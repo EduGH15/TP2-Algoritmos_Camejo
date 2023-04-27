@@ -56,6 +56,7 @@ typedef struct juego{
 	ingrediente_t comida_lista[MAX_INGREDIENTES];
 	int tope_comida_lista;
 	int precio_total;
+	int movimientos;
 }juego_t;
 
 /*
