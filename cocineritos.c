@@ -3,53 +3,137 @@
 
 #include "cocineritos.h"
 
-void inicializar_juego(juego_t* juego, int precio){
-	//Stich
-	juego->stitch.posicion.fil = 3; //La posicion de stich deberia ser random
-	juego->stitch.posicion.col = 10;
-	juego->stitch.tipo = 'S';
-	juego->stitch.objeto_en_mano = ' '; //No tiene nada en la mano
-	//Reuben
-	juego->reuben.posicion.fil = 15;
-	juego->reuben.posicion.col = 10;
-	juego->reuben.tipo = 'R';
-	juego->reuben.objeto_en_mano = ' ';
-	//------------------
-	juego->personaje_activo = 'S';// comienza estando activo stich y luego pasa a Reuben si se presiona X
-	//----------------------
-	juego->comida_actual = 'E'; //Ensalada, luego siguen otros...
-	//Paredes
-	juego->paredes[0].fil = 0; //Pero quedan mas paredes para agregar, solo agregué la pared que esta en (0,0)
-	juego->tope_paredes = 1;
-	juego->paredes[1].col = 0;
-	juego->tope_paredes = 2;
-	//Herramientas
-	juego->herramientas[0].posicion.fil = 1;
-	juego->tope_herramientas = 1;
-	juego->herramientas[1].posicion.col = 1;
-	juego->tope_herramientas = 2;
-	juego->herramientas[2].tipo = 'C'; //cuchillo
-	juego->tope_herramientas = 3; //Pero quedan mas herramientas para agregar (1,1,C)
-	//Salida
-	juego->salida.fil = 20; //Pero debe ser random
-	juego->salida.col = 10;
-	//Mesa
-	juego->mesa.fil = 10;
-	juego->mesa.col = 10;
-	//Obstaculos
-	juego->obstaculos[0].posicion.fil = 9;
-	juego->tope_obstaculos = 1;
-	juego->obstaculos[1].posicion.col = 9;
-	juego->tope_obstaculos = 2;
-	juego->obstaculos[2].tipo = 'A'; // Agujero pero tambien falta el fuego
-	juego->tope_herramientas = 3;
-	//Comida: comienza con ensalada, luego con...
-	juego->comida[0].ingrediente[0].posicion.fil = 0;
+#define MAX_FIL 21
+#define MAX_COL 21
 
+/*-------OBSTACULOS----------*/
+const char FUEGO = 'F';
+const char AGUJEROS = 'A';
 
-	
+/*-------HERRAMIENTAS----------*/
+const char MATAFUEGOS = 'M';
+const char CUCHILLO = 'C';
+const char HORNO = 'H';
 
+/*-------INGREDIENTES----------*/
+const char LECHUGA = 'L';
+const char TOMATE = 'T';
+const char MILANESA = 'I';
+const char CARNE = 'B';
+const char PAN = 'N';
+const char JAMON = 'J';
+const char QUESO = 'Q';
+const char MASA = 'O';
+
+/*--------COMIDAS-----------*/
+const char ENSALADA = 'E';
+const char PIZZA = 'P';
+const char HAMBURGUESA = 'H';
+const char SANDWICH = 'S';
+
+/*------ PERSONAJES -----------*/
+const char STICH = 'S';
+const char REUBEN = 'R';
+//const char PERSONAJE_AGUJERO = '*';
+//const char PERSONAJE_HERRAMIENTA = '@';
+//const char PERSONAJE_INGREDIENTE = '$';
+
+/*------ELEMENTOS DE LA MATRIZ------*/
+const char PARED = '#';
+const char MESA = '_';
+const char PUERTA_SALIDA = 'P';
+const char VACIO = ' ';
+
+bool hay_jugador(juego_t juego, int fila, int columna){
+	return (juego.stitch.posicion.fil == fila && juego.stitch.posicion.col == columna) || (juego.reuben.posicion.fil == fila && juego.reuben.posicion.col == columna);
 }
+
+bool hay_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int fila, int columna){
+	bool encontro = false;
+	int i = 0;
+	while(i < tope_obstaculo && !encontro){
+		if(obstaculos[i].posicion.fil == fila && obstaculos[i].posicion.col == columna){
+			encontro = true;
+		}
+		i++;
+	}
+	return encontro;
+}
+
+hay_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna){
+	bool encontro = false;
+	int i = 0;
+	while(i < tope_herramientas && !encontro){
+		if(herramientas[i].posicion.fil == fila && herramientas[i].posicion.col == columna){
+			encontro = true;
+		}
+		i++;
+	}
+	return encontro;
+}
+
+hay_pared(coordenada_t paredes[MAX_PAREDES], int tope_paredes, int fila, int columna){
+	bool encontro = false;
+	int i = 0;
+	while(i < tope_paredes && !encontro){
+		if(paredes[i].fil == fila && paredes[i].col == columna){
+			encontro == true;
+		}
+		i++;
+	}
+	return encontro;
+}
+
+hay_mesa(coordenada_t mesa, int fila, int columna){
+	return mesa.fil == fila && mesa.col == columna;
+}
+
+hay_salida(coordenada_t salida, int fila, int columna){
+	return salida.fil == fila && salida.col == columna;
+}
+
+hay_ingrediente(comida_t comida[MAX_COMIDA], int tope_comida, int fila, int columna){
+	bool encontro = false;
+	int i = 0;
+	int j = 0;
+	while(i < tope_comida && !encontro){
+		while(j < comida[i].tope_ingredientes && !encontro){
+			if(comida[i].ingrediente[j].posicion.fil == fila && comida[i].ingrediente[j].posicion.col == columna){
+				encontro = true;
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+}
+
+void inicializar_paredes(coordenada_t paredes[MAX_PAREDES], int *tope_paredes){
+	for(int posicion = 0; posicion < tope_paredes; posicion++){
+		for(int i = 0; i < MAX_FIL; i++){
+			for(int j = 0; j < MAX_COL; j++){
+				if(i == 0 || i == 10 || i == 20 || j == 0 || j == 20){
+					paredes[posicion].fil = i;
+					paredes[posicion].col += 1;
+					(*tope_paredes)++;
+				}
+
+			}
+		}
+	}
+}
+
+
+void crear_grilla_vacia(){
+    char grilla[MAX_FIL][MAX_COL];
+    for(int i = 0; i < MAX_FIL; i++){
+        for(int j = 0; j < MAX_COL; j++){
+           grilla[i][j] = ' ';
+        }
+    }
+}
+
+//void inicializar_juego(juego_t* juego, int precio)
 //void realizar_jugada(juego_t* juego, char movimiento)
 //void imprimir_terreno(juego_t juego)
 //int estado_juego(juego_t juego)
