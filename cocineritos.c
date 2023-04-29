@@ -94,7 +94,7 @@ void inicializar_agujeros_stitch(juego_t* juego){
 void inicializar_agujeros_reuben(juego_t* juego){
 	int cuadrante_reuben = 0;
 	while(cuadrante_reuben < 10){
-		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 8, 1, 19);
+		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 9, 1, 19);
 		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
 		juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_agujero.col; 
 		juego->obstaculos[juego->tope_obstaculos].tipo = 'A';
