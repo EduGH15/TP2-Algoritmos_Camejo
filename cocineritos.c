@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "cocineritos.h"
 
@@ -44,15 +46,19 @@ const char MESA = '_';
 const char PUERTA_SALIDA = 'P';
 const char VACIO = ' ';
 
-/*
+//------------------------------------------FUNCIONES VARIAS --------------------------------------------------
+
 coordenada_t generar_coordenada_aleatoria(int fil_inicial, int fil_final, int col_inicial, int col_final){
 	coordenada_t posicion;
 	posicion.fil = rand() % fil_final + fil_inicial; //Ambos inclusives;
 	posicion.col = rand() % col_final + col_inicial; //Ambos inclusives;
 	return posicion;
 }
-*/
 
+//------------------------------------------BOOLEANOS---------------------------------------------------------
+
+
+//---------------------------------------INICIALIZANDO--------------------------------------------------------
 void inicializar_paredes(juego_t* juego){
 	juego->tope_paredes = 0;
 	for(int i = 0; i < MAX_FIL; i++){
@@ -71,6 +77,33 @@ void inicializar_paredes(juego_t* juego){
 	}
 }
 
+
+void inicializar_agujeros_stitch(juego_t* juego){
+	juego->tope_obstaculos = 0;
+	int cuadrante_stitch = 0;
+	while(cuadrante_stitch < 10){
+		coordenada_t posicion_agujero = generar_coordenada_aleatoria(1, 9, 1, 19);
+		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
+		juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_agujero.col; 
+		juego->obstaculos[juego->tope_obstaculos].tipo = 'A';
+		(juego->tope_obstaculos)++;
+		cuadrante_stitch++;
+	}
+}
+
+void inicializar_agujeros_reuben(juego_t* juego){
+	int cuadrante_reuben = 0;
+	while(cuadrante_reuben < 10){
+		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 8, 1, 19);
+		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
+		juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_agujero.col; 
+		juego->obstaculos[juego->tope_obstaculos].tipo = 'A';
+		(juego->tope_obstaculos)++;
+		cuadrante_reuben++;
+	}
+}
+
+
 void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
     for(int i = 0; i < MAX_FIL; i++){
         for(int j = 0; j < MAX_COL; j++){
@@ -82,6 +115,9 @@ void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
 void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 	for(int i = 0; i < juego.tope_paredes; i++){
 		grilla[juego.paredes[i].fil][juego.paredes[i].col] = '#';
+	}
+	for(int i = 0;i < juego.tope_obstaculos; i++){
+		grilla[juego.obstaculos[i].posicion.fil][juego.obstaculos[i].posicion.col] = juego.obstaculos[i].tipo;
 	}
 }
 
@@ -103,6 +139,8 @@ void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]){
 
 void inicializar_juego(juego_t* juego, int precio){
 	inicializar_paredes(juego);
+	inicializar_agujeros_stitch(juego);
+	inicializar_agujeros_reuben(juego);
 }
 
 void imprimir_terreno(juego_t juego){
