@@ -44,90 +44,34 @@ const char MESA = '_';
 const char PUERTA_SALIDA = 'P';
 const char VACIO = ' ';
 
-bool hay_jugador(juego_t juego, int fila, int columna){
-	return (juego.stitch.posicion.fil == fila && juego.stitch.posicion.col == columna) || (juego.reuben.posicion.fil == fila && juego.reuben.posicion.col == columna);
+/*
+coordenada_t generar_coordenada_aleatoria(int fil_inicial, int fil_final, int col_inicial, int col_final){
+	coordenada_t posicion;
+	posicion.fil = rand() % fil_final + fil_inicial; //Ambos inclusives;
+	posicion.col = rand() % col_final + col_inicial; //Ambos inclusives;
+	return posicion;
 }
+*/
 
-bool hay_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int fila, int columna){
-	bool encontro = false;
-	int i = 0;
-	while(i < tope_obstaculo && !encontro){
-		if(obstaculos[i].posicion.fil == fila && obstaculos[i].posicion.col == columna){
-			encontro = true;
-		}
-		i++;
-	}
-	return encontro;
-}
-
-hay_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna){
-	bool encontro = false;
-	int i = 0;
-	while(i < tope_herramientas && !encontro){
-		if(herramientas[i].posicion.fil == fila && herramientas[i].posicion.col == columna){
-			encontro = true;
-		}
-		i++;
-	}
-	return encontro;
-}
-
-hay_pared(coordenada_t paredes[MAX_PAREDES], int tope_paredes, int fila, int columna){
-	bool encontro = false;
-	int i = 0;
-	while(i < tope_paredes && !encontro){
-		if(paredes[i].fil == fila && paredes[i].col == columna){
-			encontro == true;
-		}
-		i++;
-	}
-	return encontro;
-}
-
-hay_mesa(coordenada_t mesa, int fila, int columna){
-	return mesa.fil == fila && mesa.col == columna;
-}
-
-hay_salida(coordenada_t salida, int fila, int columna){
-	return salida.fil == fila && salida.col == columna;
-}
-
-hay_ingrediente(comida_t comida[MAX_COMIDA], int tope_comida, int fila, int columna){
-	bool encontro = false;
-	int i = 0;
-	int j = 0;
-	while(i < tope_comida && !encontro){
-		while(j < comida[i].tope_ingredientes && !encontro){
-			if(comida[i].ingrediente[j].posicion.fil == fila && comida[i].ingrediente[j].posicion.col == columna){
-				encontro = true;
-			}
-			j++;
-		}
-		j = 0;
-		i++;
-	}
-}
-
-void inicializar_paredes(coordenada_t paredes[MAX_PAREDES], int *tope_paredes){
+void inicializar_paredes(juego_t* juego){
+	juego->tope_paredes = 0;
 	for(int i = 0; i < MAX_FIL; i++){
 		for(int j = 0; j < MAX_COL; j++){
 			if(j == 0 || j == 20){
-				paredes[*tope_paredes].fil = i;
-				paredes[*tope_paredes].col = j;
-				(*tope_paredes)++;
+				juego->paredes[juego->tope_paredes].fil = i;
+				juego->paredes[juego->tope_paredes].col = j;
+				(juego->tope_paredes)++;
 			}
 			if((j > 0 && j < 20) && (i == 0 || (i == 10 && j != 10)|| i == 20)){
-			paredes[*tope_paredes].fil = i;
-			paredes[*tope_paredes].col = j;
-			(*tope_paredes)++;
+				juego->paredes[juego->tope_paredes].fil = i;
+				juego->paredes[juego->tope_paredes].col = j;
+				(juego->tope_paredes)++;
 			}
 		} 
 	}
 }
 
-
-void crear_grilla_vacia(){
-    char grilla[MAX_FIL][MAX_COL];
+void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
     for(int i = 0; i < MAX_FIL; i++){
         for(int j = 0; j < MAX_COL; j++){
            grilla[i][j] = ' ';
@@ -135,9 +79,41 @@ void crear_grilla_vacia(){
     }
 }
 
-//void inicializar_juego(juego_t* juego, int precio)
+void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
+	for(int i = 0; i < juego.tope_paredes; i++){
+		grilla[juego.paredes[i].fil][juego.paredes[i].col] = '#';
+	}
+}
+
+void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]){
+    for(int i = 0; i < MAX_FIL; i++){
+        for(int j = 0; j < MAX_COL; j++){
+            if(j < 20){
+                printf(" %c |", grilla[i][j]);
+            }else{
+                printf(" %c ", grilla[i][j]);
+            }
+        }
+        if(i < 20){
+            printf("\n------------------------------------------------------------------------------------\n");
+        }
+    }
+    printf("\n");
+}
+
+void inicializar_juego(juego_t* juego, int precio){
+	inicializar_paredes(juego);
+}
+
+void imprimir_terreno(juego_t juego){
+	char grilla[MAX_FIL][MAX_COL];
+	inicializar_grilla_vacia(grilla);
+	llenar_grilla(juego, grilla);
+	dibujar_grilla(grilla);
+}
+
 //void realizar_jugada(juego_t* juego, char movimiento)
-//void imprimir_terreno(juego_t juego)
+
 //int estado_juego(juego_t juego)
 
 
