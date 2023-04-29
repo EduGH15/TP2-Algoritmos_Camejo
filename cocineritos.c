@@ -109,17 +109,32 @@ hay_ingrediente(comida_t comida[MAX_COMIDA], int tope_comida, int fila, int colu
 }
 
 void inicializar_paredes(coordenada_t paredes[MAX_PAREDES], int *tope_paredes){
-	for(int posicion = 0; posicion < tope_paredes; posicion++){
-		for(int i = 0; i < MAX_FIL; i++){
-			for(int j = 0; j < MAX_COL; j++){
-				if(i == 0 || i == 10 || i == 20 || j == 0 || j == 20){
-					paredes[posicion].fil = i;
-					paredes[posicion].col += 1;
-					(*tope_paredes)++;
-				}
-
-			}
+	for(int j = 0; j < MAX_COL; j++){
+		paredes[*tope_paredes].fil = 0;
+		paredes[*tope_paredes].col = j;
+		(*tope_paredes)++;
+	}
+	for(int j = 0; j < MAX_COL; j++){
+		paredes[*tope_paredes].fil = 20;
+		paredes[*tope_paredes].col = j;
+		(*tope_paredes)++;
+	}
+	for(int j = 0; j < MAX_COL; j++){
+		if(j != 10){
+			paredes[*tope_paredes].fil = 10;
+			paredes[*tope_paredes].col = j;
+			(*tope_paredes)++;
 		}
+	}
+	for(int i = 0; i < MAX_FIL; i++){
+		paredes[*tope_paredes].fil = i;
+		paredes[*tope_paredes].col = 0;
+		(*tope_paredes)++;
+	}
+	for(int i = 0; i < MAX_FIL; i++){
+		paredes[*tope_paredes].fil = i;
+		paredes[*tope_paredes].col = 20;
+		(*tope_paredes)++;
 	}
 }
 
