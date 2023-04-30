@@ -97,33 +97,6 @@ void inicializar_mesa(juego_t* juego){
 	juego->mesa.col = 10;
 }
 
-/*
-void inicializar_agujeros_stitch(juego_t* juego){
-	juego->tope_obstaculos = 0;
-	int cuadrante_stitch = 0;
-	while(cuadrante_stitch < 10){
-		coordenada_t posicion_agujero = generar_coordenada_aleatoria(1, 9, 1, 19);
-		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
-		juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_agujero.col; 
-		juego->obstaculos[juego->tope_obstaculos].tipo = 'A';
-		(juego->tope_obstaculos)++;
-		cuadrante_stitch++;
-	}
-}
-
-void inicializar_agujeros_reuben(juego_t* juego){
-	int cuadrante_reuben = 0;
-	while(cuadrante_reuben < 10){
-		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 9, 1, 19);
-		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
-		juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_agujero.col; 
-		juego->obstaculos[juego->tope_obstaculos].tipo = 'A';
-		(juego->tope_obstaculos)++;
-		cuadrante_reuben++;
-	}
-}
-*/
-
 void inicializar_agujeros(juego_t* juego){
 	juego->tope_obstaculos = 0;
 	int cuadrante_stitch = 0;
@@ -148,6 +121,8 @@ void inicializar_agujeros(juego_t* juego){
 	}
 }
 
+/*
+
 void inicializar_herramientas_stitch(juego_t* juego){
 	juego->tope_herramientas = 0;
 	int herramientas_stitch = 0;
@@ -165,6 +140,35 @@ void inicializar_herramientas_stitch(juego_t* juego){
 
 void inicializar_herramientas_reuben(juego_t* juego){
 	int herramientas_reuben = 0;
+	while(herramientas_reuben < 2){
+		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(11, 9, 1, 19);
+		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col)){
+			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_herramienta.fil;
+			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
+			juego->herramientas[juego->tope_herramientas].tipo = 'H';
+			(juego->tope_herramientas)++;
+			herramientas_reuben++;
+		}
+	}
+}
+*/
+
+void inicializar_herramientas(juego_t* juego){
+	juego->tope_herramientas = 0;
+	int herramientas_stitch = 0;
+	int herramientas_reuben = 0;
+
+	while(herramientas_stitch < 2){
+		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(1, 9, 1, 19);
+		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col)){
+			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_herramienta.fil;
+			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
+			juego->herramientas[juego->tope_herramientas].tipo = 'C';
+			(juego->tope_herramientas)++;
+			herramientas_stitch++;
+		}
+	}
+
 	while(herramientas_reuben < 2){
 		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(11, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col)){
@@ -236,12 +240,11 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_paredes(juego);
 	inicializar_mesa(juego);
 	inicializar_agujeros(juego);
+	inicializar_herramientas(juego);
 	/*
-	inicializar_agujeros_stitch(juego);
-	inicializar_agujeros_reuben(juego);
-	*/
 	inicializar_herramientas_stitch(juego);
 	inicializar_herramientas_reuben(juego);
+	*/
 	inicializar_comida(juego);
 }
 
