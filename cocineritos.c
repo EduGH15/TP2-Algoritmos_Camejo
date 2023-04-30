@@ -70,6 +70,10 @@ bool hay_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int f
 }
 
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
+void inicializar_precio_total(juego_t* juego, int precio){
+	juego->precio_total = precio;
+}
+
 void inicializar_paredes(juego_t* juego){
 	juego->tope_paredes = 0;
 	for(int i = 0; i < MAX_FIL; i++){
@@ -88,13 +92,12 @@ void inicializar_paredes(juego_t* juego){
 	}
 }
 
-
 void inicializar_mesa(juego_t* juego){
 	juego->mesa.fil = 10;
 	juego->mesa.col = 10;
 }
 
-
+/*
 void inicializar_agujeros_stitch(juego_t* juego){
 	juego->tope_obstaculos = 0;
 	int cuadrante_stitch = 0;
@@ -110,6 +113,31 @@ void inicializar_agujeros_stitch(juego_t* juego){
 
 void inicializar_agujeros_reuben(juego_t* juego){
 	int cuadrante_reuben = 0;
+	while(cuadrante_reuben < 10){
+		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 9, 1, 19);
+		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
+		juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_agujero.col; 
+		juego->obstaculos[juego->tope_obstaculos].tipo = 'A';
+		(juego->tope_obstaculos)++;
+		cuadrante_reuben++;
+	}
+}
+*/
+
+void inicializar_agujeros(juego_t* juego){
+	juego->tope_obstaculos = 0;
+	int cuadrante_stitch = 0;
+	int cuadrante_reuben = 0;
+
+	while(cuadrante_stitch < 10){
+		coordenada_t posicion_agujero = generar_coordenada_aleatoria(1, 9, 1, 19);
+		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
+		juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_agujero.col; 
+		juego->obstaculos[juego->tope_obstaculos].tipo = 'A';
+		(juego->tope_obstaculos)++;
+		cuadrante_stitch++;
+	}
+
 	while(cuadrante_reuben < 10){
 		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 9, 1, 19);
 		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
@@ -148,6 +176,22 @@ void inicializar_herramientas_reuben(juego_t* juego){
 		}
 	}
 }
+
+void inicializar_comida(juego_t* juego){
+	juego->tope_comida = 0;
+	juego->comida[0].tipo = ENSALADA;
+	juego->comida[1].tipo = PIZZA;
+	juego->comida[2].tipo = HAMBURGUESA;
+	juego->comida[3].tipo = SANDWICH;
+	if(juego->precio_total <= 100){
+		juego->tope_comida = 2;
+	}else if(juego->precio_total <= 150){
+		juego->tope_comida = 3;
+	}else if(juego->tope_comida < 150){
+		juego->tope_comida = 4;
+	}
+}
+
 
 //--------------------------------------------------INICIALIZACIÓN CENTRALIZADA--------------------------------------
 void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
@@ -188,12 +232,17 @@ void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]){
 }
 
 void inicializar_juego(juego_t* juego, int precio){
+	inicializar_precio_total(juego, precio);
 	inicializar_paredes(juego);
 	inicializar_mesa(juego);
+	inicializar_agujeros(juego);
+	/*
 	inicializar_agujeros_stitch(juego);
 	inicializar_agujeros_reuben(juego);
+	*/
 	inicializar_herramientas_stitch(juego);
 	inicializar_herramientas_reuben(juego);
+	inicializar_comida(juego);
 }
 
 void imprimir_terreno(juego_t juego){
