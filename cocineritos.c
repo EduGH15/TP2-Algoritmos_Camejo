@@ -130,27 +130,24 @@ void inicializar_herramientas_stitch(juego_t* juego){
 			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
 			juego->herramientas[juego->tope_herramientas].tipo = 'C';
 			(juego->tope_herramientas)++;
+			herramientas_stitch++;
 		}
-		herramientas_stitch++;
-
 	}
 }
 
-/*
-*tope_herramientas = 0;
-	int herramientas_stitch = 0;
-	while(herramientas_stitch < 0){
-		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(1, 9, 1, 19);
-		if(!hay_obstaculo(obstaculos, tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col)){
-			herramientas[*tope_herramientas].posicion.fil = posicion_herramienta.fil;
-			herramientas[*tope_herramientas].posicion.col = posicion_herramienta.col;
-			herramientas[*tope_herramientas].tipo = 'C';
-			(*tope_herramientas)++;
+void inicializar_herramientas_reuben(juego_t* juego){
+	int herramientas_reuben = 0;
+	while(herramientas_reuben < 2){
+		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(11, 9, 1, 19);
+		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col)){
+			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_herramienta.fil;
+			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
+			juego->herramientas[juego->tope_herramientas].tipo = 'H';
+			(juego->tope_herramientas)++;
+			herramientas_reuben++;
 		}
-		herramientas_stitch++;
 	}
-*/
-
+}
 
 //--------------------------------------------------INICIALIZACIÓN CENTRALIZADA--------------------------------------
 void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
@@ -196,6 +193,7 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_agujeros_stitch(juego);
 	inicializar_agujeros_reuben(juego);
 	inicializar_herramientas_stitch(juego);
+	inicializar_herramientas_reuben(juego);
 }
 
 void imprimir_terreno(juego_t juego){
