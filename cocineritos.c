@@ -81,6 +81,22 @@ bool hay_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramien
 	return encontro;
 }
 
+bool hay_ingrediente(comida_t comida[MAX_COMIDA], int tope_comida, int fila, int columna){
+	bool encontro = false;
+	int i = 0;
+	int j = 0;
+	while(i < tope_comida && !encontro){
+		while(j < comida[i].tope_ingredientes && !encontro){
+			if(comida[i].ingrediente[j].posicion.fil == fila && comida[i].ingrediente[j].posicion.col == columna){
+				encontro = true;
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	return encontro;
+}
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
 void inicializar_precio_total(juego_t* juego, int precio){
 	juego->precio_total = precio;
@@ -171,7 +187,7 @@ void inicializar_ingrediente_ensalada(juego_t* juego){
 		if(i == 0){
 			while(cantidad_lechuga < 1){
 				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col)){
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
 					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
 					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].posicion.col = posicion_aleatoria.col;
 					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].tipo = LECHUGA;
@@ -182,7 +198,7 @@ void inicializar_ingrediente_ensalada(juego_t* juego){
 		}else if(i == 1){
 			while(cantidad_tomate < 1){
 				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col)){
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
 					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
 					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].posicion.col = posicion_aleatoria.col;
 					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].tipo = TOMATE;
