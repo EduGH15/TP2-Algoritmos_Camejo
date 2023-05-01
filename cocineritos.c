@@ -213,6 +213,68 @@ void inicializar_ingrediente_ensalada(juego_t* juego){
 
 void inicializar_ingrediente_pizza(juego_t* juego){
 	juego->comida[1].tope_ingredientes = 0;
+	int cantidad_masa = 0;
+	int cantidad_jamon = 0;
+	int cantidad_queso = 0; 
+	for(int i = 0; i < MAX_INGREDIENTES; i++){
+		juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].esta_cocinado = false;
+		juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].esta_cortado = false;
+		if(i == 0){
+			while(cantidad_masa < 1){
+				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(11, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
+					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
+					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.col = posicion_aleatoria.col;
+					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].tipo = MASA;
+					(juego->comida[1].tope_ingredientes)++;
+					cantidad_masa++;
+				}
+			}
+		}else if(i == 1){
+			while(cantidad_jamon < 1){
+				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
+					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
+					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.col = posicion_aleatoria.col;
+					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].tipo = JAMON;
+					(juego->comida[1].tope_ingredientes)++;
+					cantidad_jamon++;
+				}
+			}
+		}else if(i == 2){
+			while(cantidad_queso < 1){
+				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
+					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
+					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.col = posicion_aleatoria.col;
+					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].tipo = QUESO;
+					(juego->comida[1].tope_ingredientes)++;
+					cantidad_queso++;
+				}
+			}
+		}
+	}
+}
+
+void inicializar_ingrediente_hamburguesa(juego_t* juego){
+	juego->comida[2].tope_ingredientes = 0;
+	int cantidad_pan = 0;
+	for(int i = 0; i < MAX_INGREDIENTES; i++){
+		juego->comida[2].ingrediente[juego->comida[2].tope_ingredientes].esta_cocinado = false;
+		juego->comida[2].ingrediente[juego->comida[2].tope_ingredientes].esta_cortado = false;
+		if(i == 0){
+			while(cantidad_pan < 1){
+				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
+					juego->comida[2].ingrediente[juego->comida[2].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
+					juego->comida[2].ingrediente[juego->comida[2].tope_ingredientes].posicion.col = posicion_aleatoria.col;
+					juego->comida[2].ingrediente[juego->comida[2].tope_ingredientes].tipo = PAN;
+					(juego->comida[2].tope_ingredientes)++;
+					cantidad_pan++;
+				}
+			}
+		}
+	}
 }
 
 void inicializar_comida(juego_t* juego){
@@ -229,7 +291,11 @@ void inicializar_comida(juego_t* juego){
 		juego->tope_comida = 4;
 	}
 	if(juego->comida_actual == ENSALADA){
-			inicializar_ingrediente_ensalada(juego);
+		inicializar_ingrediente_ensalada(juego);
+	}else if(juego->comida_actual == PIZZA){
+		inicializar_ingrediente_pizza(juego);
+	}else if(juego->comida_actual == HAMBURGUESA){
+		inicializar_ingrediente_hamburguesa(juego);
 	}
 }
 
@@ -246,16 +312,30 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 	for(int i = 0; i < juego.tope_paredes; i++){
 		grilla[juego.paredes[i].fil][juego.paredes[i].col] = '#';
 	}
+
 	grilla[juego.mesa.fil][juego.mesa.col] = '_';
 	for(int i = 0;i < juego.tope_obstaculos; i++){
 		grilla[juego.obstaculos[i].posicion.fil][juego.obstaculos[i].posicion.col] = juego.obstaculos[i].tipo;
 	}
+
 	for(int i = 0; i < juego.tope_herramientas; i++){
 		grilla[juego.herramientas[i].posicion.fil][juego.herramientas[i].posicion.col] = juego.herramientas[i].tipo;
 	}
-	for(int i = 0; i < juego.comida[0].tope_ingredientes; i++){
+
+	if(juego.comida_actual == ENSALADA){
+		for(int i = 0; i < juego.comida[0].tope_ingredientes; i++){
 		grilla[juego.comida[0].ingrediente[i].posicion.fil][juego.comida[0].ingrediente[i].posicion.col] = juego.comida[0].ingrediente[i].tipo;
+		}
+	}else if(juego.comida_actual == PIZZA){
+		for(int i = 0; i < juego.comida[1].tope_ingredientes; i++){
+		grilla[juego.comida[1].ingrediente[i].posicion.fil][juego.comida[1].ingrediente[i].posicion.col] = juego.comida[1].ingrediente[i].tipo;
+		}
+	}else if(juego.comida_actual == HAMBURGUESA){
+		for(int i = 0; i < juego.comida[2].tope_ingredientes; i++){
+		grilla[juego.comida[2].ingrediente[i].posicion.fil][juego.comida[2].ingrediente[i].posicion.col] = juego.comida[2].ingrediente[i].tipo;
+		}
 	}
+	
 }
 
 void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]){
@@ -280,7 +360,7 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_mesa(juego);
 	inicializar_agujeros(juego);
 	inicializar_herramientas(juego);
-	//juego->comida_actual = ENSALADA;
+	juego->comida_actual = HAMBURGUESA;
 	inicializar_comida(juego);
 }
 
