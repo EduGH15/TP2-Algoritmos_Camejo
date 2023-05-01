@@ -211,6 +211,10 @@ void inicializar_ingrediente_ensalada(juego_t* juego){
 	}
 }
 
+void inicializar_ingrediente_pizza(juego_t* juego){
+	juego->comida[1].tope_ingredientes = 0;
+}
+
 void inicializar_comida(juego_t* juego){
 	juego->tope_comida = 0;
 	juego->comida[0].tipo = ENSALADA;
@@ -224,7 +228,9 @@ void inicializar_comida(juego_t* juego){
 	}else if(juego->tope_comida < 150){
 		juego->tope_comida = 4;
 	}
-	inicializar_ingrediente_ensalada(juego);
+	if(juego->comida_actual == ENSALADA){
+			inicializar_ingrediente_ensalada(juego);
+	}
 }
 
 //--------------------------------------------------INICIALIZACIÓN CENTRALIZADA--------------------------------------
@@ -274,6 +280,7 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_mesa(juego);
 	inicializar_agujeros(juego);
 	inicializar_herramientas(juego);
+	//juego->comida_actual = ENSALADA;
 	inicializar_comida(juego);
 }
 
