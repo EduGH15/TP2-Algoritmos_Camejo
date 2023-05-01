@@ -313,6 +313,28 @@ void inicializar_ingrediente_hamburguesa(juego_t* juego){
 	}
 }
 
+void inicializar_ingrediente_sandwich(juego_t* juego){
+	juego->comida[3].tope_ingredientes = 0;
+	int cantidad_milanesa = 0;
+	int cantidad_pan = 0;
+	for(int i = 0; i < MAX_INGREDIENTES; i++){
+		if(i == 0){
+			while(cantidad_milanesa < 1){
+				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(11, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
+					juego->comida[3].ingrediente[juego->comida[3].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
+					juego->comida[3].ingrediente[juego->comida[3].tope_ingredientes].posicion.col = posicion_aleatoria.col;
+					juego->comida[3].ingrediente[juego->comida[3].tope_ingredientes].tipo = MILANESA;
+					(juego->comida[3].tope_ingredientes)++;
+					cantidad_milanesa++;
+				}
+			}
+		}else if(i == 1){
+
+		}
+	}
+}
+
 void inicializar_comida(juego_t* juego){
 	juego->tope_comida = 0;
 	juego->comida[0].tipo = ENSALADA;
@@ -332,6 +354,8 @@ void inicializar_comida(juego_t* juego){
 		inicializar_ingrediente_pizza(juego);
 	}else if(juego->comida_actual == HAMBURGUESA){
 		inicializar_ingrediente_hamburguesa(juego);
+	}else if(juego->comida_actual){
+		inicializar_ingrediente_sandwich(juego);
 	}
 }
 
@@ -370,6 +394,10 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 		for(int i = 0; i < juego.comida[2].tope_ingredientes; i++){
 		grilla[juego.comida[2].ingrediente[i].posicion.fil][juego.comida[2].ingrediente[i].posicion.col] = juego.comida[2].ingrediente[i].tipo;
 		}
+	}else if(juego.comida_actual == SANDWICH){
+		for(int i = 0; i < juego.comida[3].tope_ingredientes; i++){
+			grilla[juego.comida[3].ingrediente[i].posicion.fil][juego.comida[3].ingrediente[i].posicion.col] = juego.comida[3].ingrediente[i].tipo;
+		}
 	}
 	
 }
@@ -396,7 +424,7 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_mesa(juego);
 	inicializar_agujeros(juego);
 	inicializar_herramientas(juego);
-	juego->comida_actual = HAMBURGUESA;
+	juego->comida_actual = SANDWICH;
 	inicializar_comida(juego);
 }
 
