@@ -69,6 +69,18 @@ bool hay_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int f
 	return encontro;
 }
 
+bool hay_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna){
+	bool encontro = false;
+	int i = 0;
+	while(i < tope_herramientas && !encontro){
+		if(herramientas[i].posicion.fil == fila && herramientas[i].posicion.col == columna){
+			encontro = true;
+		}
+		i++;
+	}
+	return encontro;
+}
+
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
 void inicializar_precio_total(juego_t* juego, int precio){
 	juego->precio_total = precio;
@@ -121,38 +133,6 @@ void inicializar_agujeros(juego_t* juego){
 	}
 }
 
-/*
-
-void inicializar_herramientas_stitch(juego_t* juego){
-	juego->tope_herramientas = 0;
-	int herramientas_stitch = 0;
-	while(herramientas_stitch < 2){
-		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(1, 9, 1, 19);
-		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col)){
-			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_herramienta.fil;
-			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
-			juego->herramientas[juego->tope_herramientas].tipo = 'C';
-			(juego->tope_herramientas)++;
-			herramientas_stitch++;
-		}
-	}
-}
-
-void inicializar_herramientas_reuben(juego_t* juego){
-	int herramientas_reuben = 0;
-	while(herramientas_reuben < 2){
-		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(11, 9, 1, 19);
-		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col)){
-			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_herramienta.fil;
-			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
-			juego->herramientas[juego->tope_herramientas].tipo = 'H';
-			(juego->tope_herramientas)++;
-			herramientas_reuben++;
-		}
-	}
-}
-*/
-
 void inicializar_herramientas(juego_t* juego){
 	juego->tope_herramientas = 0;
 	int herramientas_stitch = 0;
@@ -181,6 +161,40 @@ void inicializar_herramientas(juego_t* juego){
 	}
 }
 
+void inicializar_ingrediente_ensalada(juego_t* juego){
+	juego->comida[0].tope_ingredientes = 0;
+	int cantidad_lechuga = 0;
+	int cantidad_tomate = 0;
+	for(int i = 0; i < MAX_INGREDIENTES; i++){
+		juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].esta_cocinado = false;
+		juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].esta_cortado = false;
+		if(i == 0){
+			while(cantidad_lechuga < 1){
+				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col)){
+					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
+					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].posicion.col = posicion_aleatoria.col;
+					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].tipo = LECHUGA;
+					(juego->comida[0].tope_ingredientes)++;
+					cantidad_lechuga++;
+				}
+			}
+		}else if(i == 1){
+			while(cantidad_tomate < 1){
+				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col)){
+					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
+					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].posicion.col = posicion_aleatoria.col;
+					juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].tipo = TOMATE;
+					(juego->comida[0].tope_ingredientes)++;
+					cantidad_tomate++;
+				}
+			}
+		}
+	
+	}
+}
+
 void inicializar_comida(juego_t* juego){
 	juego->tope_comida = 0;
 	juego->comida[0].tipo = ENSALADA;
@@ -194,8 +208,8 @@ void inicializar_comida(juego_t* juego){
 	}else if(juego->tope_comida < 150){
 		juego->tope_comida = 4;
 	}
+	inicializar_ingrediente_ensalada(juego);
 }
-
 
 //--------------------------------------------------INICIALIZACIÓN CENTRALIZADA--------------------------------------
 void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
@@ -216,6 +230,9 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 	}
 	for(int i = 0; i < juego.tope_herramientas; i++){
 		grilla[juego.herramientas[i].posicion.fil][juego.herramientas[i].posicion.col] = juego.herramientas[i].tipo;
+	}
+	for(int i = 0; i < juego.comida[0].tope_ingredientes; i++){
+		grilla[juego.comida[0].ingrediente[i].posicion.fil][juego.comida[0].ingrediente[i].posicion.col] = juego.comida[0].ingrediente[i].tipo;
 	}
 }
 
@@ -241,10 +258,6 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_mesa(juego);
 	inicializar_agujeros(juego);
 	inicializar_herramientas(juego);
-	/*
-	inicializar_herramientas_stitch(juego);
-	inicializar_herramientas_reuben(juego);
-	*/
 	inicializar_comida(juego);
 }
 
