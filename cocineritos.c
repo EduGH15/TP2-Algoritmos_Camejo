@@ -438,6 +438,19 @@ void inicializar_personajes(juego_t* juego){
 	}
 }
 
+void inicializar_puerta_salida(juego_t* juego){
+	for(int i = 0; i < MAX_FIL; i++){
+			coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(11, 10, 0, 21);
+			if(posicion_aleatoria.col == 0 || posicion_aleatoria.col == 20){
+				juego->salida.fil = posicion_aleatoria.fil;
+				juego->salida.col = posicion_aleatoria.col;
+			}else if(posicion_aleatoria.fil == 20){
+				juego->salida.fil = posicion_aleatoria.fil;
+				juego->salida.col = posicion_aleatoria.col;
+			}
+	}
+}
+
 //--------------------------------------------------INICIALIZACIÓN CENTRALIZADA--------------------------------------
 void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
     for(int i = 0; i < MAX_FIL; i++){
@@ -481,7 +494,7 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 
 	grilla[juego.stitch.posicion.fil][juego.stitch.posicion.col] = juego.stitch.tipo;
 	grilla[juego.reuben.posicion.fil][juego.reuben.posicion.col] = juego.reuben.tipo;
-
+	grilla[juego.salida.fil][juego.salida.col] = PUERTA_SALIDA;
 }
 
 void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]){
@@ -508,6 +521,8 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_herramientas(juego);
 	inicializar_comida(juego);
 	inicializar_personajes(juego);
+	juego->movimientos = ' '; 
+	inicializar_puerta_salida(juego);
 }
 
 void imprimir_terreno(juego_t juego){
