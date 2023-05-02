@@ -45,6 +45,23 @@ const char PARED = '#';
 const char MESA = '_';
 const char PUERTA_SALIDA = 'P';
 const char VACIO = ' ';
+const int CENTRO_FILA = 10;
+const int CENTRO_COLUMNA = 10;
+const int PRIMERA_FILA = 0;
+const int FILA_DEL_MEDIO = 10;
+const int ULTIMA_FILA = 20;
+
+/*------------COORDENADAS----------*/
+const coordenada_t MOVER_ARRIBA = {-1, 0};
+const coordenada_t MOVER_ABAJO = {1, 0};
+const coordenada_t MOVER_DERECHA = {1, 0};
+const coordenada_t MOVER_IZQUIERDA = {-1, 0};
+
+/*------------TECLAS-----------------*/
+const char ARRIBA = 'W';
+const char ABAJO = 'S';
+const char DERECHA = 'D';
+const char IZQUIERDA = 'A';
 
 //------------------------------------------FUNCIONES VARIAS --------------------------------------------------
 
@@ -97,6 +114,7 @@ bool hay_ingrediente(comida_t comida[MAX_COMIDA], int tope_comida, int fila, int
 	}
 	return encontro;
 }
+
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
 void inicializar_precio_total(juego_t* juego, int precio){
 	juego->precio_total = precio;
@@ -121,8 +139,8 @@ void inicializar_paredes(juego_t* juego){
 }
 
 void inicializar_mesa(juego_t* juego){
-	juego->mesa.fil = 10;
-	juego->mesa.col = 10;
+	juego->mesa.fil = CENTRO_FILA;
+	juego->mesa.col = CENTRO_COLUMNA;
 }
 
 void inicializar_agujeros(juego_t* juego){
@@ -134,7 +152,7 @@ void inicializar_agujeros(juego_t* juego){
 		coordenada_t posicion_agujero = generar_coordenada_aleatoria(1, 9, 1, 19);
 		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
 		juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_agujero.col; 
-		juego->obstaculos[juego->tope_obstaculos].tipo = 'A';
+		juego->obstaculos[juego->tope_obstaculos].tipo = AGUJEROS;
 		(juego->tope_obstaculos)++;
 		cuadrante_stitch++;
 	}
@@ -143,7 +161,7 @@ void inicializar_agujeros(juego_t* juego){
 		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 9, 1, 19);
 		juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_agujero.fil;
 		juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_agujero.col; 
-		juego->obstaculos[juego->tope_obstaculos].tipo = 'A';
+		juego->obstaculos[juego->tope_obstaculos].tipo = AGUJEROS;
 		(juego->tope_obstaculos)++;
 		cuadrante_reuben++;
 	}
@@ -159,7 +177,7 @@ void inicializar_herramientas(juego_t* juego){
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col)){
 			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_herramienta.fil;
 			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
-			juego->herramientas[juego->tope_herramientas].tipo = 'C';
+			juego->herramientas[juego->tope_herramientas].tipo = CUCHILLO;
 			(juego->tope_herramientas)++;
 			herramientas_stitch++;
 		}
@@ -170,7 +188,7 @@ void inicializar_herramientas(juego_t* juego){
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col)){
 			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_herramienta.fil;
 			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
-			juego->herramientas[juego->tope_herramientas].tipo = 'H';
+			juego->herramientas[juego->tope_herramientas].tipo = HORNO;
 			(juego->tope_herramientas)++;
 			herramientas_reuben++;
 		}
@@ -531,6 +549,8 @@ void imprimir_terreno(juego_t juego){
 	llenar_grilla(juego, grilla);
 	dibujar_grilla(grilla);
 }
+
+//-------------------------------------------- ACTUALIZAR STRUCT----------------------------
 
 //void realizar_jugada(juego_t* juego, char movimiento)
 
