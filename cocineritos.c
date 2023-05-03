@@ -74,6 +74,10 @@ coordenada_t generar_coordenada_aleatoria(int fil_inicial, int amplitud_fila, in
 
 //------------------------------------------BOOLEANOS---------------------------------------------------------
 
+bool hay_jugador(juego_t juego, int fila, int columna){
+	return (juego.stitch.posicion.fil == fila && juego.stitch.posicion.col == columna) || (juego.reuben.posicion.fil == fila && juego.reuben.posicion.col == columna);
+}
+
 bool hay_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int fila, int columna){
 	bool encontro = false;
 	int i = 0;
@@ -415,17 +419,17 @@ void inicializar_ingrediente_sandwich(juego_t* juego){
 void inicializar_comida(juego_t* juego){
 	juego->tope_comida = 0;
 	juego->comida[0].tipo = ENSALADA;
-	juego->comida[1].tipo = PIZZA;
-	juego->comida[2].tipo = HAMBURGUESA;
-	juego->comida[3].tipo = SANDWICH;
+	//juego->comida[1].tipo = PIZZA;
+	//juego->comida[2].tipo = HAMBURGUESA;
+	//juego->comida[3].tipo = SANDWICH;
 
-	if(juego->precio_total <= 100){
-		juego->tope_comida = 2;
-	}else if(juego->precio_total <= 150){
-		juego->tope_comida = 3;
-	}else if(juego->tope_comida > 150){
-		juego->tope_comida = 4;
-	}
+	//if(juego->precio_total <= 100){
+	//	juego->tope_comida = 2;
+	//}else if(juego->precio_total <= 150){
+	//	juego->tope_comida = 3;
+	//}else if(juego->tope_comida > 150){
+	//	juego->tope_comida = 4;
+	//}
 	juego->comida_actual = ENSALADA;
 	inicializar_ingrediente_ensalada(juego);
 }
@@ -457,15 +461,14 @@ void inicializar_personajes(juego_t* juego){
 }
 
 void inicializar_puerta_salida(juego_t* juego){
-	for(int i = 0; i < MAX_FIL; i++){
-			coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(11, 10, 0, 21);
-			if(posicion_aleatoria.col == 0 || posicion_aleatoria.col == 20){
-				juego->salida.fil = posicion_aleatoria.fil;
-				juego->salida.col = posicion_aleatoria.col;
-			}else if(posicion_aleatoria.fil == 20){
-				juego->salida.fil = posicion_aleatoria.fil;
-				juego->salida.col = posicion_aleatoria.col;
-			}
+	bool es_posicion_valida = false;
+	while(!es_posicion_valida){
+		coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(11, 9, 1, 19);
+		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_jugador(*juego, posicion_aleatoria.fil, posicion_aleatoria.col)){
+			juego->salida.fil = posicion_aleatoria.fil;
+			juego->salida.col = posicion_aleatoria.col;
+			es_posicion_valida = true;
+		}
 	}
 }
 
@@ -552,7 +555,26 @@ void imprimir_terreno(juego_t juego){
 
 //-------------------------------------------- ACTUALIZAR STRUCT----------------------------
 
-//void realizar_jugada(juego_t* juego, char movimiento)
+void mover_jugador(personaje_t* jugador, char movimiento){
+	if(movimiento == ARRIBA){
+		jugador->posicion.fil += MOVER_ARRIBA.fil;
+		jugador->posicion.col += MOVER_ARRIBA.col;
+	}else if(movimiento == ABAJO){
+		jugador->posicion.fil += MOVER_ABAJO.fil;
+		jugador->posicion.col += MOVER_ABAJO.col;
+	}else if(movimiento == DERECHA){
+		jugador->posicion.fil += MOVER_DERECHA.fil;
+		jugador->posicion.col += MOVER_DERECHA.col;
+	}else if(movimiento == IZQUIERDA){
+		jugador->posicion.fil += MOVER_IZQUIERDA.fil;
+		jugador->posicion.col += MOVER_IZQUIERDA.col;
+	}
+}
+
+void realizar_jugada(juego_t* juego, char movimiento){
+	mover_jugador(&(juego)->stitch, movimiento);
+	imprimir_terreno(*juego);
+}
 
 //int estado_juego(juego_t juego)
 
