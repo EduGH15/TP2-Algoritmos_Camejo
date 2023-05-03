@@ -54,8 +54,8 @@ const int ULTIMA_FILA = 20;
 /*------------COORDENADAS----------*/
 const coordenada_t MOVER_ARRIBA = {-1, 0};
 const coordenada_t MOVER_ABAJO = {1, 0};
-const coordenada_t MOVER_DERECHA = {1, 0};
-const coordenada_t MOVER_IZQUIERDA = {-1, 0};
+const coordenada_t MOVER_DERECHA = {0, 1};
+const coordenada_t MOVER_IZQUIERDA = {0, -1};
 
 /*------------TECLAS-----------------*/
 const char ARRIBA = 'W';
@@ -76,6 +76,18 @@ coordenada_t generar_coordenada_aleatoria(int fil_inicial, int amplitud_fila, in
 
 bool hay_jugador(juego_t juego, int fila, int columna){
 	return (juego.stitch.posicion.fil == fila && juego.stitch.posicion.col == columna) || (juego.reuben.posicion.fil == fila && juego.reuben.posicion.col == columna);
+}
+
+bool hay_pared(coordenada_t paredes[MAX_PAREDES], int tope_paredes, int fila, int columna){
+	bool encontro = false;
+	int i = 0;
+	while(i < tope_paredes && !encontro){
+		if(paredes[i].fil == fila && paredes[i].col == columna){
+			encontro == true;
+		}
+		i++;
+	}
+	return encontro;
 }
 
 bool hay_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int fila, int columna){
@@ -569,6 +581,10 @@ void mover_jugador(personaje_t* jugador, char movimiento){
 		jugador->posicion.fil += MOVER_IZQUIERDA.fil;
 		jugador->posicion.col += MOVER_IZQUIERDA.col;
 	}
+}
+
+bool es_movimiento_valido(juego_t juego, int fil, int col){
+	return 
 }
 
 void realizar_jugada(juego_t* juego, char movimiento){
