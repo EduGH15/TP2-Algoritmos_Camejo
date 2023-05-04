@@ -463,7 +463,7 @@ void inicializar_personajes(juego_t* juego){
 			juego->stitch.posicion.fil = posicion_aleatoria.fil;
 			juego->stitch.posicion.col = posicion_aleatoria.col;
 			juego->stitch.tipo = STITCH;
-			juego->stitch.objeto_en_mano = '-';
+			juego->stitch.objeto_en_mano = ' ';
 			cantidad_stitch++;
 		}
 	}
@@ -574,6 +574,16 @@ void imprimir_terreno(juego_t juego){
 
 //-------------------------------------------- ACTUALIZAR STRUCT----------------------------
 
+bool posiciones_iguales(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, personaje_t jugador){
+	bool iguales = false;
+	for(int i = 0; i < tope_ingredientes; i++){
+		if(ingrediente[i].posicion.fil == jugador.posicion.fil && ingrediente[i].posicion.col == jugador.posicion.col){
+			iguales = true;
+		}
+	}
+	return iguales;
+}
+
 void mover_jugador(personaje_t* jugador, char movimiento){
 	if(movimiento == ARRIBA){
 		jugador->posicion.fil += MOVER_ARRIBA.fil;
@@ -590,6 +600,7 @@ void mover_jugador(personaje_t* jugador, char movimiento){
 	}
 }
 
+
 void mover_ingrediente_jugador(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, personaje_t* jugador, char movimiento){
 	for(int i = 0; i < tope_ingredientes; i++){
 		if(ingrediente[i].posicion.fil == jugador->posicion.fil && ingrediente[i].posicion.col == jugador->posicion.col){
@@ -600,9 +611,16 @@ void mover_ingrediente_jugador(ingrediente_t ingrediente[MAX_INGREDIENTES], int 
 	}
 }
 
+
+
 void realizar_jugada(juego_t* juego, char movimiento){
 	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
+		if(juego->stitch.objeto_en_mano != VACIO){
+			mover_ingrediente_jugador(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, &juego->stitch, movimiento);
+		}
 		mover_jugador(&(juego)->stitch, movimiento);
+	}if(movimiento == AGARRAR && posiciones_iguales(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, juego->stitch)){
+		juego->stitch.objeto_en_mano = juego->comida[0].ingrediente[0].tipo;
 	}
 	imprimir_terreno(*juego);
 }
