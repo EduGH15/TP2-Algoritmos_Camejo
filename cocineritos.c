@@ -62,6 +62,13 @@ const char ARRIBA = 'W';
 const char ABAJO = 'S';
 const char DERECHA = 'D';
 const char IZQUIERDA = 'A';
+const char CAMBIAR_PERSONAJE = 'X';
+const char ACTIVAR_MATAFUEGO = 'M';
+const char ACTIVAR_CUCHILLO = 'C';
+const char ACTIVAR_HORNO = 'H';
+const char AGARRAR = 'R';
+const char SOLTAR = 'R';
+const char PASAR = 'T';
 
 //------------------------------------------FUNCIONES VARIAS --------------------------------------------------
 
@@ -83,7 +90,7 @@ bool hay_pared(coordenada_t paredes[MAX_PAREDES], int tope_paredes, int fila, in
 	int i = 0;
 	while(i < tope_paredes && !encontro){
 		if(paredes[i].fil == fila && paredes[i].col == columna){
-			encontro == true;
+			encontro = true;
 		}
 		i++;
 	}
@@ -456,7 +463,7 @@ void inicializar_personajes(juego_t* juego){
 			juego->stitch.posicion.fil = posicion_aleatoria.fil;
 			juego->stitch.posicion.col = posicion_aleatoria.col;
 			juego->stitch.tipo = STITCH;
-			juego->stitch.objeto_en_mano = ' ';
+			juego->stitch.objeto_en_mano = '-';
 			cantidad_stitch++;
 		}
 	}
@@ -583,12 +590,20 @@ void mover_jugador(personaje_t* jugador, char movimiento){
 	}
 }
 
-bool es_movimiento_valido(juego_t juego, int fil, int col){
-	return 
+void mover_ingrediente_jugador(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, personaje_t* jugador, char movimiento){
+	for(int i = 0; i < tope_ingredientes; i++){
+		if(ingrediente[i].posicion.fil == jugador->posicion.fil && ingrediente[i].posicion.col == jugador->posicion.col){
+			mover_jugador(jugador, movimiento);
+			ingrediente[i].posicion.fil = jugador->posicion.fil;
+			ingrediente[i].posicion.col = jugador->posicion.col;
+		}
+	}
 }
 
 void realizar_jugada(juego_t* juego, char movimiento){
-	mover_jugador(&(juego)->stitch, movimiento);
+	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
+		mover_jugador(&(juego)->stitch, movimiento);
+	}
 	imprimir_terreno(*juego);
 }
 
