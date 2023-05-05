@@ -6,11 +6,13 @@
 #include "chambuchito.h"
 
 void imprimir_struct(juego_t juego){
-    printf("Tu tope de paredes es de: %i\n", juego.tope_paredes);
+    //printf("Tu tope de paredes es de: %i\n", juego.tope_paredes);
+
     printf("Tu tope de obstaculos es de: %i\n", juego.tope_obstaculos);
     //for(int i = 0; i < juego.tope_obstaculos; i++){
     //    printf("tienes obstaculos en: (%i, %i)\n", juego.obstaculos[i].posicion.fil, juego.obstaculos[i].posicion.col);
     //}
+    
     printf("Tu tope de herramientas es de: %i\n", juego.tope_herramientas);
     //for(int i = 0; i < juego.tope_herramientas; i++){
     //    printf("tienes herramientas en: (%i, %i) y es de tipo %c\n", juego.herramientas[i].posicion.fil, juego.herramientas[i].posicion.col, juego.herramientas[i].tipo);
@@ -18,7 +20,7 @@ void imprimir_struct(juego_t juego){
     //for(int i = 0; i < juego.tope_comida; i++){
     //    printf("Las comidas presentes en el struct son: %c\n", juego.comida[i].tipo);
     //}
-    printf("El tope del struct de comida es de: %i\n", juego.tope_comida);
+    //printf("El tope del struct de comida es de: %i\n", juego.tope_comida);
 
     printf("Tu tope de ingredientes en la ensalada es de: %i\n", juego.comida[0].tope_ingredientes);
     //for(int i = 0; i < juego.comida[0].tope_ingredientes; i++){
@@ -41,17 +43,39 @@ void imprimir_struct(juego_t juego){
     //}
 
     printf("Stitch esta en (%i, %i)\n", juego.stitch.posicion.fil, juego.stitch.posicion.col);
+    printf("esta activo el personaje: %c\n", juego.personaje_activo);
     printf("Reuben esta en (%i, %i)\n", juego.reuben.posicion.fil, juego.reuben.posicion.col);
+    printf("Hiciste hasta ahora %i movimientos\n", juego.movimientos);
+    
+
+    for(int i = 0; i < juego.tope_obstaculos; i++){
+        if(juego.obstaculos[i].tipo == 'F'){
+            printf("ALERTAAAAAAAAAAAAA TIENES UN FUEGO EN (%i, %i)\n", juego.obstaculos[i].posicion.fil, juego.obstaculos[i].posicion.col);
+        }
+    }
+    //printf("La puerta de salida esta en (%i, %i)\n", juego.salida.fil, juego.salida.col);
+    //printf("Stitch tiene en la mano %c\n", juego.stitch.objeto_en_mano);
 }
 
 int main(){
+   
     srand (( unsigned)time(NULL));
 
     int precio = 0;
+    char movimiento = ' ';
     juego_t juego;
+
     //calcular_precio_chambuchito(&precio);
     inicializar_juego(&juego, precio);
     imprimir_terreno(juego);
     imprimir_struct(juego);
+    while( precio == 0){
+        printf("Ingrese una jugada:");
+        scanf(" %c", &movimiento);
+        realizar_jugada(&juego, movimiento);
+        imprimir_terreno(juego);
+        imprimir_struct(juego);
+    }
+
     return 0;
 }
