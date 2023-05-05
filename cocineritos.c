@@ -96,6 +96,8 @@ void ocultar_ingrediente(char tipo_ingrediente, comida_t comida[MAX_COMIDA], int
 		for(int j = 0; j <comida->tope_ingredientes; j++){
 			if(comida[i].ingrediente[j].tipo == tipo_ingrediente){
 				comida[i].ingrediente[j].tipo = VACIO;
+				comida[i].ingrediente[j].posicion.fil = 0;
+				comida[i].ingrediente[j].posicion.col = 0;
 			}
 		} 
 	}
