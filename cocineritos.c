@@ -90,6 +90,37 @@ char buscar_tipo_ingrediente(comida_t comida[MAX_COMIDA], int tope_comida, int f
 	}
 	return tipo_ingrediente;
 }
+
+void ocultar_ingrediente(char tipo_ingrediente, comida_t comida[MAX_COMIDA], int tope_comida){
+	for(int i = 0; i < tope_comida; i++){
+		for(int j = 0; j <comida->tope_ingredientes; j++){
+			if(comida[i].ingrediente[j].tipo == tipo_ingrediente){
+				comida[i].ingrediente[j].tipo = VACIO;
+			}
+		} 
+	}
+}
+
+void cambiar_posicion_ingrediente(comida_t comida[MAX_COMIDA], int tope_comida, int fila, int columna){
+	for(int i = 0; i < tope_comida; i++){
+		for(int j = 0; j <comida->tope_ingredientes; j++){
+			if(comida[i].ingrediente[j].tipo == VACIO){
+				comida[i].ingrediente[j].posicion.fil = fila;
+				comida[i].ingrediente[j].posicion.col = columna;
+			}
+		} 
+	}
+}
+
+void mostrar_ingrediente(char tipo_ingrediente, comida_t comida[MAX_COMIDA], int tope_comida){
+	for(int i = 0; i < tope_comida; i++){
+		for(int j = 0; j <comida->tope_ingredientes; j++){
+			if(comida[i].ingrediente[j].tipo == VACIO){
+				comida[i].ingrediente[j].tipo = tipo_ingrediente;
+			}
+		} 
+	}
+}
 //------------------------------------------BOOLEANOS---------------------------------------------------------
 
 bool hay_jugador(juego_t juego, int fila, int columna){
@@ -616,7 +647,6 @@ void imprimir_terreno(juego_t juego){
 
 //-------------------------------------------- ACTUALIZAR STRUCT----------------------------
 
-
 coordenada_t generar_posicion_nueva(personaje_t personaje, char movimiento){
 	coordenada_t posicion_jugador;
 	if(movimiento == ARRIBA){
@@ -651,50 +681,48 @@ void mover_jugador(personaje_t* jugador, char movimiento){
 	}
 }
 
-/*
-void mover_ingrediente_jugador(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, personaje_t* jugador, char movimiento){
-	for(int i = 0; i < tope_ingredientes; i++){
-		if(ingrediente[i].posicion.fil == jugador->posicion.fil && ingrediente[i].posicion.col == jugador->posicion.col){
-			mover_jugador(jugador, movimiento);
-			ingrediente[i].posicion.fil = jugador->posicion.fil;
-			ingrediente[i].posicion.col = jugador->posicion.col;
-		}
-	}
-}
-*/
-
-
 void realizar_jugada(juego_t* juego, char movimiento){
 
-	if(juego->personaje_activo == STITCH && (movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA)){
-		coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->stitch, movimiento);
-		if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
-			mover_jugador(&(juego->stitch), movimiento);
-			//juego->movimientos++;
-		}
-	}else if(juego->personaje_activo == REUBEN && (movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA)){
-		coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->reuben, movimiento);
-		if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
-			mover_jugador(&(juego->reuben), movimiento);
-			//juego->movimientos++;
+	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
+		if(juego->personaje_activo == STITCH){
+			coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->stitch, movimiento);
+			if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
+				mover_jugador(&(juego->stitch), movimiento);
+				//juego->movimientos++;
+			}
+		}else if(juego->personaje_activo == REUBEN){
+			coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->reuben, movimiento);
+			if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
+				mover_jugador(&(juego->reuben), movimiento);
+				//juego->movimientos++;
+			}
 		}
 	}
-	if(movimiento == CAMBIAR_PERSONAJE && juego->personaje_activo == STITCH){
-		juego->personaje_activo = REUBEN;
-	}else if(movimiento == CAMBIAR_PERSONAJE && juego->personaje_activo == REUBEN){
-		juego->personaje_activo = STITCH;
+
+	if(movimiento == CAMBIAR_PERSONAJE){
+		if(juego->personaje_activo == STITCH){
+			juego->personaje_activo = REUBEN;
+		}else if(juego->personaje_activo == REUBEN){
+			juego->personaje_activo = STITCH;
+		}
 	}
+
+	if(movimiento == AGARRAR && juego->personaje_activo == STITCH && hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col) && juego->stitch.objeto_en_mano == VACIO){
+		juego->stitch.objeto_en_mano = buscar_tipo_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col);
+		ocultar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
+	}else if(movimiento == SOLTAR && juego->personaje_activo == STITCH && !hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col) && juego->stitch.objeto_en_mano != VACIO){
+		cambiar_posicion_ingrediente(juego->comida, juego->tope_comida, juego->stitch.posicion.fil, juego->stitch.posicion.col);
+		mostrar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
+		juego->stitch.objeto_en_mano = VACIO;
+	}
+}
+
 
 	/**
 	 if(juego->movimientos == 15){
 		inicializar_fuego(juego);
 	}	
 	*/
-
-	if(movimiento == AGARRAR && juego->personaje_activo == STITCH && hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col) && juego->stitch.objeto_en_mano == VACIO){
-		juego->stitch.objeto_en_mano = buscar_tipo_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col);
-	}
-}
 
 //int estado_juego(juego_t juego)
 
