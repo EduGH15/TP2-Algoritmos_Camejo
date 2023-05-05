@@ -712,7 +712,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 	if(movimiento == AGARRAR && juego->personaje_activo == STITCH && hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col) && juego->stitch.objeto_en_mano == VACIO){
 		juego->stitch.objeto_en_mano = buscar_tipo_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col);
 		ocultar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
-	}else if(movimiento == SOLTAR && juego->personaje_activo == STITCH && !hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col) && juego->stitch.objeto_en_mano != VACIO){
+	}else if(movimiento == SOLTAR && juego->personaje_activo == STITCH && !hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col) && juego->stitch.objeto_en_mano != VACIO){
 		cambiar_posicion_ingrediente(juego->comida, juego->tope_comida, juego->stitch.posicion.fil, juego->stitch.posicion.col);
 		mostrar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
 		juego->stitch.objeto_en_mano = VACIO;
