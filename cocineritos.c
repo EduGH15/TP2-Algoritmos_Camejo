@@ -138,6 +138,9 @@ bool hay_ingrediente(comida_t comida[MAX_COMIDA], int tope_comida, int fila, int
 	return encontro;
 }
 
+bool hay_mesa(coordenada_t mesa, int fila, int columna){
+	return mesa.fil == fila && mesa.col == columna;
+}
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
 void inicializar_precio_total(juego_t* juego, int precio){
 	juego->precio_total = precio;
@@ -638,11 +641,23 @@ void mover_ingrediente_jugador(ingrediente_t ingrediente[MAX_INGREDIENTES], int 
 
 
 void realizar_jugada(juego_t* juego, char movimiento){
-	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
+	if(juego->personaje_activo == STITCH && (movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA)){
 		coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->stitch, movimiento);
-		if(!hay_pared(juego->paredes, juego->tope_paredes, posicion_nueva_jugador.fil, posicion_nueva_jugador.col) && !hay_mesa()){
+		if(!hay_pared(juego->paredes, juego->tope_paredes, posicion_nueva_jugador.fil, posicion_nueva_jugador.col) && !hay_mesa(juego->mesa, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
 			mover_jugador(&(juego->stitch), movimiento);
+			//juego->movimientos++;
 		}
+	}else if(juego->personaje_activo == REUBEN && (movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA)){
+		coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->reuben, movimiento);
+		if(!hay_pared(juego->paredes, juego->tope_paredes, posicion_nueva_jugador.fil, posicion_nueva_jugador.col) && !hay_mesa(juego->mesa, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
+			mover_jugador(&(juego->reuben), movimiento);
+			//juego->movimientos++;
+		}
+	}
+	if(movimiento == CAMBIAR_PERSONAJE && juego->personaje_activo == STITCH){
+		juego->personaje_activo = REUBEN;
+	}else if(movimiento == CAMBIAR_PERSONAJE && juego->personaje_activo == REUBEN){
+		juego->personaje_activo = STITCH;
 	}
 }
 
