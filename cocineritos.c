@@ -438,6 +438,7 @@ void inicializar_ingrediente_sandwich(juego_t* juego){
 void inicializar_comida(juego_t* juego){
 	juego->tope_comida = 0;
 	juego->comida[0].tipo = ENSALADA;
+	juego->tope_comida = 1;
 	//juego->comida[1].tipo = PIZZA;
 	//juego->comida[2].tipo = HAMBURGUESA;
 	//juego->comida[3].tipo = SANDWICH;
@@ -561,7 +562,7 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_herramientas(juego);
 	inicializar_comida(juego);
 	inicializar_personajes(juego);
-	juego->movimientos = ' '; 
+	juego->movimientos = 0; 
 	inicializar_puerta_salida(juego);
 }
 
@@ -574,6 +575,7 @@ void imprimir_terreno(juego_t juego){
 
 //-------------------------------------------- ACTUALIZAR STRUCT----------------------------
 
+/*
 bool posiciones_iguales(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, personaje_t jugador){
 	bool iguales = false;
 	for(int i = 0; i < tope_ingredientes; i++){
@@ -582,6 +584,27 @@ bool posiciones_iguales(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_in
 		}
 	}
 	return iguales;
+}
+
+*/
+
+
+coordenada_t generar_posicion_nueva(personaje_t personaje, char movimiento){
+	coordenada_t posicion_jugador;
+	if(movimiento == ARRIBA){
+		posicion_jugador.fil = personaje.posicion.fil - 1;
+		posicion_jugador.col = personaje.posicion.col;
+	}else if( movimiento == ABAJO){
+		posicion_jugador.fil = personaje.posicion.fil + 1;
+		posicion_jugador.col = personaje.posicion.col;
+	}else if(movimiento == DERECHA){
+		posicion_jugador.fil = personaje.posicion.fil;
+		posicion_jugador.col = personaje.posicion.col + 1;
+	}else if(movimiento == IZQUIERDA){
+		posicion_jugador.fil = personaje.posicion.fil;
+		posicion_jugador.col = personaje.posicion.col -1;
+	}
+	return posicion_jugador;
 }
 
 void mover_jugador(personaje_t* jugador, char movimiento){
@@ -600,6 +623,7 @@ void mover_jugador(personaje_t* jugador, char movimiento){
 	}
 }
 
+/*
 
 void mover_ingrediente_jugador(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, personaje_t* jugador, char movimiento){
 	for(int i = 0; i < tope_ingredientes; i++){
@@ -610,19 +634,16 @@ void mover_ingrediente_jugador(ingrediente_t ingrediente[MAX_INGREDIENTES], int 
 		}
 	}
 }
-
+*/
 
 
 void realizar_jugada(juego_t* juego, char movimiento){
 	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
-		if(juego->stitch.objeto_en_mano != VACIO){
-			mover_ingrediente_jugador(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, &juego->stitch, movimiento);
+		coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->stitch, movimiento);
+		if(!hay_pared(juego->paredes, juego->tope_paredes, posicion_nueva_jugador.fil, posicion_nueva_jugador.col) && !hay_mesa()){
+			mover_jugador(&(juego->stitch), movimiento);
 		}
-		mover_jugador(&(juego)->stitch, movimiento);
-	}if(movimiento == AGARRAR && posiciones_iguales(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, juego->stitch)){
-		juego->stitch.objeto_en_mano = juego->comida[0].ingrediente[0].tipo;
 	}
-	imprimir_terreno(*juego);
 }
 
 //int estado_juego(juego_t juego)
