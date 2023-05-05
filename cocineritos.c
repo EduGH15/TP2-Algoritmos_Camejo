@@ -719,6 +719,15 @@ void realizar_jugada(juego_t* juego, char movimiento){
 				mostrar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
 				juego->stitch.objeto_en_mano = VACIO;
 			}
+		}else if(juego->personaje_activo == REUBEN){
+			if(juego->reuben.objeto_en_mano == VACIO && hay_ingrediente(juego->comida, juego->tope_comida,juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+				juego->reuben.objeto_en_mano = buscar_tipo_ingrediente(juego->comida, juego->tope_comida,juego->reuben.posicion.fil, juego->reuben.posicion.col);
+				ocultar_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
+			}else if(juego->reuben.objeto_en_mano != VACIO && !hay_ingrediente(juego->comida, juego->tope_comida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+				cambiar_posicion_ingrediente(juego->comida, juego->tope_comida, juego->reuben.posicion.fil, juego->reuben.posicion.col);
+				mostrar_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
+				juego->reuben.objeto_en_mano = VACIO;
+			}
 		}
 	}
 
