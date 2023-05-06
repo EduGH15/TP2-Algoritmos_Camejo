@@ -755,10 +755,19 @@ void realizar_jugada(juego_t* juego, char movimiento){
 	}
 
 	if(movimiento == PASAR){
-		if(juego->personaje_activo == STITCH && juego->stitch.objeto_en_mano != VACIO && distancia_manhattan(juego->stitch.posicion, juego->mesa, 1)){
-			cambiar_posicion_ingrediente(juego->comida, juego->tope_comida, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col);
-			mostrar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
+		if(juego->personaje_activo == STITCH){
+			if(juego->stitch.objeto_en_mano != VACIO && distancia_manhattan(juego->stitch.posicion, juego->mesa, 1)){
+				cambiar_posicion_ingrediente(juego->comida, juego->tope_comida, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col);
+				mostrar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
+				juego->stitch.objeto_en_mano = VACIO;
+			}
+		}else if(juego->personaje_activo == REUBEN){
+			if(juego->reuben.objeto_en_mano == VACIO && distancia_manhattan(juego->reuben.posicion, juego->mesa, 1)){
+				juego->reuben.objeto_en_mano = buscar_tipo_ingrediente(juego->comida, juego->tope_comida, juego->reuben.posicion.fil - 1, juego->reuben.posicion.col);
+				ocultar_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
+			}
 		}
+		
 	}
 }
 
