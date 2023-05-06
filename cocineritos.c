@@ -213,8 +213,20 @@ bool hay_vacio(juego_t juego, int fila, int columna){
 	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, fila, columna) && !hay_herramienta(juego.herramientas, juego.tope_herramientas, fila, columna) && !hay_ingrediente(juego.comida, juego.tope_comida, fila, columna) && !hay_jugador(juego, fila, columna);
 }
 
+bool hay_horno(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna){
+	bool encontro = false;
+	int i = 0;
+	while(i < tope_herramientas && !encontro){
+		if(herramientas[i].tipo == HORNO && herramientas[i].posicion.fil == fila && herramientas[i].posicion.col == columna){
+			encontro = true;
+		}
+		i++;
+	}
+	return encontro;
+}
+
 bool es_movimiento_valido(juego_t juego, int fila, int columna){
-	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna);
+	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_horno(juego.herramientas, juego.tope_herramientas, fila, columna);
 }
 
 bool distancia_manhattan(coordenada_t posicion_jugador, coordenada_t posicion_elemento, int distancia){
