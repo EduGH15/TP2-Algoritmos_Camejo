@@ -213,6 +213,23 @@ bool distancia_manhattan(coordenada_t posicion_jugador, coordenada_t posicion_el
 	return respuesta <= distancia;
 }
 
+bool esta_cortado(comida_t comida[MAX_COMIDA], int tope_comida){
+	bool cortado = false;
+	int i = 0;
+	int j = 0;
+	while(i < tope_comida && !cortado){
+		while(j < comida[i].tope_ingredientes && !cortado){
+			if(comida[i].ingrediente[j].tipo == VACIO){
+				cortado = comida[i].ingrediente[j].esta_cortado;
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	return cortado;
+}
+
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
 void inicializar_precio_total(juego_t* juego, int precio){
 	juego->precio_total = precio;
@@ -756,7 +773,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 
 	if(movimiento == PASAR){
 		if(juego->personaje_activo == STITCH){
-			if(juego->stitch.objeto_en_mano != VACIO && distancia_manhattan(juego->stitch.posicion, juego->mesa, 1)){
+			if(juego->stitch.objeto_en_mano != VACIO && esta_cortado(juego->comida, juego->tope_comida) && distancia_manhattan(juego->stitch.posicion, juego->mesa, 1)){
 				cambiar_posicion_ingrediente(juego->comida, juego->tope_comida, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col);
 				mostrar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
 				juego->stitch.objeto_en_mano = VACIO;
