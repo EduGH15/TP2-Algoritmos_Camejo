@@ -253,6 +253,22 @@ bool esta_cortado(char tipo_ingrediente, comida_t comida[MAX_COMIDA], int tope_c
 	return cortado;
 }
 
+bool esta_cocinado(char tipo_ingrediente, comida_t comida[MAX_COMIDA], int tope_comida){
+	bool cocinado = false;
+	int i = 0;
+	int j = 0;
+	while(i < tope_comida && !cocinado){
+		while(j < comida[i].tope_ingredientes && !cocinado){
+			if(comida[i].ingrediente[j].tipo == tipo_ingrediente){
+				cocinado = comida[i].ingrediente[j].esta_cocinado;
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	return cocinado;
+}
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
 void inicializar_precio_total(juego_t* juego, int precio){
 	juego->precio_total = precio;
