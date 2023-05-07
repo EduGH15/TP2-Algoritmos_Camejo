@@ -849,7 +849,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 
 	if(movimiento == AGARRAR){
 		if(juego->personaje_activo == STITCH){
-			if((juego->stitch.objeto_en_mano == VACIO) && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+			if(juego->stitch.objeto_en_mano == VACIO && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col)){
 
 				juego->stitch.objeto_en_mano = buscar_tipo_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col);
 				ocultar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
@@ -866,7 +866,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 			}
 			
 		}else if(juego->personaje_activo == REUBEN){
-			if((juego->reuben.objeto_en_mano == VACIO) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && hay_ingrediente(juego->comida, juego->tope_comida,juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+			if(juego->reuben.objeto_en_mano == VACIO && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && hay_ingrediente(juego->comida, juego->tope_comida,juego->reuben.posicion.fil, juego->reuben.posicion.col)){
 
 				juego->reuben.objeto_en_mano = buscar_tipo_ingrediente(juego->comida, juego->tope_comida,juego->reuben.posicion.fil, juego->reuben.posicion.col);
 				ocultar_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
@@ -908,6 +908,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 	if(juego->movimientos == 15){
 		inicializar_fuego(juego);
 		inicializar_matafuegos(juego);
+		juego->movimientos++;
 	}
 	
 	if(movimiento == ACTIVAR_MATAFUEGO){
