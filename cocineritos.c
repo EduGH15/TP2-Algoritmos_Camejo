@@ -159,6 +159,7 @@ void ocultar_herramienta(char tipo_herramienta, objeto_t herramientas[MAX_HERRAM
 		i++;
 	}
 }
+
 //------------------------------------------BOOLEANOS---------------------------------------------------------
 
 bool hay_jugador(juego_t juego, int fila, int columna){
@@ -182,6 +183,18 @@ bool hay_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int f
 	int i = 0;
 	while(i < tope_obstaculo && !encontro){
 		if(obstaculos[i].posicion.fil == fila && obstaculos[i].posicion.col == columna){
+			encontro = true;
+		}
+		i++;
+	}
+	return encontro;
+}
+
+bool hay_fuego(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int fila, int columna){
+	bool encontro = false;
+	int i = 0;
+	while(i < tope_obstaculo && !encontro){
+		if(obstaculos[i].tipo == FUEGO && obstaculos[i].posicion.fil == fila && obstaculos[i].posicion.col == columna){
 			encontro = true;
 		}
 		i++;
@@ -251,7 +264,7 @@ bool hay_matafuegos(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramient
 }
 
 bool es_movimiento_valido(juego_t juego, int fila, int columna){
-	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_horno(juego.herramientas, juego.tope_herramientas, fila, columna);
+	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_horno(juego.herramientas, juego.tope_herramientas, fila, columna) && !hay_fuego(juego.obstaculos, juego.tope_obstaculos, fila, columna);
 }
 
 bool distancia_manhattan(coordenada_t posicion_jugador, coordenada_t posicion_elemento, int distancia){
@@ -860,7 +873,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 			}
 		}
 	}
-	
+		
 	if(movimiento == ACTIVAR_CUCHILLO && juego->personaje_activo == STITCH && hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
 		cortar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
 	}
@@ -886,6 +899,10 @@ void realizar_jugada(juego_t* juego, char movimiento){
 	if(juego->movimientos == 15){
 		inicializar_fuego(juego);
 		inicializar_matafuegos(juego);
+	}
+	
+	if(movimiento == ACTIVAR_MATAFUEGO){
+
 	}
 }
 
