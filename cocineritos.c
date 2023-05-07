@@ -901,7 +901,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		}
 	}
 
-	if(movimiento == ACTIVAR_HORNO && juego->personaje_activo == REUBEN && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+	if(movimiento == ACTIVAR_HORNO && juego->personaje_activo == REUBEN && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (distancia_manhattan(juego->reuben.posicion, juego->herramientas[2].posicion, 1) || distancia_manhattan(juego->reuben.posicion, juego->herramientas[3].posicion, 1))){
 			cocinar_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
 		}
 	
