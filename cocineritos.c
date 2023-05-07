@@ -906,6 +906,12 @@ void realizar_jugada(juego_t* juego, char movimiento){
 			juego->tope_obstaculos--;
 			juego->tope_herramientas--;
 			juego->stitch.objeto_en_mano = VACIO;
+			juego->movimientos = 0;
+		}else if(juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->reuben.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
+			juego->tope_obstaculos--;
+			juego->tope_herramientas--;
+			juego->reuben.objeto_en_mano = VACIO;
+			juego->movimientos = 0;
 		}
 	}
 }
