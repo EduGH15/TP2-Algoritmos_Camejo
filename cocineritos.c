@@ -146,6 +146,19 @@ char buscar_tipo_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_h
 	}
 	return tipo_herramienta;
 }
+
+void ocultar_herramienta(char tipo_herramienta, objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas){
+	bool encontro = false;
+	int i = 0;
+	while(i < tope_herramientas && !encontro){
+		if(herramientas[i].tipo == tipo_herramienta){
+			herramientas[i].posicion.fil = -1;
+			herramientas[i].posicion.col = -1;
+			encontro = true;
+		}
+		i++;
+	}
+}
 //------------------------------------------BOOLEANOS---------------------------------------------------------
 
 bool hay_jugador(juego_t juego, int fila, int columna){
@@ -285,6 +298,7 @@ bool esta_cocinado(char tipo_ingrediente, comida_t comida[MAX_COMIDA], int tope_
 bool estan_mismo_cuadrante(int fila_objeto_1,  int fila_objeto_2){
 	return ((fila_objeto_1 >= 1 && fila_objeto_1 <= 9) && (fila_objeto_2 >=1 && fila_objeto_2 <= 9)) || ((fila_objeto_1 >= 11 && fila_objeto_1 <= 19) && (fila_objeto_2 >=11 && fila_objeto_2 <= 19));
 }
+
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
 void inicializar_precio_total(juego_t* juego, int precio){
 	juego->precio_total = precio;
@@ -814,25 +828,37 @@ void realizar_jugada(juego_t* juego, char movimiento){
 	if(movimiento == AGARRAR){
 		if(juego->personaje_activo == STITCH){
 			if(juego->stitch.objeto_en_mano == VACIO && hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+
 				juego->stitch.objeto_en_mano = buscar_tipo_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col);
 				ocultar_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida);
-			}else if(juego->stitch.objeto_en_mano != VACIO && !hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+
+			}else if(juego->stitch.objeto_en_mano == VACIO && hay_matafuegos(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+
+				juego->stitch.objeto_en_mano = buscar_tipo_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col);
+				ocultar_herramienta(juego->stitch.objeto_en_mano, juego->herramientas, juego->tope_herramientas);
+
+			}else if((juego->stitch.objeto_en_mano != VACIO && juego->stitch.objeto_en_mano != MATAFUEGOS)  && !hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+
 				cambiar_posicion_ingrediente(juego->stitch.objeto_en_mano, juego->comida, juego->tope_comida, juego->stitch.posicion.fil, juego->stitch.posicion.col);
 				juego->stitch.objeto_en_mano = VACIO;
 			}
-			if(juego->stitch.objeto_en_mano == VACIO && hay_matafuegos(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
-				juego->stitch.objeto_en_mano = buscar_tipo_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col);
-			}
+			
 		}else if(juego->personaje_activo == REUBEN){
 			if(juego->reuben.objeto_en_mano == VACIO && hay_ingrediente(juego->comida, juego->tope_comida,juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+
 				juego->reuben.objeto_en_mano = buscar_tipo_ingrediente(juego->comida, juego->tope_comida,juego->reuben.posicion.fil, juego->reuben.posicion.col);
 				ocultar_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
-			}else if(juego->reuben.objeto_en_mano != VACIO && !hay_ingrediente(juego->comida, juego->tope_comida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+
+			}else if(juego->reuben.objeto_en_mano == VACIO && hay_matafuegos(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+
+				juego->reuben.objeto_en_mano = buscar_tipo_herramienta(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col);
+				ocultar_herramienta(juego->reuben.objeto_en_mano, juego->herramientas, juego->tope_herramientas);
+			}else if((juego->reuben.objeto_en_mano != VACIO && juego->reuben.objeto_en_mano != MATAFUEGOS) && !hay_ingrediente(juego->comida, juego->tope_comida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+
 				cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida, juego->reuben.posicion.fil, juego->reuben.posicion.col);
 				juego->reuben.objeto_en_mano = VACIO;
 			}
 		}
-		
 	}
 	
 	if(movimiento == ACTIVAR_CUCHILLO && juego->personaje_activo == STITCH && hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
@@ -861,15 +887,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		inicializar_fuego(juego);
 		inicializar_matafuegos(juego);
 	}
-
-	
-
 }
-
-
-	/**
-	 
-	*/
 
 //int estado_juego(juego_t juego)
 
