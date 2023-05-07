@@ -764,9 +764,9 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_agujeros(juego);
 	inicializar_herramientas(juego);
 	inicializar_comida(juego);
+	inicializar_puerta_salida(juego);
 	inicializar_personajes(juego);
 	juego->movimientos = 0; 
-	inicializar_puerta_salida(juego);
 }
 
 void imprimir_terreno(juego_t juego){
@@ -902,7 +902,11 @@ void realizar_jugada(juego_t* juego, char movimiento){
 	}
 	
 	if(movimiento == ACTIVAR_MATAFUEGO){
-
+		if(juego->personaje_activo == STITCH && juego->stitch.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->stitch.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
+			juego->tope_obstaculos--;
+			juego->tope_herramientas--;
+			juego->stitch.objeto_en_mano = VACIO;
+		}
 	}
 }
 
