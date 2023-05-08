@@ -780,6 +780,8 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_puerta_salida(juego);
 	inicializar_personajes(juego);
 	juego->movimientos = 0; 
+	juego->tope_comida_lista = 0;
+
 }
 
 void imprimir_terreno(juego_t juego){
@@ -792,11 +794,11 @@ void imprimir_terreno(juego_t juego){
 //------------------------------------------- CARGAR VECTOR DE COMIDA LISTA ------------------------------------
 
 void cargar_vector(juego_t* juego){
-	juego->tope_comida_lista = 0;
-	for(int i = 0; i < MAX_INGREDIENTES; i++){
-		juego->comida_lista[juego->tope_comida_lista].tipo = juego->reuben.objeto_en_mano;
-		(juego->tope_comida_lista)++;
-	}
+	juego->comida_lista[juego->tope_comida_lista].posicion.fil = juego->reuben.posicion.fil;
+	juego->comida_lista[juego->tope_comida_lista].posicion.col = juego->reuben.posicion.col;
+	juego->comida_lista[juego->tope_comida_lista].tipo = juego->reuben.objeto_en_mano;
+	(juego->tope_comida_lista)++;
+	
 }
 
 //-------------------------------------------- ACTUALIZAR STRUCT----------------------------------------------
@@ -915,7 +917,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		}
 	}
 
-	if(movimiento == ACTIVAR_HORNO && juego->personaje_activo == REUBEN && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (distancia_manhattan(juego->reuben.posicion, juego->herramientas[2].posicion, 1) || distancia_manhattan(juego->reuben.posicion, juego->herramientas[3].posicion, 1))){
+	if(movimiento == ACTIVAR_HORNO && juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano != VACIO && !esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) &&!hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (distancia_manhattan(juego->reuben.posicion, juego->herramientas[2].posicion, 1) || distancia_manhattan(juego->reuben.posicion, juego->herramientas[3].posicion, 1))){
 			cocinar_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
 		}
 	
