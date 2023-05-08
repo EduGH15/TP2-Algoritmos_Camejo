@@ -320,6 +320,9 @@ bool estan_mismo_cuadrante(int fila_objeto_1,  int fila_objeto_2){
 	return ((fila_objeto_1 >= 1 && fila_objeto_1 <= 9) && (fila_objeto_2 >=1 && fila_objeto_2 <= 9)) || ((fila_objeto_1 >= 11 && fila_objeto_1 <= 19) && (fila_objeto_2 >=11 && fila_objeto_2 <= 19));
 }
 
+bool hay_puerta_salida(coordenada_t puerta_salida, int fila, int columna){
+	return puerta_salida.fil == fila && puerta_salida.col == columna;
+}
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
 
 void inicializar_precio_total(juego_t* juego, int precio){
@@ -665,6 +668,18 @@ void inicializar_comida(juego_t* juego){
 	inicializar_ingrediente_ensalada(juego);
 }
 
+void inicializar_puerta_salida(juego_t* juego){
+	bool es_posicion_valida = false;
+	while(!es_posicion_valida){
+		coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(11, 9, 1, 19);
+		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_jugador(*juego, posicion_aleatoria.fil, posicion_aleatoria.col)){
+			juego->salida.fil = posicion_aleatoria.fil;
+			juego->salida.col = posicion_aleatoria.col;
+			es_posicion_valida = true;
+		}
+	}
+}
+
 void inicializar_personajes(juego_t* juego){
 	juego->personaje_activo = STITCH;
 	int cantidad_stitch = 0;
@@ -691,17 +706,6 @@ void inicializar_personajes(juego_t* juego){
 	}
 }
 
-void inicializar_puerta_salida(juego_t* juego){
-	bool es_posicion_valida = false;
-	while(!es_posicion_valida){
-		coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(11, 9, 1, 19);
-		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_jugador(*juego, posicion_aleatoria.fil, posicion_aleatoria.col)){
-			juego->salida.fil = posicion_aleatoria.fil;
-			juego->salida.col = posicion_aleatoria.col;
-			es_posicion_valida = true;
-		}
-	}
-}
 
 //--------------------------------------------------INICIALIZACIÓN CENTRALIZADA--------------------------------------
 
@@ -785,7 +789,17 @@ void imprimir_terreno(juego_t juego){
 	dibujar_grilla(grilla);
 }
 
-//-------------------------------------------- ACTUALIZAR STRUCT----------------------------
+//------------------------------------------- CARGAR VECTOR DE COMIDA LISTA ------------------------------------
+
+void cargar_vector(juego_t* juego){
+	juego->tope_comida_lista = 0;
+	for(int i = 0; i < MAX_INGREDIENTES; i++){
+		juego->comida_lista[juego->tope_comida_lista].tipo = juego->reuben.objeto_en_mano;
+		(juego->tope_comida_lista)++;
+	}
+}
+
+//-------------------------------------------- ACTUALIZAR STRUCT----------------------------------------------
 
 coordenada_t generar_posicion_nueva(personaje_t personaje, char movimiento){
 	coordenada_t posicion_jugador;
@@ -924,10 +938,22 @@ void realizar_jugada(juego_t* juego, char movimiento){
 			juego->movimientos = 0;
 		}
 	}
+
+	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida))){
+		cargar_vector(juego);
+		juego->reuben.objeto_en_mano = VACIO;
+	}
 }
 
-//int estado_juego(juego_t juego)
-
+int estado_juego(juego_t juego){
+	int estado = 0;
+	if(hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.stitch.posicion.fil, juego.stitch.posicion.col) || hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.reuben.posicion.fil, juego.reuben.posicion.col)){
+		estado = -1;
+	}if(juego.tope_comida_lista == 4){
+		estado = 1;
+	}
+	return estado;
+}
 
 
 
