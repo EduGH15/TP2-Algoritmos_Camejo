@@ -853,17 +853,21 @@ void realizar_jugada(juego_t* juego, char movimiento){
 			coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->stitch, movimiento);
 			if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
 				mover_jugador(&(juego->stitch), movimiento);
+				if(juego->tope_obstaculos < 21){
+					juego->movimientos++;
+				}
 			}
 		}else if(juego->personaje_activo == REUBEN){
 			coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->reuben, movimiento);
 			if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
 				mover_jugador(&(juego->reuben), movimiento);
+				if(juego->tope_obstaculos < 21){
+					juego->movimientos++;
+				}
 			}
 		}
 
-		if(juego->tope_obstaculos < 21){
-			juego->movimientos++;
-		}
+		
 	}
 
 	if(movimiento == CAMBIAR_PERSONAJE){
@@ -957,22 +961,28 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		juego->reuben.objeto_en_mano = VACIO;
 	}
 
-	/*
 	if(juego->comida_actual == ENSALADA && juego->tope_comida_lista == 2){
 		juego->comida_actual = PIZZA;
-		cargar_nivel(juego);
+		inicializar_comida(juego);
+		juego->tope_comida_lista = 0;
 	}else if(juego->comida_actual == PIZZA && juego->tope_comida_lista == 3){
 		juego->comida_actual = HAMBURGUESA;
-		cargar_nivel(juego);
+		inicializar_comida(juego);
+		juego->tope_comida_lista = 0;
+	}else if(juego->comida_actual == HAMBURGUESA && juego->tope_comida_lista == 4){
+		juego->comida_actual = SANDWICH;
+		inicializar_comida(juego);
+		juego->tope_comida_lista = 0;
 	}
-	*/
+	
+	
 }
 
 int estado_juego(juego_t juego){
 	int estado = 0;
 	if(hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.stitch.posicion.fil, juego.stitch.posicion.col) || hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.reuben.posicion.fil, juego.reuben.posicion.col)){
 		estado = -1;
-	}if(juego.tope_comida_lista == 4){
+	}if(juego.tope_comida_lista == 3){
 		estado = 1;
 	}
 	return estado;
