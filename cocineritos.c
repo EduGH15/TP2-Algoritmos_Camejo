@@ -839,6 +839,13 @@ void mover_jugador(personaje_t* jugador, char movimiento){
 	}
 }
 
+void cargar_siguiente_nivel(juego_t* juego){
+	juego->comida[1].tipo = PIZZA;
+	juego->tope_comida += 1;
+	juego->comida_actual = PIZZA;
+	inicializar_ingrediente_pizza(juego);
+}
+
 void realizar_jugada(juego_t* juego, char movimiento){
 
 	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
@@ -947,6 +954,12 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		cargar_vector(juego);
 		juego->reuben.objeto_en_mano = VACIO;
 	}
+
+	if(juego->tope_comida_lista == 2){
+		cargar_siguiente_nivel(juego);
+		juego->tope_comida_lista = 0;
+	}
+
 }
 
 int estado_juego(juego_t juego){
