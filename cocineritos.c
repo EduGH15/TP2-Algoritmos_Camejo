@@ -952,6 +952,10 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		}
 	}
 
+	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida))){
+		cargar_vector(juego);
+		juego->reuben.objeto_en_mano = VACIO;
+	}
 }
 
 int estado_juego(juego_t juego){
@@ -974,10 +978,7 @@ int estado_juego(juego_t juego){
 	
 	
 
-	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida))){
-		cargar_vector(juego);
-		juego->reuben.objeto_en_mano = VACIO;
-	}
+	
 
 	if(juego->tope_comida_lista == 2){
 		cargar_siguiente_nivel(juego);
