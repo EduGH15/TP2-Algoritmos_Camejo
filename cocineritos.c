@@ -650,22 +650,25 @@ void inicializar_ingrediente_sandwich(juego_t* juego){
 }
 
 void inicializar_comida(juego_t* juego){
-	juego->tope_comida = 0;
 	juego->comida[0].tipo = ENSALADA;
 	juego->tope_comida = 1;
-	//juego->comida[1].tipo = PIZZA;
-	//juego->comida[2].tipo = HAMBURGUESA;
-	//juego->comida[3].tipo = SANDWICH;
-
-	//if(juego->precio_total <= 100){
-	//	juego->tope_comida = 2;
-	//}else if(juego->precio_total <= 150){
-	//	juego->tope_comida = 3;
-	//}else if(juego->tope_comida > 150){
-	//	juego->tope_comida = 4;
-	//}
 	juego->comida_actual = ENSALADA;
 	inicializar_ingrediente_ensalada(juego);
+
+	/*
+	juego->comida[1].tipo = PIZZA;
+	juego->comida[2].tipo = HAMBURGUESA;
+	juego->comida[3].tipo = SANDWICH;
+
+	if(juego->precio_total <= 100){
+		juego->tope_comida = 2;
+	}else if(juego->precio_total <= 150){
+		juego->tope_comida = 3;
+	}else if(juego->tope_comida > 150){
+		juego->tope_comida = 4;
+	}
+	*/
+
 }
 
 void inicializar_puerta_salida(juego_t* juego){
@@ -749,9 +752,9 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 		}
 	}
 
+	grilla[juego.salida.fil][juego.salida.col] = PUERTA_SALIDA;
 	grilla[juego.stitch.posicion.fil][juego.stitch.posicion.col] = juego.stitch.tipo;
 	grilla[juego.reuben.posicion.fil][juego.reuben.posicion.col] = juego.reuben.tipo;
-	grilla[juego.salida.fil][juego.salida.col] = PUERTA_SALIDA;
 }
 
 void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]){
@@ -776,6 +779,7 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_mesa(juego);
 	inicializar_agujeros(juego);
 	inicializar_herramientas(juego);
+	juego->tope_comida = 0;
 	inicializar_comida(juego);
 	inicializar_puerta_salida(juego);
 	inicializar_personajes(juego);
@@ -801,6 +805,21 @@ void cargar_vector(juego_t* juego){
 	juego->comida_lista[juego->tope_comida_lista].esta_cocinado = esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
 	(juego->tope_comida_lista)++;
 	
+}
+
+void cargar_nivel(juego_t* juego){
+	if(juego->comida_actual == PIZZA){
+		inicializar_ingrediente_pizza(juego);
+			juego->tope_comida_lista = 0;
+	}else if(juego->comida_actual == HAMBURGUESA){
+		inicializar_ingrediente_hamburguesa(juego);
+			juego->tope_comida_lista = 0;
+
+	}else if(juego->comida_actual == SANDWICH){
+		inicializar_ingrediente_sandwich(juego);
+			juego->tope_comida_lista = 0;
+
+	}
 }
 
 //-------------------------------------------- ACTUALIZAR STRUCT----------------------------------------------
@@ -837,13 +856,6 @@ void mover_jugador(personaje_t* jugador, char movimiento){
 		jugador->posicion.fil += MOVER_IZQUIERDA.fil;
 		jugador->posicion.col += MOVER_IZQUIERDA.col;
 	}
-}
-
-void cargar_siguiente_nivel(juego_t* juego){
-	juego->comida[1].tipo = PIZZA;
-	juego->tope_comida += 1;
-	juego->comida_actual = PIZZA;
-	inicializar_ingrediente_pizza(juego);
 }
 
 void realizar_jugada(juego_t* juego, char movimiento){
@@ -955,6 +967,19 @@ void realizar_jugada(juego_t* juego, char movimiento){
 	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida))){
 		cargar_vector(juego);
 		juego->reuben.objeto_en_mano = VACIO;
+	}
+
+	if(juego->tope_comida_lista == 2){
+		juego->comida_actual = PIZZA;
+			cargar_nivel(juego);
+	}else if(juego->tope_comida_lista == 3){
+		juego->comida_actual = HAMBURGUESA;
+			cargar_nivel(juego);
+
+	}else if(juego->tope_comida_lista == 4){
+		juego->comida_actual = SANDWICH;
+			cargar_nivel(juego);
+
 	}
 }
 
