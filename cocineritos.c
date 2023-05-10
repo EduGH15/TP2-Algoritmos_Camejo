@@ -219,12 +219,19 @@ int orden_actual(char comida_actual){
 	return orden;
 }
 
-void asignar_posicion_agujero(objeto_t obstaculos[MAX_OBSTACULOS], int* tope_obstaculos, coordenada_t posicion, char tipo_obstaculo){
+void asignar_agujero(objeto_t obstaculos[MAX_OBSTACULOS], int* tope_obstaculos, coordenada_t posicion, char tipo_obstaculo){
 	obstaculos[*tope_obstaculos].posicion.fil = posicion.fil;
 	obstaculos[*tope_obstaculos].posicion.col = posicion.col;
 	obstaculos[*tope_obstaculos].tipo = tipo_obstaculo;
 	(*tope_obstaculos)++;
 
+}
+
+void asignar_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int* tope_herramientas, coordenada_t posicion, char tipo_herramienta){
+	herramientas[*tope_herramientas].posicion.fil = posicion.fil;
+	herramientas[*tope_herramientas].posicion.col = posicion.col;
+	herramientas[*tope_herramientas].tipo = tipo_herramienta;
+	(*tope_herramientas)++;
 }
 
 //------------------------------------------BOOLEANOS---------------------------------------------------------
@@ -417,7 +424,7 @@ void inicializar_agujeros(juego_t* juego){
 	while(cuadrante_stitch < 10){
 		coordenada_t posicion_agujero = generar_coordenada_aleatoria(1, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_agujero.fil, posicion_agujero.col)){
-			asignar_posicion_agujero(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
+			asignar_agujero(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
 			cuadrante_stitch++;
 		}
 	}
@@ -425,8 +432,30 @@ void inicializar_agujeros(juego_t* juego){
 	while(cuadrante_reuben < 10){
 		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_agujero.fil, posicion_agujero.col)){
-			asignar_posicion_agujero(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
+			asignar_agujero(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
 			cuadrante_reuben++;
+		}
+	}
+}
+
+void inicializar_herramientas(juego_t* juego){
+	juego->tope_herramientas = 0;
+	int herramientas_stitch = 0;
+	int herramientas_reuben = 0;
+
+	while(herramientas_stitch < 2){
+		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(1, 9, 1, 19);
+		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_herramienta.fil, posicion_herramienta.col)){
+			asignar_herramienta(juego->herramientas, &(juego)->tope_herramientas, posicion_herramienta, CUCHILLO);
+			herramientas_stitch++;
+		}
+	}
+
+	while(herramientas_reuben < 2){
+		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(11, 9, 1, 19);
+		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_herramienta.fil, posicion_herramienta.col)){
+			asignar_herramienta(juego->herramientas, &(juego)->tope_herramientas, posicion_herramienta, HORNO);
+			herramientas_reuben++;
 		}
 	}
 }
@@ -448,33 +477,6 @@ void inicializar_fuego(juego_t* juego){
 	}
 }
 
-void inicializar_herramientas(juego_t* juego){
-	juego->tope_herramientas = 0;
-	int herramientas_stitch = 0;
-	int herramientas_reuben = 0;
-
-	while(herramientas_stitch < 2){
-		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(1, 9, 1, 19);
-		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_herramienta.fil, posicion_herramienta.col)){
-			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_herramienta.fil;
-			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
-			juego->herramientas[juego->tope_herramientas].tipo = CUCHILLO;
-			(juego->tope_herramientas)++;
-			herramientas_stitch++;
-		}
-	}
-
-	while(herramientas_reuben < 2){
-		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(11, 9, 1, 19);
-		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_herramienta.fil, posicion_herramienta.col)){
-			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_herramienta.fil;
-			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_herramienta.col;
-			juego->herramientas[juego->tope_herramientas].tipo = HORNO;
-			(juego->tope_herramientas)++;
-			herramientas_reuben++;
-		}
-	}
-}
 
 void inicializar_matafuegos(juego_t* juego){
 	int cantidad_matafuegos = 0;
@@ -788,10 +790,12 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 		grilla[juego.obstaculos[i].posicion.fil][juego.obstaculos[i].posicion.col] = juego.obstaculos[i].tipo;
 	}
 
-	/*
 	for(int i = 0; i < juego.tope_herramientas; i++){
 		grilla[juego.herramientas[i].posicion.fil][juego.herramientas[i].posicion.col] = juego.herramientas[i].tipo;
 	}
+
+	/*
+	
 
 	if(juego.comida_actual == ENSALADA){
 		for(int i = 0; i < juego.comida[0].tope_ingredientes; i++){
@@ -838,9 +842,9 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_paredes(juego);
 	inicializar_mesa(juego);
 	inicializar_agujeros(juego);
-	
-	/*
 	inicializar_herramientas(juego);
+
+	/*
 	juego->tope_comida = 0;
 	juego->comida_actual = ENSALADA;
 	inicializar_comida(juego);
