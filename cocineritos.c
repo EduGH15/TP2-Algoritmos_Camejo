@@ -494,26 +494,62 @@ void inicializar_ingredientes_ensalada(juego_t* juego){
 	}
 }
 
+void inicializar_ingredientes_pizza(juego_t* juego){
+	juego->comida[1].tope_ingredientes = 0;
+	int cantidad_masa = 0;
+	int cantidad_jamon = 0;
+	int cantidad_queso = 0; 
+	for(int i = 0; i < MAX_INGREDIENTES; i++){
+		juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].esta_cocinado = false;
+		juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].esta_cortado = false;
+		if(i == 0){
+			while(cantidad_masa < 1){
+				coordenada_t posicion_ingrediente = generar_coordenada_aleatoria(11, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[1].ingrediente, juego->comida[1].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
+					asignar_ingrediente(juego->comida[1].ingrediente, &(juego)->comida[1].tope_ingredientes, posicion_ingrediente, MASA);
+					cantidad_masa++;
+				}
+			}
+		}else if(i == 1){
+			while(cantidad_jamon < 1){
+				coordenada_t posicion_ingrediente = generar_coordenada_aleatoria(1, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[1].ingrediente, juego->comida[1].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
+					asignar_ingrediente(juego->comida[1].ingrediente, &(juego)->comida[1].tope_ingredientes, posicion_ingrediente, JAMON);
+					cantidad_jamon++;
+				}
+			}
+		}else if(i == 2){
+			while(cantidad_queso < 1){
+				coordenada_t posicion_ingrediente = generar_coordenada_aleatoria(1, 9, 1, 19);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[1].ingrediente, juego->comida[1].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
+					asignar_ingrediente(juego->comida[1].ingrediente, &(juego)->comida[1].tope_ingredientes, posicion_ingrediente, QUESO);
+					cantidad_queso++;
+				}
+			}
+		}
+	}
+}
+
 void inicializar_comida(juego_t* juego){	
 	if(juego->comida_actual == ENSALADA && juego->precio_total <= 100){
 		juego->comida[0].tipo = ENSALADA;
 		(juego->tope_comida)++;
 		inicializar_ingredientes_ensalada(juego);
+	}else if(juego->comida_actual == PIZZA && juego->precio_total <= 100){
+		juego->comida[1].tipo = PIZZA;
+		(juego->tope_comida)++;
+		inicializar_ingredientes_pizza(juego);
 	}
 
 	/*
-	else if(juego->comida_actual == PIZZA && juego->precio_total <= 100){
-		juego->comida[1].tipo = PIZZA;
-		(juego->tope_comida)++;
-		inicializar_ingrediente_pizza(juego);
-	}else if(juego->comida_actual == HAMBURGUESA && juego->precio_total <= 150){
+	else if(juego->comida_actual == HAMBURGUESA && juego->precio_total <= 150){
 		juego->comida[2].tipo = HAMBURGUESA;
 		(juego->tope_comida)++;
-		inicializar_ingrediente_hamburguesa(juego);
+		inicializar_ingredientes_hamburguesa(juego);
 	}else if(juego->comida_actual == SANDWICH && juego->precio_total > 150){
 		juego->comida[3].tipo = SANDWICH;
 		(juego->tope_comida)++;
-		inicializar_ingrediente_sandwich(juego);
+		inicializar_ingredientes_sandwich(juego);
 	}
 	*/
 }
@@ -555,52 +591,9 @@ void inicializar_matafuegos(juego_t* juego){
 }
 
 
-void inicializar_ingrediente_pizza(juego_t* juego){
-	juego->comida[1].tope_ingredientes = 0;
-	int cantidad_masa = 0;
-	int cantidad_jamon = 0;
-	int cantidad_queso = 0; 
-	for(int i = 0; i < MAX_INGREDIENTES; i++){
-		juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].esta_cocinado = false;
-		juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].esta_cortado = false;
-		if(i == 0){
-			while(cantidad_masa < 1){
-				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(11, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
-					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
-					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.col = posicion_aleatoria.col;
-					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].tipo = MASA;
-					(juego->comida[1].tope_ingredientes)++;
-					cantidad_masa++;
-				}
-			}
-		}else if(i == 1){
-			while(cantidad_jamon < 1){
-				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
-					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
-					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.col = posicion_aleatoria.col;
-					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].tipo = JAMON;
-					(juego->comida[1].tope_ingredientes)++;
-					cantidad_jamon++;
-				}
-			}
-		}else if(i == 2){
-			while(cantidad_queso < 1){
-				coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
-					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.fil = posicion_aleatoria.fil;
-					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].posicion.col = posicion_aleatoria.col;
-					juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].tipo = QUESO;
-					(juego->comida[1].tope_ingredientes)++;
-					cantidad_queso++;
-				}
-			}
-		}
-	}
-}
 
-void inicializar_ingrediente_hamburguesa(juego_t* juego){
+
+void inicializar_ingredientes_hamburguesa(juego_t* juego){
 	juego->comida[2].tope_ingredientes = 0;
 	int cantidad_pan = 0; 
 	int cantidad_carne = 0;
@@ -657,7 +650,7 @@ void inicializar_ingrediente_hamburguesa(juego_t* juego){
 	}
 }
 
-void inicializar_ingrediente_sandwich(juego_t* juego){
+void inicializar_ingredientes_sandwich(juego_t* juego){
 	juego->comida[3].tope_ingredientes = 0;
 	int cantidad_milanesa = 0;
 	int cantidad_pan = 0;
@@ -809,15 +802,15 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 		for(int i = 0; i < juego.comida[0].tope_ingredientes; i++){
 		grilla[juego.comida[0].ingrediente[i].posicion.fil][juego.comida[0].ingrediente[i].posicion.col] = juego.comida[0].ingrediente[i].tipo;
 		}
+	}else if(juego.comida_actual == PIZZA){
+		for(int i = 0; i < juego.comida[1].tope_ingredientes; i++){
+		grilla[juego.comida[1].ingrediente[i].posicion.fil][juego.comida[1].ingrediente[i].posicion.col] = juego.comida[1].ingrediente[i].tipo;
+		}
 	}
 
 	/*
 
-	else if(juego.comida_actual == PIZZA){
-		for(int i = 0; i < juego.comida[1].tope_ingredientes; i++){
-		grilla[juego.comida[1].ingrediente[i].posicion.fil][juego.comida[1].ingrediente[i].posicion.col] = juego.comida[1].ingrediente[i].tipo;
-		}
-	}else if(juego.comida_actual == HAMBURGUESA){
+	else if(juego.comida_actual == HAMBURGUESA){
 		for(int i = 0; i < juego.comida[2].tope_ingredientes; i++){
 		grilla[juego.comida[2].ingrediente[i].posicion.fil][juego.comida[2].ingrediente[i].posicion.col] = juego.comida[2].ingrediente[i].tipo;
 		}
@@ -855,7 +848,7 @@ void inicializar_juego(juego_t* juego, int precio){
 	inicializar_agujeros(juego);
 	inicializar_herramientas(juego);
 	juego->tope_comida = 0;
-	juego->comida_actual = ENSALADA;
+	juego->comida_actual = PIZZA;
 	inicializar_comida(juego);
 
 	/*
