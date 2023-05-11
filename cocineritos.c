@@ -220,7 +220,7 @@ int orden_actual(char comida_actual){
 }
 
 
-void asignar_agujero(objeto_t obstaculos[MAX_OBSTACULOS], int* tope_obstaculos, coordenada_t posicion, char tipo_obstaculo){
+void asignar_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS], int* tope_obstaculos, coordenada_t posicion, char tipo_obstaculo){
 	obstaculos[*tope_obstaculos].posicion.fil = posicion.fil;
 	obstaculos[*tope_obstaculos].posicion.col = posicion.col;
 	obstaculos[*tope_obstaculos].tipo = tipo_obstaculo;
@@ -327,11 +327,9 @@ bool hay_mesa(coordenada_t mesa, int fila, int columna){
 	return mesa.fil == fila && mesa.col == columna;
 }
 
-/*
-bool hay_vacio(juego_t juego, int fila, int columna){
-	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, fila, columna) && !hay_herramienta(juego.herramientas, juego.tope_herramientas, fila, columna) && !hay_ingrediente(juego.comida[juego.tope_comida - 1].ingrediente, juego.comida[juego.tope_comida -1].tope_ingredientes, fila, columna) && !hay_jugador(juego, fila, columna);
+bool hay_vacio(juego_t juego, int orden, int fila, int columna){
+	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, fila, columna) && !hay_herramienta(juego.herramientas, juego.tope_herramientas, fila, columna) && !hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, fila, columna) && !hay_jugador(juego, fila, columna);
 }
-*/
 
 bool hay_horno(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna){
 	bool encontro = false;
@@ -439,7 +437,7 @@ void inicializar_agujeros(juego_t* juego){
 	while(cuadrante_stitch < 10){
 		coordenada_t posicion_agujero = generar_coordenada_aleatoria(1, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_agujero.fil, posicion_agujero.col)){
-			asignar_agujero(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
+			asignar_obstaculo(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
 			cuadrante_stitch++;
 		}
 	}
@@ -447,7 +445,7 @@ void inicializar_agujeros(juego_t* juego){
 	while(cuadrante_reuben < 10){
 		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_agujero.fil, posicion_agujero.col)){
-			asignar_agujero(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
+			asignar_obstaculo(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
 			cuadrante_reuben++;
 		}
 	}
@@ -699,37 +697,27 @@ void inicializar_personajes(juego_t* juego){
 	}
 }
 
-
-/*
-void inicializar_fuego(juego_t* juego){
+void inicializar_fuego(juego_t* juego, int orden){
 	int cantidad_fuego = 0;
 	while(cantidad_fuego < 1){
 		coordenada_t posicion_fuego = generar_coordenada_aleatoria(1, 19, 1, 19);
-		if(hay_vacio(*juego, posicion_fuego.fil, posicion_fuego.col)){
-			juego->obstaculos[juego->tope_obstaculos].posicion.fil = posicion_fuego.fil;
-			juego->obstaculos[juego->tope_obstaculos].posicion.col = posicion_fuego.col; 
-			juego->obstaculos[juego->tope_obstaculos].tipo = FUEGO;
-			(juego->tope_obstaculos)++;
+		if(hay_vacio(*juego, orden, posicion_fuego.fil, posicion_fuego.col)){
+			asignar_obstaculo(juego->obstaculos, &(juego)->tope_obstaculos, posicion_fuego, FUEGO);
 			cantidad_fuego++;
 		}
 	}
 }
 
-
-void inicializar_matafuegos(juego_t* juego){
+void inicializar_matafuegos(juego_t* juego, int orden){
 	int cantidad_matafuegos = 0;
 	while(cantidad_matafuegos < 1){
 		coordenada_t posicion_matafuegos = generar_coordenada_aleatoria(1, 19, 1, 19);
-		if(hay_vacio(*juego, posicion_matafuegos.fil, posicion_matafuegos.col) && estan_mismo_cuadrante(posicion_matafuegos.fil, juego->obstaculos[(juego->tope_obstaculos)-1].posicion.fil)){
-			juego->herramientas[juego->tope_herramientas].posicion.fil = posicion_matafuegos.fil;
-			juego->herramientas[juego->tope_herramientas].posicion.col = posicion_matafuegos.col; 
-			juego->herramientas[juego->tope_herramientas].tipo = MATAFUEGOS;
-			(juego->tope_herramientas)++;
+		if(hay_vacio(*juego, orden, posicion_matafuegos.fil, posicion_matafuegos.col) && estan_mismo_cuadrante(posicion_matafuegos.fil, juego->obstaculos[(juego->tope_obstaculos)-1].posicion.fil)){
+			asignar_herramienta(juego->herramientas, &(juego)->tope_herramientas, posicion_matafuegos, MATAFUEGOS);
 			cantidad_matafuegos++;
 		}
 	}
 }
-*/
 
 //--------------------------------------------------INICIALIZACIÓN CENTRALIZADA--------------------------------------
 
@@ -909,6 +897,38 @@ void realizar_jugada(juego_t* juego, char movimiento){
 			}
 		}
 	}
+
+	if(juego->movimientos == 15){
+		inicializar_fuego(juego, orden);
+		inicializar_matafuegos(juego, orden);
+		juego->movimientos = 16;
+	}
+
+	if(juego->personaje_activo == STITCH){
+		if(juego->stitch.objeto_en_mano == VACIO && hay_matafuegos(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+			juego->stitch.objeto_en_mano = buscar_tipo_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col);
+			ocultar_herramienta(juego->stitch.objeto_en_mano, juego->herramientas, juego->tope_herramientas);
+		}
+	}else if(juego->personaje_activo == REUBEN){
+		if(juego->reuben.objeto_en_mano == VACIO && hay_matafuegos(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+			juego->reuben.objeto_en_mano = buscar_tipo_herramienta(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col);
+			ocultar_herramienta(juego->reuben.objeto_en_mano, juego->herramientas, juego->tope_herramientas);
+		}
+	}
+
+	if(movimiento == ACTIVAR_MATAFUEGO){
+		if(juego->personaje_activo == STITCH && juego->stitch.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->stitch.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
+			juego->tope_obstaculos--;
+			juego->tope_herramientas--;
+			juego->stitch.objeto_en_mano = VACIO;
+			juego->movimientos = 0;
+		}else if(juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->reuben.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
+			juego->tope_obstaculos--;
+			juego->tope_herramientas--;
+			juego->reuben.objeto_en_mano = VACIO;
+			juego->movimientos = 0;
+		}
+	}
 }
 
 	
@@ -936,25 +956,9 @@ int estado_juego(juego_t juego){
 			cocinar_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
 		}
 
-	if(juego->movimientos == 15){
-		inicializar_fuego(juego);
-		inicializar_matafuegos(juego);
-		juego->movimientos = 16;
-	}
 	
-	if(movimiento == ACTIVAR_MATAFUEGO){
-		if(juego->personaje_activo == STITCH && juego->stitch.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->stitch.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
-			juego->tope_obstaculos--;
-			juego->tope_herramientas--;
-			juego->stitch.objeto_en_mano = VACIO;
-			juego->movimientos = 0;
-		}else if(juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->reuben.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
-			juego->tope_obstaculos--;
-			juego->tope_herramientas--;
-			juego->reuben.objeto_en_mano = VACIO;
-			juego->movimientos = 0;
-		}
-	}
+	
+	
 
 	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida))){
 		cargar_vector(juego);
