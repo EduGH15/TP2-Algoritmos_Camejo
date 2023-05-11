@@ -45,7 +45,7 @@ const char REUBEN = 'R';
 const char PARED = '#';
 const char MESA = '_';
 const char PUERTA_SALIDA = 'P';
-const char VACIO = ' ';
+const char VACIO = 'V';
 const int CENTRO_FILA = 10;
 const int CENTRO_COLUMNA = 10;
 const int PRIMERA_FILA = 0;
@@ -242,10 +242,10 @@ void asignar_ingrediente(ingrediente_t ingrediente[MAX_INGREDIENTES], int* tope_
 	(*tope_ingredientes)++;
 }
 
-void asignar_personaje(personaje_t* personaje, coordenada_t posicion, char tipo){
+void asignar_personaje(personaje_t* personaje, coordenada_t posicion, char tipo, char objeto_en_mano){
 	personaje->posicion.fil = posicion.fil;
 	personaje->posicion.col = posicion.col;
-	personaje->objeto_en_mano = VACIO;
+	personaje->objeto_en_mano = objeto_en_mano;
 	personaje->tipo = tipo;
 }
 
@@ -686,14 +686,14 @@ void inicializar_personajes(juego_t* juego){
 	while(cantidad_stitch < 1){
 		coordenada_t posicion_personaje = generar_coordenada_aleatoria(1, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_personaje.fil, posicion_personaje.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_personaje.fil, posicion_personaje.col) && !hay_ingrediente(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, posicion_personaje.fil, posicion_personaje.col)){
-			asignar_personaje(&(juego)->stitch, posicion_personaje, STITCH);
+			asignar_personaje(&(juego)->stitch, posicion_personaje, STITCH, VACIO);
 			cantidad_stitch++;
 		}
 	}
 	while(cantidad_reuben < 1){
 		coordenada_t posicion_personaje = generar_coordenada_aleatoria(11, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_personaje.fil, posicion_personaje.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_personaje.fil, posicion_personaje.col) && !hay_ingrediente(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, posicion_personaje.fil, posicion_personaje.col) && !hay_puerta_salida(juego->salida, posicion_personaje.fil, posicion_personaje.col)){
-			asignar_personaje(&(juego)->reuben, posicion_personaje, REUBEN);
+			asignar_personaje(&(juego)->reuben, posicion_personaje, REUBEN, VACIO);
 			cantidad_reuben++;
 		}
 	}
@@ -841,11 +841,40 @@ void cargar_vector(juego_t* juego){
 
 //-------------------------------------------- ACTUALIZAR STRUCT----------------------------------------------
 
-/*
-void realizar_jugada(juego_t* juego, char movimiento){}
+
+void realizar_jugada(juego_t* juego, char movimiento){
+	//int orden = orden_actual(juego->comida_actual);
+
+	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
+		if(juego->personaje_activo == STITCH){
+			coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->stitch, movimiento);
+			if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
+				mover_jugador(&(juego)->stitch, movimiento);
+				if(juego->tope_obstaculos < 21){
+					juego->movimientos++;
+				}
+			}
+		}else if(juego->personaje_activo == REUBEN){
+			coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->reuben, movimiento);
+			if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
+				mover_jugador(&(juego)->reuben, movimiento);
+				if(juego->tope_obstaculos < 21){
+					juego->movimientos++;
+				}
+			}
+		}
+	}
+
+	if(movimiento == CAMBIAR_PERSONAJE){
+		if(juego->personaje_activo == STITCH){
+			juego->personaje_activo = REUBEN;
+		}else if(juego->personaje_activo == REUBEN){
+			juego->personaje_activo = STITCH;
+		}
+	}
+}
 
 	
-*/
 
 
 int estado_juego(juego_t juego){
@@ -862,38 +891,8 @@ int estado_juego(juego_t juego){
 
 
 /*
+
 	
-	int orden = orden_actual(juego->comida_actual);
-
-	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
-		if(juego->personaje_activo == STITCH){
-			coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->stitch, movimiento);
-			if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
-				mover_jugador(&(juego->stitch), movimiento);
-				if(juego->tope_obstaculos < 21){
-					juego->movimientos++;
-				}
-			}
-		}else if(juego->personaje_activo == REUBEN){
-			coordenada_t posicion_nueva_jugador = generar_posicion_nueva(juego->reuben, movimiento);
-			if(es_movimiento_valido(*juego, posicion_nueva_jugador.fil, posicion_nueva_jugador.col)){
-				mover_jugador(&(juego->reuben), movimiento);
-				if(juego->tope_obstaculos < 21){
-					juego->movimientos++;
-				}
-			}
-		}
-
-		
-	}
-
-	if(movimiento == CAMBIAR_PERSONAJE){
-		if(juego->personaje_activo == STITCH){
-			juego->personaje_activo = REUBEN;
-		}else if(juego->personaje_activo == REUBEN){
-			juego->personaje_activo = STITCH;
-		}
-	}
 
 
 	if(movimiento == AGARRAR){
