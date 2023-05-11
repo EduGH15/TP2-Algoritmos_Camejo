@@ -241,6 +241,14 @@ void asignar_ingrediente(ingrediente_t ingrediente[MAX_INGREDIENTES], int* tope_
 	ingrediente[*tope_ingredientes].tipo = tipo_ingrediente;
 	(*tope_ingredientes)++;
 }
+
+void asignar_personaje(personaje_t* personaje, coordenada_t posicion, char tipo){
+	personaje->posicion.fil = posicion.fil;
+	personaje->posicion.col = posicion.col;
+	personaje->objeto_en_mano = VACIO;
+	personaje->tipo = tipo;
+}
+
 //------------------------------------------BOOLEANOS---------------------------------------------------------
 
 bool hay_jugador(juego_t juego, int fila, int columna){
@@ -671,7 +679,25 @@ void inicializar_puerta_salida(juego_t* juego){
 	}
 }
 
-
+void inicializar_personajes(juego_t* juego){
+	juego->personaje_activo = STITCH;
+	int cantidad_stitch = 0;
+	int cantidad_reuben = 0;
+	while(cantidad_stitch < 1){
+		coordenada_t posicion_personaje = generar_coordenada_aleatoria(1, 9, 1, 19);
+		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_personaje.fil, posicion_personaje.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_personaje.fil, posicion_personaje.col) && !hay_ingrediente(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, posicion_personaje.fil, posicion_personaje.col)){
+			asignar_personaje(&(juego)->stitch, posicion_personaje, STITCH);
+			cantidad_stitch++;
+		}
+	}
+	while(cantidad_reuben < 1){
+		coordenada_t posicion_personaje = generar_coordenada_aleatoria(11, 9, 1, 19);
+		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_personaje.fil, posicion_personaje.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_personaje.fil, posicion_personaje.col) && !hay_ingrediente(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, posicion_personaje.fil, posicion_personaje.col) && !hay_puerta_salida(juego->salida, posicion_personaje.fil, posicion_personaje.col)){
+			asignar_personaje(&(juego)->reuben, posicion_personaje, REUBEN);
+			cantidad_reuben++;
+		}
+	}
+}
 
 
 /*
@@ -710,34 +736,6 @@ void inicializar_matafuegos(juego_t* juego){
 }
 
 
-
-
-
-void inicializar_personajes(juego_t* juego){
-	juego->personaje_activo = STITCH;
-	int cantidad_stitch = 0;
-	int cantidad_reuben = 0;
-	while(cantidad_stitch < 1){
-		coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(1, 9, 1, 19);
-		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
-			juego->stitch.posicion.fil = posicion_aleatoria.fil;
-			juego->stitch.posicion.col = posicion_aleatoria.col;
-			juego->stitch.tipo = STITCH;
-			juego->stitch.objeto_en_mano = ' ';
-			cantidad_stitch++;
-		}
-	}
-	while(cantidad_reuben < 1){
-		coordenada_t posicion_aleatoria = generar_coordenada_aleatoria(11, 9, 1, 19);
-		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_aleatoria.fil, posicion_aleatoria.col) && !hay_ingrediente(juego->comida, juego->tope_comida, posicion_aleatoria.fil, posicion_aleatoria.col)){
-			juego->reuben.posicion.fil = posicion_aleatoria.fil;
-			juego->reuben.posicion.col = posicion_aleatoria.col;
-			juego->reuben.tipo = REUBEN;
-			juego->reuben.objeto_en_mano = ' ';
-			cantidad_reuben++;
-		}
-	}
-}
 
 */
 
@@ -785,11 +783,9 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 	}
 
 	grilla[juego.salida.fil][juego.salida.col] = PUERTA_SALIDA;
-
-	/*
 	grilla[juego.stitch.posicion.fil][juego.stitch.posicion.col] = juego.stitch.tipo;
 	grilla[juego.reuben.posicion.fil][juego.reuben.posicion.col] = juego.reuben.tipo;
-	*/
+	
 }
 
 void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]){
@@ -818,12 +814,9 @@ void inicializar_juego(juego_t* juego, int precio){
 	juego->comida_actual = ENSALADA;
 	inicializar_comida(juego);
 	inicializar_puerta_salida(juego);
-
-	/*
 	inicializar_personajes(juego);
 	juego->movimientos = 0; 
 	juego->tope_comida_lista = 0;
-	*/
 }
 
 void imprimir_terreno(juego_t juego){
