@@ -370,6 +370,10 @@ bool distancia_manhattan(coordenada_t posicion_jugador, coordenada_t posicion_el
 	return respuesta <= distancia;
 }
 
+bool estan_mismo_cuadrante(int fila_objeto_1,  int fila_objeto_2){
+	return ((fila_objeto_1 >= 1 && fila_objeto_1 <= 9) && (fila_objeto_2 >=1 && fila_objeto_2 <= 9)) || ((fila_objeto_1 >= 11 && fila_objeto_1 <= 19) && (fila_objeto_2 >=11 && fila_objeto_2 <= 19));
+}
+
 bool esta_cortado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes){
 	bool cortado = false;
 	int i = 0;
@@ -393,11 +397,6 @@ bool esta_cocinado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIE
 	}
 	return cocinado;
 }
-
-bool estan_mismo_cuadrante(int fila_objeto_1,  int fila_objeto_2){
-	return ((fila_objeto_1 >= 1 && fila_objeto_1 <= 9) && (fila_objeto_2 >=1 && fila_objeto_2 <= 9)) || ((fila_objeto_1 >= 11 && fila_objeto_1 <= 19) && (fila_objeto_2 >=11 && fila_objeto_2 <= 19));
-}
-
 
 
 //---------------------------------------INICIALIZACION POR PARTES --------------------------------------------------------
@@ -898,6 +897,24 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		}
 	}
 
+	if(movimiento == ACTIVAR_MATAFUEGO){
+		if(juego->personaje_activo == STITCH && juego->stitch.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->stitch.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
+			juego->tope_obstaculos--;
+			juego->tope_herramientas--;
+			juego->stitch.objeto_en_mano = VACIO;
+			juego->movimientos = 0;
+		}else if(juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->reuben.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
+			juego->tope_obstaculos--;
+			juego->tope_herramientas--;
+			juego->reuben.objeto_en_mano = VACIO;
+			juego->movimientos = 0;
+		}
+	}
+
+	if(movimiento == ACTIVAR_HORNO && juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano != VACIO && !esta_cortado(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (distancia_manhattan(juego->reuben.posicion, juego->herramientas[2].posicion, 1) || distancia_manhattan(juego->reuben.posicion, juego->herramientas[3].posicion, 1))){
+			cocinar_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
+	}
+
 	if(juego->movimientos == 15){
 		inicializar_fuego(juego, orden);
 		inicializar_matafuegos(juego, orden);
@@ -916,23 +933,13 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		}
 	}
 
-	if(movimiento == ACTIVAR_MATAFUEGO){
-		if(juego->personaje_activo == STITCH && juego->stitch.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->stitch.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
-			juego->tope_obstaculos--;
-			juego->tope_herramientas--;
-			juego->stitch.objeto_en_mano = VACIO;
-			juego->movimientos = 0;
-		}else if(juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano == MATAFUEGOS && distancia_manhattan(juego->reuben.posicion, juego->obstaculos[(juego->tope_obstaculos) - 1].posicion, 2)){
-			juego->tope_obstaculos--;
-			juego->tope_herramientas--;
-			juego->reuben.objeto_en_mano = VACIO;
-			juego->movimientos = 0;
-		}
+	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida))){
+		cargar_vector(juego);
+		cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida, juego->reuben.posicion.fil, juego->reuben.posicion.col);
+		juego->reuben.objeto_en_mano = VACIO;
 	}
+
 }
-
-	
-
 
 int estado_juego(juego_t juego){
 	int estado = 0;
@@ -949,22 +956,7 @@ int estado_juego(juego_t juego){
 
 /*
 
-
 	
-
-	if(movimiento == ACTIVAR_HORNO && juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano != VACIO && !esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (distancia_manhattan(juego->reuben.posicion, juego->herramientas[2].posicion, 1) || distancia_manhattan(juego->reuben.posicion, juego->herramientas[3].posicion, 1))){
-			cocinar_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
-		}
-
-	
-	
-	
-
-	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida))){
-		cargar_vector(juego);
-		cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida, juego->reuben.posicion.fil, juego->reuben.posicion.col);
-		juego->reuben.objeto_en_mano = VACIO;
-	}
 
 	if(juego->comida_actual == ENSALADA && juego->tope_comida_lista == 2){
 		juego->comida_actual = PIZZA;
