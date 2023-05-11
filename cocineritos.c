@@ -701,11 +701,6 @@ void inicializar_personajes(juego_t* juego){
 
 
 /*
-
-
-
-
-
 void inicializar_fuego(juego_t* juego){
 	int cantidad_fuego = 0;
 	while(cantidad_fuego < 1){
@@ -734,9 +729,6 @@ void inicializar_matafuegos(juego_t* juego){
 		}
 	}
 }
-
-
-
 */
 
 //--------------------------------------------------INICIALIZACIÓN CENTRALIZADA--------------------------------------
@@ -843,7 +835,7 @@ void cargar_vector(juego_t* juego){
 
 
 void realizar_jugada(juego_t* juego, char movimiento){
-	//int orden = orden_actual(juego->comida_actual);
+	int orden = orden_actual(juego->comida_actual);
 
 	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
 		if(juego->personaje_activo == STITCH){
@@ -872,6 +864,51 @@ void realizar_jugada(juego_t* juego, char movimiento){
 			juego->personaje_activo = STITCH;
 		}
 	}
+
+	if(movimiento == AGARRAR){
+		if(juego->personaje_activo == STITCH){
+			if(juego->stitch.objeto_en_mano == VACIO && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && hay_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+
+				juego->stitch.objeto_en_mano = buscar_tipo_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->stitch.posicion.fil, juego->stitch.posicion.col);
+				ocultar_ingrediente(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
+
+			}else if((juego->stitch.objeto_en_mano != VACIO && juego->stitch.objeto_en_mano != MATAFUEGOS)  && !hay_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes,juego->stitch.posicion.fil, juego->stitch.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+
+				cambiar_posicion_ingrediente(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->stitch.posicion.fil, juego->stitch.posicion.col);
+				juego->stitch.objeto_en_mano = VACIO;
+			}
+			
+		}else if(juego->personaje_activo == REUBEN){
+			if(juego->reuben.objeto_en_mano == VACIO && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && hay_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes,juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+
+				juego->reuben.objeto_en_mano = buscar_tipo_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes,juego->reuben.posicion.fil, juego->reuben.posicion.col);
+				ocultar_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
+
+			}else if((juego->reuben.objeto_en_mano != VACIO && juego->reuben.objeto_en_mano != MATAFUEGOS) && !hay_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col)){
+
+				cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->reuben.posicion.fil, juego->reuben.posicion.col);
+				juego->reuben.objeto_en_mano = VACIO;
+			}
+		}
+	}
+		
+	if(movimiento == ACTIVAR_CUCHILLO && juego->personaje_activo == STITCH && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+		cortar_ingrediente(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
+	}
+
+	if(movimiento == PASAR){
+		if(juego->personaje_activo == STITCH){
+			if(juego->stitch.objeto_en_mano != VACIO && esta_cortado(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes) && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && !hay_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col) && distancia_manhattan(juego->stitch.posicion, juego->mesa, 1)){
+				cambiar_posicion_ingrediente(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col);
+				juego->stitch.objeto_en_mano = VACIO;
+			}
+		}else if(juego->personaje_activo == REUBEN){
+			if(juego->reuben.objeto_en_mano == VACIO && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && distancia_manhattan(juego->reuben.posicion, juego->mesa, 1)){
+				juego->reuben.objeto_en_mano = buscar_tipo_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->reuben.posicion.fil - 1, juego->reuben.posicion.col);
+				ocultar_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
+			}
+		}
+	}
 }
 
 	
@@ -891,56 +928,6 @@ int estado_juego(juego_t juego){
 
 
 /*
-
-	
-
-
-	if(movimiento == AGARRAR){
-		if(juego->personaje_activo == STITCH){
-			if(juego->stitch.objeto_en_mano == VACIO && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && hay_ingrediente(juego->comida, juego->tope_comida, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
-
-				juego->stitch.objeto_en_mano = buscar_tipo_ingrediente(juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida -1].tope_ingredientes, juego->stitch.posicion.fil, juego->stitch.posicion.col);
-				ocultar_ingrediente(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
-
-			}else if((juego->stitch.objeto_en_mano != VACIO && juego->stitch.objeto_en_mano != MATAFUEGOS)  && !hay_ingrediente(juego->comida, juego->tope_comida,juego->stitch.posicion.fil, juego->stitch.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
-
-				cambiar_posicion_ingrediente(juego->stitch.objeto_en_mano, juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida -1].tope_ingredientes, juego->stitch.posicion.fil, juego->stitch.posicion.col);
-				juego->stitch.objeto_en_mano = VACIO;
-			}
-			
-		}else if(juego->personaje_activo == REUBEN){
-			if(juego->reuben.objeto_en_mano == VACIO && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && hay_ingrediente(juego->comida, juego->tope_comida,juego->reuben.posicion.fil, juego->reuben.posicion.col)){
-
-				juego->reuben.objeto_en_mano = buscar_tipo_ingrediente(juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida -1].tope_ingredientes,juego->reuben.posicion.fil, juego->reuben.posicion.col);
-				ocultar_ingrediente(juego->reuben.objeto_en_mano, juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida -1].tope_ingredientes);
-
-			}else if((juego->reuben.objeto_en_mano != VACIO && juego->reuben.objeto_en_mano != MATAFUEGOS) && !hay_ingrediente(juego->comida, juego->tope_comida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->reuben.posicion.fil, juego->reuben.posicion.col)){
-
-				cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida -1].tope_ingredientes, juego->reuben.posicion.fil, juego->reuben.posicion.col);
-				juego->reuben.objeto_en_mano = VACIO;
-			}
-		}
-		
-	}
-
-	if(movimiento == ACTIVAR_CUCHILLO && juego->personaje_activo == STITCH && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
-		cortar_ingrediente(juego->stitch.objeto_en_mano, juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida - 1].tope_ingredientes);
-	}
-	
-	if(movimiento == PASAR){
-		if(juego->personaje_activo == STITCH){
-			if(juego->stitch.objeto_en_mano != VACIO && esta_cortado(juego->stitch.objeto_en_mano, juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida - 1].tope_ingredientes) && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && !hay_ingrediente(juego->comida, juego->tope_comida, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col) && distancia_manhattan(juego->stitch.posicion, juego->mesa, 1)){
-				cambiar_posicion_ingrediente(juego->stitch.objeto_en_mano, juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida - 1].tope_ingredientes, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col);
-				juego->stitch.objeto_en_mano = VACIO;
-			}
-		}else if(juego->personaje_activo == REUBEN){
-			if(juego->reuben.objeto_en_mano == VACIO && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && distancia_manhattan(juego->reuben.posicion, juego->mesa, 1)){
-				juego->reuben.objeto_en_mano = buscar_tipo_ingrediente(juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida -1].tope_ingredientes, juego->reuben.posicion.fil - 1, juego->reuben.posicion.col);
-				ocultar_ingrediente(juego->reuben.objeto_en_mano, juego->comida[juego->tope_comida - 1].ingrediente, juego->comida[juego->tope_comida - 1].tope_ingredientes);
-			}
-		}
-	}
-}
 
 
 	
