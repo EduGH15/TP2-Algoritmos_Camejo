@@ -938,8 +938,6 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		juego->reuben.objeto_en_mano = VACIO;
 	}
 
-	/*
-	
 	if(juego->comida_actual == ENSALADA && juego->tope_comida_lista == 2){
 		juego->comida_actual = PIZZA;
 		inicializar_comida(juego);
@@ -953,14 +951,17 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		inicializar_comida(juego);
 		juego->tope_comida_lista = 0;
 	}
-	*/
 }
 
 int estado_juego(juego_t juego){
 	int estado = 0;
 	if(hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.stitch.posicion.fil, juego.stitch.posicion.col) || hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.reuben.posicion.fil, juego.reuben.posicion.col)){
 		estado = -1;
-	}if(juego.tope_comida_lista == 3){
+	}else if(juego.precio_total <= 100 && juego.tope_comida_lista == 3){
+		estado = 1;
+	}else if(juego.precio_total <= 150 && juego.tope_comida == 4){
+		estado = 1;
+	}else if(juego.precio_total > 150 && juego.tope_comida_lista == 6){
 		estado = 1;
 	}
 	return estado;
