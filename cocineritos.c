@@ -806,17 +806,16 @@ void imprimir_terreno(juego_t juego){
 }
 
 //------------------------------------------- CARGAR VECTOR DE COMIDA LISTA ------------------------------------
-/*
-void cargar_vector(juego_t* juego){
+
+void cargar_vector(juego_t* juego, int orden){
 	juego->comida_lista[juego->tope_comida_lista].posicion.fil = juego->reuben.posicion.fil;
 	juego->comida_lista[juego->tope_comida_lista].posicion.col = juego->reuben.posicion.col;
 	juego->comida_lista[juego->tope_comida_lista].tipo = juego->reuben.objeto_en_mano;
-	juego->comida_lista[juego->tope_comida_lista].esta_cortado = esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
-	juego->comida_lista[juego->tope_comida_lista].esta_cocinado = esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida);
+	juego->comida_lista[juego->tope_comida_lista].esta_cortado = esta_cortado(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
+	juego->comida_lista[juego->tope_comida_lista].esta_cocinado = esta_cocinado(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
 	(juego->tope_comida_lista)++;
 	
 }
-*/
 
 //-------------------------------------------- ACTUALIZAR STRUCT----------------------------------------------
 
@@ -933,31 +932,14 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		}
 	}
 
-	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida))){
-		cargar_vector(juego);
-		cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida, juego->tope_comida, juego->reuben.posicion.fil, juego->reuben.posicion.col);
+	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes))){
+		cargar_vector(juego, orden);
+		cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->reuben.posicion.fil, juego->reuben.posicion.col);
 		juego->reuben.objeto_en_mano = VACIO;
 	}
 
-}
-
-int estado_juego(juego_t juego){
-	int estado = 0;
-	if(hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.stitch.posicion.fil, juego.stitch.posicion.col) || hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.reuben.posicion.fil, juego.reuben.posicion.col)){
-		estado = -1;
-	}if(juego.tope_comida_lista == 3){
-		estado = 1;
-	}
-	return estado;
-}
-
-
-
-
-/*
-
+	/*
 	
-
 	if(juego->comida_actual == ENSALADA && juego->tope_comida_lista == 2){
 		juego->comida_actual = PIZZA;
 		inicializar_comida(juego);
@@ -971,11 +953,18 @@ int estado_juego(juego_t juego){
 		inicializar_comida(juego);
 		juego->tope_comida_lista = 0;
 	}
-	
-*/
+	*/
+}
 
-
-
+int estado_juego(juego_t juego){
+	int estado = 0;
+	if(hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.stitch.posicion.fil, juego.stitch.posicion.col) || hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.reuben.posicion.fil, juego.reuben.posicion.col)){
+		estado = -1;
+	}if(juego.tope_comida_lista == 3){
+		estado = 1;
+	}
+	return estado;
+}
 
 
 
