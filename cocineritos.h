@@ -8,6 +8,21 @@
 #define MAX_HERRAMIENTAS 50
 #define MAX_OBSTACULOS 50
 #define MAX_COMIDA 5
+#define MAX_FIL 21
+#define MAX_COL 21
+
+/*------------TECLAS-----------------*/
+#define ARRIBA 'W'
+#define ABAJO 'S'
+#define DERECHA 'D'
+#define IZQUIERDA 'A'
+#define CAMBIAR_PERSONAJE 'X'
+#define ACTIVAR_MATAFUEGO 'M'
+#define ACTIVAR_CUCHILLO 'C'
+#define ACTIVAR_HORNO 'H'
+#define AGARRAR 'R'
+#define PASAR 'T'
+
 
 typedef struct coordenada{
 	int fil;
@@ -39,22 +54,22 @@ typedef struct personaje{
 }personaje_t;
 
 typedef struct juego{
-	personaje_t stitch; //Listo
-	personaje_t reuben; //Listo
-	char personaje_activo; //S / R Listo
-	char comida_actual; //Listo
+	personaje_t stitch; 
+	personaje_t reuben; 
+	char personaje_activo;
+	char comida_actual; 
 	coordenada_t paredes[MAX_PAREDES]; //Listo
 	int tope_paredes; //Listo
-	objeto_t herramientas[MAX_HERRAMIENTAS]; //Falta matafuego
+	objeto_t herramientas[MAX_HERRAMIENTAS];
 	int tope_herramientas; //Falta matafuego
 	coordenada_t salida; 
 	coordenada_t mesa; //Listo
 	objeto_t obstaculos[MAX_OBSTACULOS]; //Falta fuego
 	int tope_obstaculos;//Falta fuego
-	comida_t comida[MAX_COMIDA];//Listo
-	int tope_comida;//Listo
-	ingrediente_t comida_lista[MAX_INGREDIENTES]; //Solo ensalada
-	int tope_comida_lista;
+	comida_t comida[MAX_COMIDA];
+	int tope_comida;
+	ingrediente_t comida_lista[MAX_INGREDIENTES]; //Al inicio no hay comida lista
+	int tope_comida_lista; //Al inicio no hay comida lista
 	int precio_total;//Listo
 	int movimientos;
 }juego_t;

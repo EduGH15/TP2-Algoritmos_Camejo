@@ -4,23 +4,27 @@
 
 #include "cocineritos.h"
 #include "chambuchito.h"
+#include "funciones_varias.h"
 
 void imprimir_struct(juego_t juego){
     //printf("Tu tope de paredes es de: %i\n", juego.tope_paredes);
 
-    printf("Tu tope de obstaculos es de: %i\n", juego.tope_obstaculos);
+    //printf("Tu tope de obstaculos es de: %i\n", juego.tope_obstaculos);
     //for(int i = 0; i < juego.tope_obstaculos; i++){
-    //    printf("tienes obstaculos en: (%i, %i)\n", juego.obstaculos[i].posicion.fil, juego.obstaculos[i].posicion.col);
+    //   printf("tienes obstaculos en: ( %i , %i ) y es de tipo %c\n", juego.obstaculos[i].posicion.fil, juego.obstaculos[i].posicion.col, juego.obstaculos[i].tipo);
     //}
     
-    printf("Tu tope de herramientas es de: %i\n", juego.tope_herramientas);
+    //printf("Tu tope de herramientas es de: %i\n", juego.tope_herramientas);
     //for(int i = 0; i < juego.tope_herramientas; i++){
-    //    printf("tienes herramientas en: (%i, %i) y es de tipo %c\n", juego.herramientas[i].posicion.fil, juego.herramientas[i].posicion.col, juego.herramientas[i].tipo);
+    //   printf("tienes herramientas en: (%i, %i) y es de tipo %c\n", juego.herramientas[i].posicion.fil, juego.herramientas[i].posicion.col, juego.herramientas[i].tipo);
     //}
-    //for(int i = 0; i < juego.tope_comida; i++){
-    //    printf("Las comidas presentes en el struct son: %c\n", juego.comida[i].tipo);
-    //}
-    //printf("El tope del struct de comida es de: %i\n", juego.tope_comida);
+
+    printf("la comida actual es: %c\n", juego.comida_actual);
+    printf("El tope del struct de comida es de: %i\n", juego.tope_comida);
+    for(int i = 0; i < juego.tope_comida; i++){
+        printf("Las comidas presentes en el struct son: %c\n", juego.comida[i].tipo);
+    }
+    
 
     printf("Tu tope de ingredientes en la ensalada es de: %i\n", juego.comida[0].tope_ingredientes);
     //for(int i = 0; i < juego.comida[0].tope_ingredientes; i++){
@@ -42,26 +46,46 @@ void imprimir_struct(juego_t juego){
     //    printf("Tienes ingredientes del tipo %c en (%i, %i)\n", juego.comida[3].ingrediente[i].tipo, juego.comida[3].ingrediente[i].posicion.fil, juego.comida[3].ingrediente[i].posicion.col);
     //}
 
-    printf("Stitch esta en (%i, %i)\n", juego.stitch.posicion.fil, juego.stitch.posicion.col);
-    printf("esta activo el personaje: %c\n", juego.personaje_activo);
-    printf("Reuben esta en (%i, %i)\n", juego.reuben.posicion.fil, juego.reuben.posicion.col);
-    printf("Hiciste hasta ahora %i movimientos\n", juego.movimientos);
-    
+    //printf("Tienes una puerta de salida en (%i , %i)\n", juego.salida.fil, juego.salida.col);
 
+    //printf("esta activo el personaje: %c\n", juego.personaje_activo);
+    //printf("Stitch esta en (%i, %i)\n", juego.stitch.posicion.fil, juego.stitch.posicion.col);
+    printf("STITCH tiene en la mano: %c\n", juego.stitch.objeto_en_mano);
+
+    
+    printf("Hiciste hasta ahora %i movimientos\n", juego.movimientos);
     for(int i = 0; i < juego.tope_obstaculos; i++){
         if(juego.obstaculos[i].tipo == 'F'){
             printf("ALERTAAAAAAAAAAAAA TIENES UN FUEGO EN (%i, %i)\n", juego.obstaculos[i].posicion.fil, juego.obstaculos[i].posicion.col);
         }
     }
+   //printf("Tienes un matafuego en (%i, %i)\n", juego.herramientas[juego.tope_herramientas - 1].posicion.fil, juego.herramientas[juego.tope_herramientas - 1].posicion.col);
+
+    //printf("El ingrediente L que tiene en mano está cortado %s \n", juego.comida[0].ingrediente[0].esta_cortado ? "true" : "false");
+    //printf("El ingrediente L que tiene en mano está cocinado %s \n", juego.comida[0].ingrediente[0].esta_cocinado ? "true" : "false");
+
+    //printf("El ingrediente T que tiene en mano está cortado %s \n", juego.comida[0].ingrediente[1].esta_cortado ? "true" : "false");
+    //printf("El ingrediente T que tiene en mano está cocinado %s \n", juego.comida[0].ingrediente[1].esta_cocinado ? "true" : "false");
+
+
     //printf("La puerta de salida esta en (%i, %i)\n", juego.salida.fil, juego.salida.col);
-    //printf("Stitch tiene en la mano %c\n", juego.stitch.objeto_en_mano);
+
+    //printf("Reuben esta en (%i, %i)\n", juego.reuben.posicion.fil, juego.reuben.posicion.col);
+    printf("REUBEN tiene en la mano %c\n", juego.reuben.objeto_en_mano);
+
+    printf("El tope de comida lista es %i\n", juego.tope_comida_lista);
+    for(int i = 0; i < juego.tope_comida_lista; i++){
+        printf("Tienes ingredientes del tipo %c en (%i, %i)\n", juego.comida_lista[i].tipo, juego.comida_lista[i].posicion.fil, juego.comida_lista[i].posicion.col);
+        //printf("El ingrediente %c está cortado: %s\n", juego.comida_lista[i].tipo ,juego.comida_lista[i].esta_cortado ? "true" : "false");
+        //printf("El ingrediente %c está cocinado: %s\n", juego.comida_lista[i].tipo, juego.comida_lista[i].esta_cocinado ? "true" : "false");
+    }
 }
 
 int main(){
    
     srand (( unsigned)time(NULL));
 
-    int precio = 0;
+    int precio = 50;
     char movimiento = ' ';
     juego_t juego;
 
@@ -69,13 +93,17 @@ int main(){
     inicializar_juego(&juego, precio);
     imprimir_terreno(juego);
     imprimir_struct(juego);
-    while( precio == 0){
+    
+    
+    while(estado_juego(juego) == 0){
+        cambiar_nivel(&juego);
         printf("Ingrese una jugada:");
         scanf(" %c", &movimiento);
         realizar_jugada(&juego, movimiento);
         imprimir_terreno(juego);
         imprimir_struct(juego);
     }
+    
 
     return 0;
 }
