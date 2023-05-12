@@ -39,11 +39,28 @@
 #define MESA '_'
 #define PUERTA_SALIDA 'P'
 #define VACIO 'V'
+
+/*------POSICIONES----------------*/
 #define CENTRO_FILA 10
 #define CENTRO_COLUMNA 10
 #define PRIMERA_FILA 0
 #define FILA_DEL_MEDIO 10
 #define ULTIMA_FILA 20
+#define MAX_FIL 21
+#define MAX_COL 21
+
+/*------------TECLAS-----------------*/
+
+#define ARRIBA 'W'
+#define ABAJO 'S'
+#define DERECHA 'D'
+#define IZQUIERDA 'A'
+#define CAMBIAR_PERSONAJE 'X'
+#define ACTIVAR_MATAFUEGO 'M'
+#define ACTIVAR_CUCHILLO 'C'
+#define ACTIVAR_HORNO 'H'
+#define AGARRAR 'R'
+#define PASAR 'T'
 
 void inicializar_precio_total(juego_t* juego, int precio);
 
@@ -79,4 +96,4 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]);
 
 void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]);
 
-#endif
+#endif /*__INICIALIZAR_JUEGO_H__*/
