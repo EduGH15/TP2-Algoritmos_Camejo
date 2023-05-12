@@ -1,9 +1,10 @@
 #include "funciones_varias.h"
 
+
 coordenada_t generar_coordenada_aleatoria(int fil_inicial, int amplitud_fila, int col_inicial, int amplitud_columna){
 	coordenada_t posicion;
-	posicion.fil = rand() % amplitud_fila + fil_inicial; //Ambos inclusives;
-	posicion.col = rand() % amplitud_columna + col_inicial; //Ambos inclusives;
+	posicion.fil = rand() % amplitud_fila + fil_inicial; 
+	posicion.col = rand() % amplitud_columna + col_inicial; 
 	return posicion;
 }
 
