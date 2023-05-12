@@ -125,11 +125,13 @@ void realizar_jugada(juego_t* juego, char movimiento){
 			cocinar_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
 	}
 
+	
 	if(juego->movimientos == 15){
 		inicializar_fuego(juego, orden);
 		inicializar_matafuegos(juego, orden);
 		juego->movimientos = 16;
 	}
+	
 
 	if(juego->personaje_activo == STITCH){
 		if(juego->stitch.objeto_en_mano == VACIO && hay_matafuegos(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
@@ -156,7 +158,7 @@ int estado_juego(juego_t juego){
 		estado = -1;
 	}else if(juego.precio_total <= 100 && juego.tope_comida_lista == 3){
 		estado = 1;
-	}else if(juego.precio_total <= 150 && juego.tope_comida == 4){
+	}else if((juego.precio_total > 100 && juego.precio_total <= 150) && juego.tope_comida_lista == 4){
 		estado = 1;
 	}else if(juego.precio_total > 150 && juego.tope_comida_lista == 6){
 		estado = 1;
