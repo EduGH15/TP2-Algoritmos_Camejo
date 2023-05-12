@@ -38,4 +38,4 @@ void cargar_vector(juego_t* juego, int orden);
 
 void cambiar_nivel(juego_t* juego);
 
-#endif
+#endif /*__FUNCIONES_VARIAS_H__*/
