@@ -156,11 +156,7 @@ int estado_juego(juego_t juego){
 	int estado = 0;
 	if(hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.stitch.posicion.fil, juego.stitch.posicion.col) || hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.reuben.posicion.fil, juego.reuben.posicion.col)){
 		estado = -1;
-	}else if(juego.precio_total <= 100 && juego.tope_comida_lista == 3){
-		estado = 1;
-	}else if((juego.precio_total > 100 && juego.precio_total <= 150) && juego.tope_comida_lista == 4){
-		estado = 1;
-	}else if(juego.precio_total > 150 && juego.tope_comida_lista == 6){
+	}else if((juego.precio_total <= 100 && juego.tope_comida_lista == 3) || ((juego.precio_total > 100 && juego.precio_total <= 150) && juego.tope_comida_lista == 4) || (juego.precio_total > 150 && juego.tope_comida_lista == 6)){
 		estado = 1;
 	}
 	return estado;
