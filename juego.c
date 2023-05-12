@@ -76,16 +76,16 @@ void imprimir_struct(juego_t juego){
     printf("El tope de comida lista es %i\n", juego.tope_comida_lista);
     for(int i = 0; i < juego.tope_comida_lista; i++){
         printf("Tienes ingredientes del tipo %c en (%i, %i)\n", juego.comida_lista[i].tipo, juego.comida_lista[i].posicion.fil, juego.comida_lista[i].posicion.col);
-        //printf("El ingrediente %c está cortado: %s\n", juego.comida_lista[i].tipo ,juego.comida_lista[i].esta_cortado ? "true" : "false");
-        //printf("El ingrediente %c está cocinado: %s\n", juego.comida_lista[i].tipo, juego.comida_lista[i].esta_cocinado ? "true" : "false");
+        printf("El ingrediente %c está cortado: %s\n", juego.comida_lista[i].tipo ,juego.comida_lista[i].esta_cortado ? "true" : "false");
+        printf("El ingrediente %c está cocinado: %s\n", juego.comida_lista[i].tipo, juego.comida_lista[i].esta_cocinado ? "true" : "false");
     }
 }
 
 int main(){
-   
+    system("clear");
     srand (( unsigned)time(NULL));
 
-    int precio = 50;
+    int precio = 151;
     char movimiento = ' ';
     juego_t juego;
 
@@ -96,12 +96,14 @@ int main(){
     
     
     while(estado_juego(juego) == 0){
+        system("clear");
         cambiar_nivel(&juego);
+        imprimir_terreno(juego);
+        imprimir_struct(juego);
         printf("Ingrese una jugada:");
         scanf(" %c", &movimiento);
         realizar_jugada(&juego, movimiento);
-        imprimir_terreno(juego);
-        imprimir_struct(juego);
+        
     }
     
 
