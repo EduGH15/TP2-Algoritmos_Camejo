@@ -148,8 +148,6 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->reuben.posicion.fil, juego->reuben.posicion.col);
 		juego->reuben.objeto_en_mano = VACIO;
 	}
-
-	
 }
 
 int estado_juego(juego_t juego){
@@ -165,7 +163,3 @@ int estado_juego(juego_t juego){
 	}
 	return estado;
 }
-
-
-
-
