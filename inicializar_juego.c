@@ -307,12 +307,12 @@ void inicializar_fuego(juego_t* juego, int orden){
 }
 
 void inicializar_matafuegos(juego_t* juego, int orden){
-	int cantidad_matafuegos = 0;
-	while(cantidad_matafuegos < 1){
+	int posicion_valida_matafuegos = false;
+	while(!posicion_valida_matafuegos){
 		coordenada_t posicion_matafuegos = generar_coordenada_aleatoria(1, 19, 1, 19);
 		if(hay_vacio(*juego, orden, posicion_matafuegos.fil, posicion_matafuegos.col) && estan_mismo_cuadrante(posicion_matafuegos.fil, juego->obstaculos[(juego->tope_obstaculos)-1].posicion.fil)){
 			asignar_herramienta(juego->herramientas, &(juego)->tope_herramientas, posicion_matafuegos, MATAFUEGOS);
-			cantidad_matafuegos++;
+			posicion_valida_matafuegos = true;
 		}
 	}
 }
@@ -325,6 +325,44 @@ void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
            grilla[i][j] = ESPACIO_BLANCO;
         }
     }
+}
+
+void posicionar_paredes(coordenada_t paredes[MAX_PAREDES], int tope_paredes, char grilla[MAX_FIL][MAX_COL]){
+	for(int i = 0; i < tope_paredes; i++){
+		grilla[paredes[i].fil][paredes[i].col] = PARED;
+	}
+}
+
+void posicionar_obstaculos(objeto_t obstaculos[MAX_OBSTACULOS], int tope_obstaculos, char grilla[MAX_FIL][MAX_COL]){
+	for(int i = 0; i < tope_obstaculos; i++){
+		grilla[obstaculos[i].posicion.fil][obstaculos[i].posicion.col] = obstaculos[i].tipo;
+	}
+}
+
+void posicionar_herramientas(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, char grilla[MAX_FIL][MAX_COL]){
+	for(int i = 0; i < tope_herramientas; i++){
+		grilla[herramientas[i].posicion.fil][herramientas[i].posicion.col] = herramientas[i].tipo;
+	}
+}
+
+void posicionar_ingredientes(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
+	if(juego.comida_actual == ENSALADA){
+		for(int i = 0; i < juego.comida[ORDEN_ENSALADA].tope_ingredientes; i++){
+		grilla[juego.comida[ORDEN_ENSALADA].ingrediente[i].posicion.fil][juego.comida[ORDEN_ENSALADA].ingrediente[i].posicion.col] = juego.comida[ORDEN_ENSALADA].ingrediente[i].tipo;
+		}
+	}else if(juego.comida_actual == PIZZA){
+		for(int i = 0; i < juego.comida[ORDEN_PIZZA].tope_ingredientes; i++){
+		grilla[juego.comida[ORDEN_PIZZA].ingrediente[i].posicion.fil][juego.comida[ORDEN_PIZZA].ingrediente[i].posicion.col] = juego.comida[ORDEN_PIZZA].ingrediente[i].tipo;
+		}
+	}else if(juego.comida_actual == HAMBURGUESA){
+		for(int i = 0; i < juego.comida[ORDEN_HAMBURGUESA].tope_ingredientes; i++){
+		grilla[juego.comida[ORDEN_HAMBURGUESA].ingrediente[i].posicion.fil][juego.comida[ORDEN_HAMBURGUESA].ingrediente[i].posicion.col] = juego.comida[ORDEN_HAMBURGUESA].ingrediente[i].tipo;
+		}
+	}else if(juego.comida_actual == SANDWICH){
+		for(int i = 0; i < juego.comida[ORDEN_SANDWICH].tope_ingredientes; i++){
+			grilla[juego.comida[ORDEN_SANDWICH].ingrediente[i].posicion.fil][juego.comida[ORDEN_SANDWICH].ingrediente[i].posicion.col] = juego.comida[ORDEN_SANDWICH].ingrediente[i].tipo;
+		}
+	}
 }
 
 void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
