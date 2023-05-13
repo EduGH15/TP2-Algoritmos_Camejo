@@ -76,9 +76,6 @@ bool hay_mesa(coordenada_t mesa, int fila, int columna){
 	return mesa.fil == fila && mesa.col == columna;
 }
 
-bool hay_vacio(juego_t juego, int orden, int fila, int columna){
-	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, fila, columna) && !hay_herramienta(juego.herramientas, juego.tope_herramientas, fila, columna) && !hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, fila, columna) && !hay_jugador(juego, fila, columna);
-}
 
 bool hay_horno(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna){
 	bool encontro = false;
@@ -145,4 +142,8 @@ bool esta_cocinado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIE
 		i++;
 	}
 	return cocinado;
+}
+
+bool hay_vacio(juego_t juego, int orden, int fila, int columna){
+	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, fila, columna) && !hay_herramienta(juego.herramientas, juego.tope_herramientas, fila, columna) && !hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, fila, columna) && !hay_jugador(juego, fila, columna);
 }
