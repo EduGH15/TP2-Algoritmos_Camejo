@@ -24,8 +24,6 @@ bool hay_ingrediente(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingre
 
 bool hay_mesa(coordenada_t mesa, int fila, int columna);
 
-bool hay_vacio(juego_t juego, int orden, int fila, int columna);
-
 bool hay_horno(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna);
 
 bool hay_matafuegos(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna);
@@ -42,4 +40,7 @@ bool esta_cortado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIEN
 
 bool esta_cocinado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes);
 
-#endif
+bool hay_vacio(juego_t juego, int orden, int fila, int columna);
+
+
+#endif /*__VALIDACIONES_H__*/
