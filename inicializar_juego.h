@@ -39,6 +39,7 @@
 #define MESA '_'
 #define PUERTA_SALIDA 'P'
 #define VACIO 'V'
+#define ESPACIO_BLANCO ' '; 
 
 /*------POSICIONES----------------*/
 #define CENTRO_FILA 10
@@ -46,8 +47,19 @@
 #define PRIMERA_FILA 0
 #define FILA_DEL_MEDIO 10
 #define ULTIMA_FILA 20
+#define PRIMERA_COLUMNA 0
+#define ULTIMA_COLUMNA 20
 #define MAX_FIL 21
 #define MAX_COL 21
+
+/*------------VALORES VARIOS-----------*/
+
+#define CANTIDAD_AGUJEROS_CUADRANTE 10
+#define CANTIDAD_HERRAMIENTAS_CUADRANTE 2
+#define ORDEN_ENSALADA 0
+#define ORDEN_PIZZA 1
+#define ORDEN_HAMBURGUESA 2
+#define ORDEN_SANDWICH 3
 
 /*------------TECLAS-----------------*/
 
