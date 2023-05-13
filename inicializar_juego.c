@@ -8,12 +8,12 @@ void inicializar_paredes(juego_t* juego){
 	juego->tope_paredes = 0;
 	for(int i = 0; i < MAX_FIL; i++){
 		for(int j = 0; j < MAX_COL; j++){
-			if(j == 0 || j == 20){
+			if(j == PRIMERA_COLUMNA || j == ULTIMA_COLUMNA){
 				juego->paredes[juego->tope_paredes].fil = i;
 				juego->paredes[juego->tope_paredes].col = j;
 				(juego->tope_paredes)++;
 			}
-			if((j > 0 && j < 20) && (i == 0 || (i == 10 && j != 10)|| i == 20)){
+			if((j > PRIMERA_COLUMNA && j < ULTIMA_COLUMNA) && (i == PRIMERA_FILA || (i == FILA_DEL_MEDIO && j != CENTRO_COLUMNA)|| i == ULTIMA_FILA)){
 				juego->paredes[juego->tope_paredes].fil = i;
 				juego->paredes[juego->tope_paredes].col = j;
 				(juego->tope_paredes)++;
@@ -32,7 +32,7 @@ void inicializar_agujeros(juego_t* juego){
 	int cuadrante_stitch = 0;
 	int cuadrante_reuben = 0;
 
-	while(cuadrante_stitch < 10){
+	while(cuadrante_stitch < CANTIDAD_AGUJEROS_CUADRANTE){
 		coordenada_t posicion_agujero = generar_coordenada_aleatoria(1, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_agujero.fil, posicion_agujero.col)){
 			asignar_obstaculo(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
@@ -40,7 +40,7 @@ void inicializar_agujeros(juego_t* juego){
 		}
 	}
 
-	while(cuadrante_reuben < 10){
+	while(cuadrante_reuben < CANTIDAD_AGUJEROS_CUADRANTE){
 		coordenada_t posicion_agujero = generar_coordenada_aleatoria(11, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_agujero.fil, posicion_agujero.col)){
 			asignar_obstaculo(juego->obstaculos, &(juego)->tope_obstaculos, posicion_agujero, AGUJEROS);
@@ -54,7 +54,7 @@ void inicializar_herramientas(juego_t* juego){
 	int herramientas_stitch = 0;
 	int herramientas_reuben = 0;
 
-	while(herramientas_stitch < 2){
+	while(herramientas_stitch < CANTIDAD_HERRAMIENTAS_CUADRANTE){
 		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(1, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_herramienta.fil, posicion_herramienta.col)){
 			asignar_herramienta(juego->herramientas, &(juego)->tope_herramientas, posicion_herramienta, CUCHILLO);
@@ -62,7 +62,7 @@ void inicializar_herramientas(juego_t* juego){
 		}
 	}
 
-	while(herramientas_reuben < 2){
+	while(herramientas_reuben < CANTIDAD_HERRAMIENTAS_CUADRANTE){
 		coordenada_t posicion_herramienta = generar_coordenada_aleatoria(11, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_herramienta.fil, posicion_herramienta.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_herramienta.fil, posicion_herramienta.col)){
 			asignar_herramienta(juego->herramientas, &(juego)->tope_herramientas, posicion_herramienta, HORNO);
@@ -72,25 +72,25 @@ void inicializar_herramientas(juego_t* juego){
 }
 
 void inicializar_ingredientes_ensalada(juego_t* juego){
-	juego->comida[0].tope_ingredientes = 0;
+	juego->comida[ORDEN_ENSALADA].tope_ingredientes = 0;
 	int cantidad_lechuga = 0;
 	int cantidad_tomate = 0;
 	for(int i = 0; i < MAX_INGREDIENTES; i++){
-		juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].esta_cocinado = false;
-		juego->comida[0].ingrediente[juego->comida[0].tope_ingredientes].esta_cortado = false;
+		juego->comida[ORDEN_ENSALADA].ingrediente[juego->comida[ORDEN_ENSALADA].tope_ingredientes].esta_cocinado = false;
+		juego->comida[ORDEN_ENSALADA].ingrediente[juego->comida[ORDEN_ENSALADA].tope_ingredientes].esta_cortado = false;
 		if(i == 0){
 			while(cantidad_lechuga < 1){
 				coordenada_t posicion_ingrediente = generar_coordenada_aleatoria(1, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
-					asignar_ingrediente(juego->comida[0].ingrediente, &(juego)->comida[0].tope_ingredientes, posicion_ingrediente, LECHUGA);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[ORDEN_ENSALADA].ingrediente, juego->comida[ORDEN_ENSALADA].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
+					asignar_ingrediente(juego->comida[ORDEN_ENSALADA].ingrediente, &(juego)->comida[ORDEN_ENSALADA].tope_ingredientes, posicion_ingrediente, LECHUGA);
 					cantidad_lechuga++;
 				}
 			}
 		}else if(i == 1){
 			while(cantidad_tomate < 1){
 				coordenada_t posicion_ingrediente = generar_coordenada_aleatoria(1, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
-					asignar_ingrediente(juego->comida[0].ingrediente, &(juego)->comida[0].tope_ingredientes, posicion_ingrediente, TOMATE);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[ORDEN_ENSALADA].ingrediente, juego->comida[ORDEN_ENSALADA].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
+					asignar_ingrediente(juego->comida[ORDEN_ENSALADA].ingrediente, &(juego)->comida[ORDEN_ENSALADA].tope_ingredientes, posicion_ingrediente, TOMATE);
 					cantidad_tomate++;
 				}
 			}
