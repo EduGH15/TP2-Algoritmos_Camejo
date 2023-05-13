@@ -100,34 +100,34 @@ void inicializar_ingredientes_ensalada(juego_t* juego){
 }
 
 void inicializar_ingredientes_pizza(juego_t* juego){
-	juego->comida[1].tope_ingredientes = 0;
+	juego->comida[ORDEN_PIZZA].tope_ingredientes = 0;
 	int cantidad_masa = 0;
 	int cantidad_jamon = 0;
 	int cantidad_queso = 0; 
 	for(int i = 0; i < MAX_INGREDIENTES; i++){
-		juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].esta_cocinado = false;
-		juego->comida[1].ingrediente[juego->comida[1].tope_ingredientes].esta_cortado = false;
+		juego->comida[ORDEN_PIZZA].ingrediente[juego->comida[ORDEN_PIZZA].tope_ingredientes].esta_cocinado = false;
+		juego->comida[ORDEN_PIZZA].ingrediente[juego->comida[ORDEN_PIZZA].tope_ingredientes].esta_cortado = false;
 		if(i == 0){
 			while(cantidad_masa < 1){
 				coordenada_t posicion_ingrediente = generar_coordenada_aleatoria(11, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[1].ingrediente, juego->comida[1].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
-					asignar_ingrediente(juego->comida[1].ingrediente, &(juego)->comida[1].tope_ingredientes, posicion_ingrediente, MASA);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[ORDEN_PIZZA].ingrediente, juego->comida[ORDEN_PIZZA].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
+					asignar_ingrediente(juego->comida[ORDEN_PIZZA].ingrediente, &(juego)->comida[ORDEN_PIZZA].tope_ingredientes, posicion_ingrediente, MASA);
 					cantidad_masa++;
 				}
 			}
 		}else if(i == 1){
 			while(cantidad_jamon < 1){
 				coordenada_t posicion_ingrediente = generar_coordenada_aleatoria(1, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[1].ingrediente, juego->comida[1].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
-					asignar_ingrediente(juego->comida[1].ingrediente, &(juego)->comida[1].tope_ingredientes, posicion_ingrediente, JAMON);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[ORDEN_PIZZA].ingrediente, juego->comida[ORDEN_PIZZA].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
+					asignar_ingrediente(juego->comida[ORDEN_PIZZA].ingrediente, &(juego)->comida[ORDEN_PIZZA].tope_ingredientes, posicion_ingrediente, JAMON);
 					cantidad_jamon++;
 				}
 			}
 		}else if(i == 2){
 			while(cantidad_queso < 1){
 				coordenada_t posicion_ingrediente = generar_coordenada_aleatoria(1, 9, 1, 19);
-				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[1].ingrediente, juego->comida[1].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
-					asignar_ingrediente(juego->comida[1].ingrediente, &(juego)->comida[1].tope_ingredientes, posicion_ingrediente, QUESO);
+				if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_ingrediente(juego->comida[ORDEN_PIZZA].ingrediente, juego->comida[ORDEN_PIZZA].tope_ingredientes, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_jugador(*juego, posicion_ingrediente.fil, posicion_ingrediente.col) && !hay_puerta_salida(juego->salida, posicion_ingrediente.fil, posicion_ingrediente.col)){
+					asignar_ingrediente(juego->comida[ORDEN_PIZZA].ingrediente, &(juego)->comida[ORDEN_PIZZA].tope_ingredientes, posicion_ingrediente, QUESO);
 					cantidad_queso++;
 				}
 			}
