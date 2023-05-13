@@ -245,19 +245,19 @@ void inicializar_ingredientes_sandwich(juego_t* juego){
 
 void inicializar_comida(juego_t* juego){	
 	if(juego->comida_actual == ENSALADA){
-		juego->comida[0].tipo = ENSALADA;
+		juego->comida[ORDEN_ENSALADA].tipo = ENSALADA;
 		(juego->tope_comida)++;
 		inicializar_ingredientes_ensalada(juego);
 	}else if(juego->comida_actual == PIZZA){
-		juego->comida[1].tipo = PIZZA;
+		juego->comida[ORDEN_PIZZA].tipo = PIZZA;
 		(juego->tope_comida)++;
 		inicializar_ingredientes_pizza(juego);
 	}else if(juego->comida_actual == HAMBURGUESA){
-		juego->comida[2].tipo = HAMBURGUESA;
+		juego->comida[ORDEN_HAMBURGUESA].tipo = HAMBURGUESA;
 		(juego->tope_comida)++;
 		inicializar_ingredientes_hamburguesa(juego);
 	}else if(juego->comida_actual == SANDWICH){
-		juego->comida[3].tipo = SANDWICH;
+		juego->comida[ORDEN_SANDWICH].tipo = SANDWICH;
 		(juego->tope_comida)++;
 		inicializar_ingredientes_sandwich(juego);
 	}
@@ -277,31 +277,31 @@ void inicializar_puerta_salida(juego_t* juego){
 
 void inicializar_personajes(juego_t* juego){
 	juego->personaje_activo = STITCH;
-	int cantidad_stitch = 0;
-	int cantidad_reuben = 0;
-	while(cantidad_stitch < 1){
+	int posicion_valida_stitch = false;
+	int posicion_valida_reuben = false;
+	while(!posicion_valida_stitch){
 		coordenada_t posicion_personaje = generar_coordenada_aleatoria(1, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_personaje.fil, posicion_personaje.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_personaje.fil, posicion_personaje.col) && !hay_ingrediente(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, posicion_personaje.fil, posicion_personaje.col)){
 			asignar_personaje(&(juego)->stitch, posicion_personaje, STITCH, VACIO);
-			cantidad_stitch++;
+			posicion_valida_stitch = true;
 		}
 	}
-	while(cantidad_reuben < 1){
+	while(!posicion_valida_reuben){
 		coordenada_t posicion_personaje = generar_coordenada_aleatoria(11, 9, 1, 19);
 		if(!hay_obstaculo(juego->obstaculos, juego->tope_obstaculos, posicion_personaje.fil, posicion_personaje.col) && !hay_herramienta(juego->herramientas, juego->tope_herramientas, posicion_personaje.fil, posicion_personaje.col) && !hay_ingrediente(juego->comida[0].ingrediente, juego->comida[0].tope_ingredientes, posicion_personaje.fil, posicion_personaje.col) && !hay_puerta_salida(juego->salida, posicion_personaje.fil, posicion_personaje.col)){
 			asignar_personaje(&(juego)->reuben, posicion_personaje, REUBEN, VACIO);
-			cantidad_reuben++;
+			posicion_valida_reuben = true;
 		}
 	}
 }
 
 void inicializar_fuego(juego_t* juego, int orden){
-	int cantidad_fuego = 0;
-	while(cantidad_fuego < 1){
+	int posicion_valida_fuego = false;
+	while(!posicion_valida_fuego){
 		coordenada_t posicion_fuego = generar_coordenada_aleatoria(1, 19, 1, 19);
 		if(hay_vacio(*juego, orden, posicion_fuego.fil, posicion_fuego.col)){
 			asignar_obstaculo(juego->obstaculos, &(juego)->tope_obstaculos, posicion_fuego, FUEGO);
-			cantidad_fuego++;
+			posicion_valida_fuego = true;
 		}
 	}
 }
@@ -322,7 +322,7 @@ void inicializar_matafuegos(juego_t* juego, int orden){
 void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
     for(int i = 0; i < MAX_FIL; i++){
         for(int j = 0; j < MAX_COL; j++){
-           grilla[i][j] = ' ';
+           grilla[i][j] = ESPACIO_BLANCO;
         }
     }
 }
