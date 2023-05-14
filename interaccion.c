@@ -1,38 +1,6 @@
 #include "interaccion.h"
 
-void preguntar_jugada(char* movimiento){
-    printf("Ingrese una jugada\n");
-    scanf(" %c", movimiento);
-    while(*movimiento != 'W' && *movimiento != 'S' && *movimiento != 'D' && *movimiento != 'A' && *movimiento != 'X' && *movimiento != 'R' && *movimiento != 'T' && *movimiento != 'C' && *movimiento != 'H' && *movimiento != 'M'){
-        system("clear");
-        printf("Ingresa un movimiento valido\n");
-        scanf(" %c", movimiento);
-    }
-}
-
-void mostrar_movimientos(){
-    printf("          ________________________________________________________________________________________________________________________________________ \n");
-    printf("         |                                                                                                                                        |\n");
-	printf("         |   LETRAS QUE SE PUEDEN USAR                                                                                                            |\n");
-    printf("         |                                                                                                                                        |\n");
-    printf("         |   MOVER ARRIBA ---------------------> W                                                                                                |\n");
-	printf("         |   MOVER ABAJO ----------------------> S                                                                                                |\n");
-	printf("         |   MOVER IZQUIERDA ------------------> A                                                                                                |\n");
-	printf("         |   MOVER DERECHA --------------------> D                                                                                                |\n");
-    printf("         |   CAMBIAR PERSONAJE ----------------> X                                                                                                |\n");
-	printf("         |   CORTAR INGREDIENTE ---------------> C                                                                                                |\n");
-	printf("         |   AGARRAR/SOLTAR INGREDIENTE -------> R                                                                                                |\n");
-	printf("         |   PASAR/RECIBIR INGREDIENTE --------> T                                                                                                |\n");
-	printf("         |   COCINAR INGREDIENTE---------------> H                                                                                                |\n");
-	printf("         |   ACTIVAR MATAFUEGOS ---------------> M                                                                                                |\n");
-	printf("         |                                                                                                                                        |\n");
-    printf("         |   COMENCEMOS CON UNAS PREGUNTAS!!!!!                                                                                                   |\n");
-	printf("         |________________________________________________________________________________________________________________________________________|\n");
-	printf("\n                                                                                                                                                  \n");
-	printf("\n                                                                                                                                                  \n");
-}
-
-void mostrar_introduccion_1(){
+void imprimir_introduccion_1(){
     printf("_______________________________________________________________________________________________________________________________________________________________\n");
     printf("'#######::'##::::'##:'########:'########::::::'######::'##::::'##::::'###::::'##::::'##:'########::'##::::'##::'######::'##::::'##:'####:'########::'#######::\n");
     printf("'##.... ##: ##:::: ##: ##.....:: ##.... ##::::'##... ##: ##:::: ##:::'## ##::: ###::'###: ##.... ##: ##:::: ##:'##... ##: ##:::: ##:. ##::... ##..::'##.... ##:\n");
@@ -81,7 +49,7 @@ void mostrar_introduccion_1(){
 	printf("\n                                                                                                                                                  \n");
 }
 
-void mostrar_introduccion_2(){
+void imprimir_introduccion_2(){
 	printf("         _________________________________________________________________________________________________________________________________________\n");
     printf("         |                                                                                                                                        |\n");
     printf("         |   NIVEL !: ENSALADA                                                                                                                    |\n");
@@ -98,7 +66,9 @@ void mostrar_introduccion_2(){
     printf("         |   NIVEL 4: SANDWICH                                                                                                                    |\n");
 	printf("         |   El sandwich llevara 1 milanesa que deberá cocinarse, por lo que irá del lado de Reuben. Mientras que el pan, el tomate, la lechuga,  |\n");
 	printf("         |   el jamón y el queso, iran del lado de Stitch y precisarán cortarse.                                                                  |\n");
-	printf("         |      																															      |\n");
+	printf("         |________________________________________________________________________________________________________________________________________|\n");
+	printf("          ________________________________________________________________________________________________________________________________________\n");
+	printf("         |                                                                                                                                        |\n");
 	printf("         |   IMPORTANTE! Para poder pasarle los ingredientes a Rouben, se deberan cortar y dejarlos en la mesa del medio. Para                    |\n");
 	printf("         |   esto, es necesario estar a una distancia manhattan de 1 y apretar la letra T. Si un ingrediente ya se encuentra en la mesa,          |\n");
     printf("         |   no podrá ubicarse otro.                                                                                                              |\n");
@@ -106,69 +76,155 @@ void mostrar_introduccion_2(){
     printf("         |   TERRENO                                                                                                                              |\n");
     printf("         |   El terreno será representado con una matriz de 21x21, dividida en 2 cuadrantes con una mesa en el medio,                             |\n");
 	printf("         |________________________________________________________________________________________________________________________________________|\n");
+	printf("\n                                                                                                                                                 \n");
+}
+
+void imprimir_lista_movimientos(){
+    printf("          ________________________________________________________________________________________________________________________________________ \n");
+    printf("         |                                                                                                                                        |\n");
+	printf("         |   LETRAS QUE SE PUEDEN USAR                                                                                                            |\n");
+    printf("         |                                                                                                                                        |\n");
+    printf("         |   MOVER ARRIBA ---------------------> W                                                                                                |\n");
+	printf("         |   MOVER ABAJO ----------------------> S                                                                                                |\n");
+	printf("         |   MOVER IZQUIERDA ------------------> A                                                                                                |\n");
+	printf("         |   MOVER DERECHA --------------------> D                                                                                                |\n");
+    printf("         |   CAMBIAR PERSONAJE ----------------> X                                                                                                |\n");
+	printf("         |   CORTAR INGREDIENTE ---------------> C                                                                                                |\n");
+	printf("         |   AGARRAR/SOLTAR INGREDIENTE -------> R                                                                                                |\n");
+	printf("         |   PASAR/RECIBIR INGREDIENTE --------> T                                                                                                |\n");
+	printf("         |   COCINAR INGREDIENTE---------------> H                                                                                                |\n");
+	printf("         |   ACTIVAR MATAFUEGOS ---------------> M                                                                                                |\n");
+	printf("         |                                                                                                                                        |\n");
+    printf("         |   COMENCEMOS CON UNAS PREGUNTAS!!!!!                                                                                                   |\n");
+	printf("         |________________________________________________________________________________________________________________________________________|\n");
 	printf("\n                                                                                                                                                  \n");
+
+	printf(".                      ########..##.....##.########.##....##....###........######..##.....##.########.########..########.########\n");
+	printf(".                      ##.....##.##.....##.##.......###...##...##.##......##....##.##.....##.##.......##.....##....##....##......\n");
+	printf(".                      ##.....##.##.....##.##.......####..##..##...##.....##.......##.....##.##.......##.....##....##....##......\n");
+	printf(".                      ########..##.....##.######...##.##.##.##.....##.....######..##.....##.######...########.....##....######..\n");
+	printf(".                      ##.....##.##.....##.##.......##..####.#########..........##.##.....##.##.......##...##......##....##......\n");
+	printf(".                      ##.....##.##.....##.##.......##...###.##.....##....##....##.##.....##.##.......##....##.....##....##......\n");
+	printf(".                      ########...#######..########.##....##.##.....##.....######...#######..########.##.....##....##....########\n");
+	printf("\n                                                                                                                               \n");
 }
 
-void mostrar_resultado(){
-printf(":'######::::::'###::::'##::: ##::::'###:::::'######::'########:'########:\n");
-printf("'##... ##::::'## ##::: ###:: ##:::'## ##:::'##... ##:... ##..:: ##.....::\n");
-printf(" ##:::..::::'##:. ##:: ####: ##::'##:. ##:: ##:::..::::: ##:::: ##:::::::\n");
-printf(" ##::'####:'##:::. ##: ## ## ##:'##:::. ##:. ######::::: ##:::: ######:::\n");
-printf(" ##::: ##:: #########: ##. ####: #########::..... ##:::: ##:::: ##...::::\n");
-printf(" ##::: ##:: ##.... ##: ##:. ###: ##.... ##:'##::: ##:::: ##:::: ##:::::::\n");
-printf(". ######::: ##:::: ##: ##::. ##: ##:::: ##:. ######::::: ##:::: ########:\n");
-printf(":......::::..:::::..::..::::..::..:::::..:::......::::::..:::::........::\n");
+void imprimir_resultado(juego_t juego){
+	if(estado_juego(juego) == 1){
+		printf(":'######::::::'###::::'##::: ##::::'###:::::'######::'########:'########:\n");
+		printf("'##... ##::::'## ##::: ###:: ##:::'## ##:::'##... ##:... ##..:: ##.....::\n");
+		printf(" ##:::..::::'##:. ##:: ####: ##::'##:. ##:: ##:::..::::: ##:::: ##:::::::\n");
+		printf(" ##::'####:'##:::. ##: ## ## ##:'##:::. ##:. ######::::: ##:::: ######:::\n");
+		printf(" ##::: ##:: #########: ##. ####: #########::..... ##:::: ##:::: ##...::::\n");
+		printf(" ##::: ##:: ##.... ##: ##:. ###: ##.... ##:'##::: ##:::: ##:::: ##:::::::\n");
+		printf(". ######::: ##:::: ##: ##::. ##: ##:::: ##:. ######::::: ##:::: ########:\n");
+		printf(":......::::..:::::..::..::::..::..:::::..:::......::::::..:::::........::\n");
+	}else if(estado_juego(juego) == -1){
+		printf("'########::'########:'########::'########::'####::'######::'########:'########:\n");
+		printf(" ##.... ##: ##.....:: ##.... ##: ##.... ##:. ##::'##... ##:... ##..:: ##.....::\n");
+		printf(" ##:::: ##: ##::::::: ##:::: ##: ##:::: ##:: ##:: ##:::..::::: ##:::: ##:::::::\n");
+		printf(" ########:: ######::: ########:: ##:::: ##:: ##::. ######::::: ##:::: ######:::\n");
+		printf(" ##.....::: ##...:::: ##.. ##::: ##:::: ##:: ##:::..... ##:::: ##:::: ##...::::\n");
+		printf(" ##:::::::: ##::::::: ##::. ##:: ##:::: ##:: ##::'##::: ##:::: ##:::: ##:::::::\n");
+		printf(" ##:::::::: ########: ##:::. ##: ########::'####:. ######::::: ##:::: ########:\n");
+		printf("..:::::::::........::..:::::..::........:::....:::......::::::..:::::........::\n");
+	}
 }
 
-void res(){
-    
-printf("'########::'########:'########::'########::'####::'######::'########:'########:\n");
-printf(" ##.... ##: ##.....:: ##.... ##: ##.... ##:. ##::'##... ##:... ##..:: ##.....::\n");
-printf(" ##:::: ##: ##::::::: ##:::: ##: ##:::: ##:: ##:: ##:::..::::: ##:::: ##:::::::\n");
-printf(" ########:: ######::: ########:: ##:::: ##:: ##::. ######::::: ##:::: ######:::\n");
-printf(" ##.....::: ##...:::: ##.. ##::: ##:::: ##:: ##:::..... ##:::: ##:::: ##...::::\n");
-printf(" ##:::::::: ##::::::: ##::. ##:: ##:::: ##:: ##::'##::: ##:::: ##:::: ##:::::::\n");
-printf(" ##:::::::: ########: ##:::. ##: ########::'####:. ######::::: ##:::: ########:\n");
-printf("..:::::::::........::..:::::..::........:::....:::......::::::..:::::........::\n");
+void mostrar_introduccion_1(int numero, bool valido){
+	while(!valido){
+		system("clear");
+		imprimir_introduccion_1();
+		printf("Ingrese [1] para continuar:\n");
+		scanf(" %i", &numero);
+		if(numero == 1){
+			valido = true;
+		}
+	}
+}
+
+void mostrar_introduccion_2(int numero, bool valido){
+	while(!valido){
+		system("clear");
+		imprimir_introduccion_2();
+		printf("Ingrese [1] para continuar:\n");
+		scanf(" %i", &numero);
+		if(numero == 1){
+			valido = true;
+		}
+	}
+}
+
+void mostrar_lista_movimientos(int numero, bool valido){
+	while(!valido){
+		system("clear");
+		imprimir_lista_movimientos();
+		printf("Ingrese [1] para continuar:\n");
+		scanf(" %i", &numero);
+		if(numero == 1){
+			valido = true;
+		}
+	}
 }
 
 void ejecutar_introduccion(){
 	int valido_1 = false;
 	int valido_2 = false;
 	int valido_3 = false;
-	int numero_1;
-	int numero_2;
-	int numero_3;
-	while(!valido_1){
-		system("clear");
-		mostrar_introduccion_1();
-		printf("Ingrese [1] para continuar:\n");
-		scanf(" %i", &numero_1);
-		if(numero_1 == 1){
-			valido_1 = true;
-		}
-	}
-
-	while(!valido_2){
-		system("clear");
-		mostrar_introduccion_2();
-		printf("Ingrese [1] para continuar:\n");
-		scanf(" %i", &numero_2);
-		if(numero_2 == 1){
-			valido_2 = true;
-		}
-	}
-
-	while(!valido_3){
-		system("clear");
-		mostrar_movimientos();
-		printf("Ingrese [1] para continuar:\n");
-		scanf(" %i", &numero_3);
-		if(numero_3 == 1){
-			valido_3 = true;
-		}
-	}
-
+	int numero_1 = 0;
+	int numero_2 = 0;
+	int numero_3 = 0;
+	mostrar_introduccion_1(numero_1, valido_1);
+	mostrar_introduccion_2(numero_2, valido_2);
+	mostrar_lista_movimientos(numero_3, valido_3);
 }
 
+void preguntar_jugada(char* movimiento){
+    printf("Ingrese una jugada:\n");
+    scanf(" %c", movimiento);
+    while(*movimiento != 'W' && *movimiento != 'S' && *movimiento != 'D' && *movimiento != 'A' && *movimiento != 'X' && *movimiento != 'R' && *movimiento != 'T' && *movimiento != 'C' && *movimiento != 'H' && *movimiento != 'M'){
+        printf("Ingresa un movimiento valido:\n");
+        scanf(" %c", movimiento);
+    }
+}
 
+void interaccion(juego_t juego, char movimiento){
+	int orden = orden_actual(juego.comida_actual);
+
+	printf("Tu personaje activo es: %c\n", juego.personaje_activo);
+	
+
+	if(movimiento == AGARRAR){
+		if(juego.personaje_activo == STITCH){
+			if(juego.stitch.objeto_en_mano == VACIO && hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, juego.stitch.posicion.fil, juego.stitch.posicion.col) && hay_fuego_cuadrante_stitch(juego.obstaculos, juego.tope_obstaculos)){
+				printf("No puedes agarrar un ingrediente si hay un fuego activo\n");
+			}else if(juego.stitch.objeto_en_mano != VACIO && (hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, juego.stitch.posicion.fil, juego.stitch.posicion.col) || hay_herramienta(juego.herramientas, juego.tope_herramientas, juego.stitch.posicion.fil, juego.stitch.posicion.col))){
+				printf("No puedes soltar el ingrediente acá\n");
+			}
+		}else if(juego.personaje_activo == REUBEN){
+			if(juego.reuben.objeto_en_mano == VACIO && hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, juego.reuben.posicion.fil, juego.reuben.posicion.col) && hay_fuego_cuadrante_reuben(juego.obstaculos, juego.tope_obstaculos)){
+				printf("No puedes agarrar un ingrediente si hay un fuego activo\n");
+			}else if(juego.reuben.objeto_en_mano != VACIO && (hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, juego.reuben.posicion.fil, juego.reuben.posicion.col) || hay_herramienta(juego.herramientas, juego.tope_herramientas, juego.reuben.posicion.fil, juego.reuben.posicion.col))){
+				printf("No puedes soltar el ingrediente acá\n");
+			}
+		}
+	}
+
+	if(movimiento == PASAR){
+		if(juego.personaje_activo == STITCH){
+			if(juego.stitch.objeto_en_mano != VACIO && esta_cortado(juego.stitch.objeto_en_mano, juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes) && hay_fuego_cuadrante_stitch(juego.obstaculos, juego.tope_obstaculos && distancia_manhattan(juego.stitch.posicion, juego.mesa, 1))){
+				printf("No puedes pasar ingredientes porque hay un fuego activo.\n");
+			}else if(juego.stitch.objeto_en_mano != VACIO && !esta_cortado(juego.stitch.objeto_en_mano, juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes) && distancia_manhattan(juego.stitch.posicion, juego.mesa, 1)){
+				printf("No puedes pasar un ingrediente que no está cortado.\n");
+			}else if(juego.stitch.objeto_en_mano != VACIO && esta_cortado(juego.stitch.objeto_en_mano, juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes) && hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, juego.stitch.posicion.fil + 1, juego.stitch.posicion.col)){
+				printf("No puedes posicionar otro ingrediente, despeja la mesa.\n");
+			}
+		}else if(juego.personaje_activo == REUBEN){
+			if(juego.reuben.objeto_en_mano == VACIO && hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, juego.reuben.posicion.fil -1, juego.reuben.posicion.col) && hay_fuego_cuadrante_reuben(juego.obstaculos, juego.tope_obstaculos) && distancia_manhattan(juego.reuben.posicion, juego.mesa, 1)){
+				printf("No puedes recibir ingredientes porque hay un fuego activo.\n");
+			}else if(juego.reuben.objeto_en_mano != VACIO && hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, juego.reuben.posicion.fil -1, juego.reuben.posicion.col) && distancia_manhattan(juego.reuben.posicion, juego.mesa, 1)){
+				printf("No puedes recibir otro ingrediente si ya tienes uno en la mano\n");
+			}
+		}
+	}
+}
