@@ -317,7 +317,6 @@ void inicializar_matafuegos(juego_t* juego, int orden){
 	}
 }
 
-//--------------------------------------------------INICIALIZACIÓN CENTRALIZADA--------------------------------------
 
 void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
     for(int i = 0; i < MAX_FIL; i++){
@@ -328,7 +327,8 @@ void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]){
 }
 
 /*
-Pre:
+Pre: El tope_paredes debe ser menor o igual a la constante MAX_PAREDES
+Post: Le asigna al caracter '#' una posición en la grilla
 */
 void posicionar_paredes(coordenada_t paredes[MAX_PAREDES], int tope_paredes, char grilla[MAX_FIL][MAX_COL]){
 	for(int i = 0; i < tope_paredes; i++){
@@ -337,7 +337,8 @@ void posicionar_paredes(coordenada_t paredes[MAX_PAREDES], int tope_paredes, cha
 }
 
 /*
-pre:
+pre:El tope de obstáculos debe ser menor o igual a la constante MAX_OBSTACULOS
+Post: Le asigna al caracter 'A' o 'F' una posición en la grilla
 */
 void posicionar_obstaculos(objeto_t obstaculos[MAX_OBSTACULOS], int tope_obstaculos, char grilla[MAX_FIL][MAX_COL]){
 	for(int i = 0; i < tope_obstaculos; i++){
@@ -346,7 +347,8 @@ void posicionar_obstaculos(objeto_t obstaculos[MAX_OBSTACULOS], int tope_obstacu
 }
 
 /*
-pre:
+pre:El tope de herramientas debe ser menor o igual a la constante MAX_HERRAMIENTAS
+Post: Le asigna al caracter 'C' o 'H' o 'M' una posición en la grilla 
 */
 void posicionar_herramientas(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, char grilla[MAX_FIL][MAX_COL]){
 	for(int i = 0; i < tope_herramientas; i++){
@@ -355,7 +357,8 @@ void posicionar_herramientas(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_h
 }
 
 /*
-pre:
+pre:--------------------------------------------------------------------------------------
+Post: Le asigna a todos los caracteres de ingredientes una posición en la grilla, dependiendo de cual sea la comida/nivel actual.
 */
 void posicionar_ingredientes(juego_t juego, char grilla[MAX_FIL][MAX_COL]){
 	if(juego.comida_actual == ENSALADA){
