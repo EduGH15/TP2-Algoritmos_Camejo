@@ -74,38 +74,106 @@
 #define AGARRAR 'R'
 #define PASAR 'T'
 
+/*
+Pre: El parámetro de precio no puede ser negativo
+Post: asigna un valor a precio_total del struct de juego
+*/
 void inicializar_precio_total(juego_t* juego, int precio);
 
+/*
+Pre: --------------------------------------------------------
+Post: Le asigna una posición a cada pared, siendo en total 98 paredes. El tope del paredes lo inicializa en cero.
+*/
 void inicializar_paredes(juego_t* juego);
 
+/*
+Pre: ............................................................
+Post: Le asigna una posición a la mesa del struct de juego.
+*/
 void inicializar_mesa(juego_t* juego);
 
+/*
+Pre:-----------------------------------------------------------
+Post:Le asigna una posición y un tipo 'A' al vector de obstáculos, siendo 10 agujeros en el cuadrante de Stitch y 10 en el cuadrante de Reuben. El tope de obstáculo lo inicializa en cero.
+*/
 void inicializar_agujeros(juego_t* juego);
 
+/*
+Pre: ...........................................................
+Post: Le asigna una posicion y un tipo ('C' o 'H') al vector de herramientas, siendo dos herramientas por cuadrante. El tope de herramientas lo inicializa en cero.
+*/
 void inicializar_herramientas(juego_t* juego);
 
+/*
+Pre:--------------------------------------------------------
+Post: Le asigna una posición a cada ingrediente, un tipo ('L' o 'T') y dos booleanos (esta_cortado y esta_cocinado que comienzan en false) al vector de ingredientes. El tope de ingredientes de la ensalada lo inicializa en cero.
+*/
 void inicializar_ingredientes_ensalada(juego_t* juego);
 
+/*
+Pre:----------------------------------------------------------------
+Post:Le asigna una posición a cada ingrediente, un tipo ('J' o 'Q' o 'O') y dos booleanos (esta_cortado y esta_cocinado que comienzan en false) al vector de ingredientes. El tope de ingredientes de la pizza lo inicializa en cero.
+*/
 void inicializar_ingredientes_pizza(juego_t* juego);
 
+/*
+Pre: ...................................................................................
+post: Le asigna una posición a cada ingrediente, un tipo ('L' o 'T' o 'N' o 'B') y dos booleanos (esta_cortado y esta_cocinado que comienzan en false) al vector de ingredientes. El tope de ingredientes de la hamburguesa lo inicializa en cero.
+*/
 void inicializar_ingredientes_hamburguesa(juego_t* juego);
 
+/*
+Pre:------------------------------------------------------------------
+Post: Le asigna una posición a cada ingrediente, un tipo ('L' o 'T' o 'N' o 'J' o 'I' o 'Q') y dos booleanos (esta_cortado y esta_cocinado que comienzan en false) al vector de ingredientes. El tope de ingredientes del sandwich lo inicializa en cero.
+*/
 void inicializar_ingredientes_sandwich(juego_t* juego);
 
+/*
+Pre:------------------------------------------------------------------------------------------
+Post: Dependiendo de cual sea la comida actual, inicializará los ingredientes de la ensalada, la pizza, la hamburguesa o el sandwich.
+*/
 void inicializar_comida(juego_t* juego);
 
+/*
+Pre:......................................................................................
+Post: Le asigna una posición y un tipo 'P' a la puerta de salida.
+*/
 void inicializar_puerta_salida(juego_t* juego);
 
+/*
+Pre:-------------------------------------------------------
+Post: inicializa a dos personajes (Stitch y Reuben), asignándole dos posiciones, un tipo 'S' o 'R' y objeto en mano.
+*/
 void inicializar_personajes(juego_t* juego);
 
+/*
+Pre:el parámetro orden debe ser válido (0: ensalada, 1: pizza, 2: hamburguesa, 3:sandwich).
+Post: Le asigna una posición al fuego y un tipo 'F', el cual es agregado vector de obstáculos.
+*/
 void inicializar_fuego(juego_t* juego, int orden);
 
+/*
+Pre:el parámetro orden debe ser válido (0: ensalada, 1: pizza, 2: hamburguesa, 3:sandwich).
+Post: Le asigna una posición al matafuegos y un tipo 'M', el cual es agregado vector de herramientas.
+*/
 void inicializar_matafuegos(juego_t* juego, int orden);
 
+/*
+Pre:-------------------------------------------------
+Post: Llena cada posición de la grilla con espacios vacios.
+*/
 void inicializar_grilla_vacia(char grilla[MAX_FIL][MAX_COL]);
 
+/*
+Pre:............................................................
+Post: Llena la grilla con cada elemento presente en el Struct de juego a excepción de: personaje_activo, comida_actual, comida_lista, precio_total y movimientos, que son elementos no mostrados en la matriz.
+*/
 void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]);
 
+/*
+Pre: -------------------------------------------------
+Post: Imprime la grilla.
+*/
 void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]);
 
 #endif /*__INICIALIZAR_JUEGO_H__*/
