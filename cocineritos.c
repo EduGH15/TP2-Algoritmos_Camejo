@@ -100,7 +100,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 				juego->stitch.objeto_en_mano = VACIO;
 			}
 		}else if(juego->personaje_activo == REUBEN){
-			if(juego->reuben.objeto_en_mano == VACIO && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && distancia_manhattan(juego->reuben.posicion, juego->mesa, 1)){
+			if(juego->reuben.objeto_en_mano == VACIO && hay_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes,juego->reuben.posicion.fil - 1, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && distancia_manhattan(juego->reuben.posicion, juego->mesa, 1)){
 				juego->reuben.objeto_en_mano = buscar_tipo_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->reuben.posicion.fil - 1, juego->reuben.posicion.col);
 				ocultar_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
 			}
