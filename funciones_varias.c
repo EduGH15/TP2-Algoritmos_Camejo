@@ -39,7 +39,7 @@ void mover_jugador(personaje_t* jugador, char movimiento){
 }
 
 char buscar_tipo_ingrediente(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, int fila, int columna){
-	char tipo_ingrediente = ' ';
+	char tipo_ingrediente = ESPACIO_BLANCO;
 	bool encontro = false;
 	int i = 0;
 	while(i < tope_ingredientes && !encontro){

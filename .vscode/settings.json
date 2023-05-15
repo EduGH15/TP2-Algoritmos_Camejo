@@ -3,5 +3,6 @@
         "stdio.h": "c",
         "inicializar.h": "c",
         "validaciones.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "enabled"
 }
