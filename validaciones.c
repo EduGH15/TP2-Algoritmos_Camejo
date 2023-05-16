@@ -147,3 +147,7 @@ bool esta_cocinado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIE
 bool hay_vacio(juego_t juego, int orden, int fila, int columna){
 	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, fila, columna) && !hay_herramienta(juego.herramientas, juego.tope_herramientas, fila, columna) && !hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, fila, columna) && !hay_jugador(juego, fila, columna) && !hay_puerta_salida(juego.salida, fila, columna);
 }
+
+bool debe_ser_cocinado(char tipo_ingrediente){
+	return tipo_ingrediente == MASA || tipo_ingrediente == MILANESA || tipo_ingrediente == CARNE;
+}

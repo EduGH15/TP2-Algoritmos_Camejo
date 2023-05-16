@@ -114,5 +114,11 @@ Post: Dada una fila y una columna, devuelve true si en esta posición no hay par
 */
 bool hay_vacio(juego_t juego, int orden, int fila, int columna);
 
+/*
+Pre: .................................................................
+Post: Devuelve true en caso de que tipo_ingrediente sea MASA; MILANESA o CARNE.
+*/
+bool debe_ser_cocinado(char tipo_ingrediente);
+
 
 #endif /*__VALIDACIONES_H__*/

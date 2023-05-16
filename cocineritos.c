@@ -33,6 +33,7 @@ void imprimir_terreno(juego_t juego){
 
 void realizar_jugada(juego_t* juego, char movimiento){
 	int orden = orden_actual(juego->comida_actual);
+	//cambiar_nivel(juego);
 
 	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
 		if(juego->personaje_activo == STITCH){
@@ -93,8 +94,8 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		cortar_ingrediente(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
 	}
 
-	if(movimiento == PASAR){
-		if(juego->personaje_activo == STITCH && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && distancia_manhattan(juego->stitch.posicion, juego->mesa, 1)){
+	if(movimiento == PASAR && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos)){
+		if(juego->personaje_activo == STITCH && distancia_manhattan(juego->stitch.posicion, juego->mesa, 1)){
 			if(juego->stitch.objeto_en_mano != VACIO && !hay_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col)){
 				cambiar_posicion_ingrediente(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col);
 				juego->stitch.objeto_en_mano = VACIO;
@@ -102,7 +103,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 				juego->stitch.objeto_en_mano = buscar_tipo_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->stitch.posicion.fil + 1, juego->stitch.posicion.col);
 				ocultar_ingrediente(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
 			}
-		}else if(juego->personaje_activo == REUBEN && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && distancia_manhattan(juego->reuben.posicion, juego->mesa, 1)){
+		}else if(juego->personaje_activo == REUBEN  && distancia_manhattan(juego->reuben.posicion, juego->mesa, 1)){
 			if(juego->reuben.objeto_en_mano != VACIO && !hay_ingrediente(juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->reuben.posicion.fil - 1, juego->reuben.posicion.col) ){
 				cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->reuben.posicion.fil - 1, juego->reuben.posicion.col);
 				juego->reuben.objeto_en_mano = VACIO;
@@ -131,13 +132,12 @@ void realizar_jugada(juego_t* juego, char movimiento){
 			cocinar_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
 	}
 
-	if(juego->movimientos == 15){
+	if(juego->movimientos == MOVIMIENTOS_MAX){
 		inicializar_fuego(juego, orden);
 		inicializar_matafuegos(juego, orden);
-		juego->movimientos = 16;
+		juego->movimientos = MOVIMIENTOS_MAX + 1;
 	}
 	
-
 	if(juego->personaje_activo == STITCH){
 		if(juego->stitch.objeto_en_mano == VACIO && hay_matafuegos(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
 			juego->stitch.objeto_en_mano = buscar_tipo_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col);

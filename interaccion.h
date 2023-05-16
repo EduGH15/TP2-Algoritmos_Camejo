@@ -8,5 +8,3 @@
 void preguntar_jugada(char* movimiento);
 
 void ejecutar_introduccion();
-
-void interaccion(juego_t juego, char movimiento);

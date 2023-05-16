@@ -60,6 +60,8 @@
 #define ORDEN_PIZZA 1
 #define ORDEN_HAMBURGUESA 2
 #define ORDEN_SANDWICH 3
+#define MOVIMIENTOS_MAX 15
+#define MOVIMIENTOS_MIN 0
 
 /*------------TECLAS-----------------*/
 
