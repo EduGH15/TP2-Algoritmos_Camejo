@@ -82,8 +82,11 @@ void cortar_ingrediente(char tipo_ingrediente, ingrediente_t ingrediente[MAX_ING
 	bool cortado = false;
 	int i = 0;
 	while(i < tope_ingredientes && !cortado){
-		if(ingrediente[i].tipo == tipo_ingrediente){
+		if(ingrediente[i].tipo == tipo_ingrediente && (tipo_ingrediente != CARNE || tipo_ingrediente != MILANESA || tipo_ingrediente != MASA)){
 			ingrediente[i].esta_cortado = true;
+			cortado = true;
+		}else{
+			ingrediente[i].esta_cortado = false;
 			cortado = true;
 		}
 		i++;
@@ -94,8 +97,11 @@ void cocinar_ingrediente(char tipo_ingrediente, ingrediente_t ingrediente[MAX_IN
 	bool cocinado = false;
 	int i = 0;
 	while(i < tope_ingredientes && !cocinado){
-		if(ingrediente[i].tipo == tipo_ingrediente){
+		if(ingrediente[i].tipo == tipo_ingrediente && (tipo_ingrediente == CARNE || tipo_ingrediente == MILANESA || tipo_ingrediente == MASA)){
 			ingrediente[i].esta_cocinado = true;
+			cocinado = true;
+		}else{
+			ingrediente[i].esta_cocinado = false;
 			cocinado = true;
 		}
 		i++;
@@ -183,15 +189,21 @@ void cargar_vector(juego_t* juego, int orden){
 void cambiar_nivel(juego_t* juego){
 	if(juego->comida_actual == ENSALADA && juego->tope_comida_lista == 2){
 		juego->comida_actual = PIZZA;
-		inicializar_comida(juego);
 		juego->tope_comida_lista = 0;
+		juego->comida[ORDEN_PIZZA].tipo = PIZZA;
+		(juego->tope_comida)++;
+		inicializar_ingredientes_pizza(juego);
 	}else if(juego->comida_actual == PIZZA && juego->tope_comida_lista == 3){
 		juego->comida_actual = HAMBURGUESA;
-		inicializar_comida(juego);
 		juego->tope_comida_lista = 0;
+		juego->comida[ORDEN_HAMBURGUESA].tipo = HAMBURGUESA;
+		(juego->tope_comida)++;
+		inicializar_ingredientes_hamburguesa(juego);
 	}else if(juego->comida_actual == HAMBURGUESA && juego->tope_comida_lista == 4){
 		juego->comida_actual = SANDWICH;
-		inicializar_comida(juego);
 		juego->tope_comida_lista = 0;
+		juego->comida[ORDEN_SANDWICH].tipo = SANDWICH;
+		(juego->tope_comida)++;
+		inicializar_ingredientes_sandwich(juego);
 	}
 }

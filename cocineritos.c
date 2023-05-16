@@ -33,7 +33,6 @@ void imprimir_terreno(juego_t juego){
 
 void realizar_jugada(juego_t* juego, char movimiento){
 	int orden = orden_actual(juego->comida_actual);
-	//cambiar_nivel(juego);
 
 	if(movimiento == ARRIBA || movimiento == ABAJO || movimiento == DERECHA || movimiento == IZQUIERDA){
 		if(juego->personaje_activo == STITCH){
@@ -90,7 +89,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		}
 	}
 		
-	if(movimiento == ACTIVAR_CUCHILLO && juego->personaje_activo == STITCH && juego->stitch.objeto_en_mano != VACIO && !debe_ser_cocinado(juego->stitch.objeto_en_mano) && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
+	if(movimiento == ACTIVAR_CUCHILLO && juego->personaje_activo == STITCH && juego->stitch.objeto_en_mano != VACIO && !hay_fuego_cuadrante_stitch(juego->obstaculos, juego->tope_obstaculos) && hay_herramienta(juego->herramientas, juego->tope_herramientas, juego->stitch.posicion.fil, juego->stitch.posicion.col)){
 		cortar_ingrediente(juego->stitch.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
 	}
 
@@ -128,7 +127,7 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		}
 	}
 
-	if(movimiento == ACTIVAR_HORNO && juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano != VACIO && debe_ser_cocinado(juego->reuben.objeto_en_mano) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (distancia_manhattan(juego->reuben.posicion, juego->herramientas[2].posicion, 1) || distancia_manhattan(juego->reuben.posicion, juego->herramientas[3].posicion, 1))){
+	if(movimiento == ACTIVAR_HORNO && juego->personaje_activo == REUBEN && juego->reuben.objeto_en_mano != VACIO && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (distancia_manhattan(juego->reuben.posicion, juego->herramientas[2].posicion, 1) || distancia_manhattan(juego->reuben.posicion, juego->herramientas[3].posicion, 1))){
 			cocinar_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes);
 	}
 
@@ -150,18 +149,20 @@ void realizar_jugada(juego_t* juego, char movimiento){
 		}
 	}
 
-	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && !hay_fuego_cuadrante_reuben(juego->obstaculos, juego->tope_obstaculos) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes))){
+	if(hay_puerta_salida(juego->salida, juego->reuben.posicion.fil, juego->reuben.posicion.col) && (esta_cortado(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes) || esta_cocinado(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes))){
 		cargar_vector(juego, orden);
 		cambiar_posicion_ingrediente(juego->reuben.objeto_en_mano, juego->comida[orden].ingrediente, juego->comida[orden].tope_ingredientes, juego->reuben.posicion.fil, juego->reuben.posicion.col);
 		juego->reuben.objeto_en_mano = VACIO;
 	}
+
+	cambiar_nivel(juego);
 }
 
 int estado_juego(juego_t juego){
 	int estado = 0;
 	if(hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.stitch.posicion.fil, juego.stitch.posicion.col) || hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, juego.reuben.posicion.fil, juego.reuben.posicion.col)){
 		estado = -1;
-	}else if((juego.precio_total <= 100 && juego.tope_comida_lista == 3) || ((juego.precio_total > 100 && juego.precio_total <= 150) && juego.tope_comida_lista == 4) || (juego.precio_total > 150 && juego.tope_comida_lista == 6)){
+	}else if((juego.precio_total <= 100 && juego.comida_actual == HAMBURGUESA && juego.tope_comida_lista == 0) || ((juego.precio_total > 100 && juego.precio_total <= 150) && juego.comida_actual == SANDWICH && juego.tope_comida_lista == 0) || (juego.precio_total > 150 && juego.comida_actual == SANDWICH && juego.tope_comida_lista == 6)){
 		estado = 1;
 	}
 	return estado;

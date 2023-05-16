@@ -179,11 +179,4 @@ void ejecutar_introduccion(){
 	mostrar_lista_movimientos(numero_3, valido_3);
 }
 
-void preguntar_jugada(char* movimiento){
-    printf("Ingrese una jugada:\n");
-    scanf(" %c", movimiento);
-    while(*movimiento != 'W' && *movimiento != 'S' && *movimiento != 'D' && *movimiento != 'A' && *movimiento != 'X' && *movimiento != 'R' && *movimiento != 'T' && *movimiento != 'C' && *movimiento != 'H' && *movimiento != 'M'){
-        printf("Ingresa un movimiento valido:\n");
-        scanf(" %c", movimiento);
-    }
-}
+

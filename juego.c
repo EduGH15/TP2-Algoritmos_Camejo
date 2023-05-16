@@ -14,8 +14,8 @@ int main(){
     int precio = 0;
     char movimiento = ESPACIO_BLANCO;
     juego_t juego;
-    //ejecutar_introduccion();
-    //calcular_precio_chambuchito(&precio);
+    ejecutar_introduccion();
+    calcular_precio_chambuchito(&precio);
     inicializar_juego(&juego, precio);
     
     while(estado_juego(juego) == 0){

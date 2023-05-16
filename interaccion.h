@@ -5,6 +5,5 @@
 #include "validaciones.h"
 #include "funciones_varias.h"
 
-void preguntar_jugada(char* movimiento);
 
 void ejecutar_introduccion();
