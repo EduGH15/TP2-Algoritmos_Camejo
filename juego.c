@@ -7,7 +7,6 @@
 #include "funciones_varias.h"
 #include "interaccion.h"
 
-
 int main(){
     srand (( unsigned)time(NULL));
 

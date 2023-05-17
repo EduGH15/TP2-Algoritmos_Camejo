@@ -120,5 +120,6 @@ Post: Devuelve true en caso de que tipo_ingrediente sea MASA; MILANESA o CARNE.
 */
 bool debe_ser_cocinado(char tipo_ingrediente);
 
+bool distancia_manhattan_horno(coordenada_t posicion_jugador, objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas);
 
 #endif /*__VALIDACIONES_H__*/

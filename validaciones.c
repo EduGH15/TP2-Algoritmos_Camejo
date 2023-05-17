@@ -41,11 +41,10 @@ bool hay_fuego(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int fila,
 }
 
 bool hay_fuego_cuadrante_stitch(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo){
-	//return (tope_obstaculo == 21) && (obstaculos[tope_obstaculo - 1].posicion.fil >= 1 &&  obstaculos[tope_obstaculo - 1].posicion.fil <= 9);
 	bool hay_fuego_stitch = false;
 	int i = 0;
 	while(i < tope_obstaculo && !hay_fuego_stitch){
-		if(obstaculos[i].tipo == FUEGO && obstaculos[i].posicion.fil >= 1 && obstaculos[i].posicion.fil <= 9){
+		if(obstaculos[i].tipo == FUEGO && (obstaculos[i].posicion.fil >= 1 && obstaculos[i].posicion.fil <= 9)){
 			hay_fuego_stitch = true;
 		}
 		i++;
@@ -54,11 +53,10 @@ bool hay_fuego_cuadrante_stitch(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obs
 }
 
 bool hay_fuego_cuadrante_reuben(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo){
-	//return (tope_obstaculo == 21) && (obstaculos[tope_obstaculo - 1].posicion.fil >= 11 &&  obstaculos[tope_obstaculo - 1].posicion.fil <= 19);
 	bool hay_fuego_reuben = false;
 	int i = 0;
 	while(i < tope_obstaculo && !hay_fuego_reuben){
-		if(obstaculos[i].tipo == FUEGO && obstaculos[i].posicion.fil >= 11 && obstaculos[i].posicion.fil <= 19){
+		if(obstaculos[i].tipo == FUEGO && (obstaculos[i].posicion.fil >= 11 && obstaculos[i].posicion.fil <= 19)){
 			hay_fuego_reuben = true;
 		}
 		i++;
@@ -179,4 +177,5 @@ bool distancia_manhattan_horno(coordenada_t posicion_jugador, objeto_t herramien
 		}
 		i++;
 	}
+	return distancia_valida;
 }
