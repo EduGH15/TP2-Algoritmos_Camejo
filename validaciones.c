@@ -44,7 +44,7 @@ bool hay_fuego_cuadrante_stitch(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obs
 	bool hay_fuego_stitch = false;
 	int i = 0;
 	while(i < tope_obstaculo && !hay_fuego_stitch){
-		if(obstaculos[i].tipo == FUEGO && (obstaculos[i].posicion.fil >= 1 && obstaculos[i].posicion.fil <= 9)){
+		if(obstaculos[i].tipo == FUEGO && (obstaculos[i].posicion.fil >= MIN_FILA_STITCH && obstaculos[i].posicion.fil <= MAX_FILA_STITCH)){
 			hay_fuego_stitch = true;
 		}
 		i++;
@@ -56,7 +56,7 @@ bool hay_fuego_cuadrante_reuben(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obs
 	bool hay_fuego_reuben = false;
 	int i = 0;
 	while(i < tope_obstaculo && !hay_fuego_reuben){
-		if(obstaculos[i].tipo == FUEGO && (obstaculos[i].posicion.fil >= 11 && obstaculos[i].posicion.fil <= 19)){
+		if(obstaculos[i].tipo == FUEGO && (obstaculos[i].posicion.fil >= MIN_FILA_REUBEN && obstaculos[i].posicion.fil <= MAX_FILA_REUBEN)){
 			hay_fuego_reuben = true;
 		}
 		i++;
@@ -133,7 +133,7 @@ bool distancia_manhattan(coordenada_t posicion_jugador, coordenada_t posicion_el
 }
 
 bool estan_mismo_cuadrante(int fila_objeto_1,  int fila_objeto_2){
-	return ((fila_objeto_1 >= 1 && fila_objeto_1 <= 9) && (fila_objeto_2 >=1 && fila_objeto_2 <= 9)) || ((fila_objeto_1 >= 11 && fila_objeto_1 <= 19) && (fila_objeto_2 >=11 && fila_objeto_2 <= 19));
+	return ((fila_objeto_1 >= MIN_FILA_STITCH && fila_objeto_1 <= MAX_FILA_STITCH) && (fila_objeto_2 >= MIN_FILA_STITCH && fila_objeto_2 <= MAX_FILA_STITCH)) || ((fila_objeto_1 >= MIN_FILA_REUBEN && fila_objeto_1 <= MAX_FILA_REUBEN) && (fila_objeto_2 >= MIN_FILA_REUBEN && fila_objeto_2 <= MAX_FILA_REUBEN));
 }
 
 bool esta_cortado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes){
@@ -162,10 +162,6 @@ bool esta_cocinado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIE
 
 bool hay_vacio(juego_t juego, int orden, int fila, int columna){
 	return !hay_pared(juego.paredes, juego.tope_paredes, fila, columna) && !hay_mesa(juego.mesa, fila, columna) && !hay_obstaculo(juego.obstaculos, juego.tope_obstaculos, fila, columna) && !hay_herramienta(juego.herramientas, juego.tope_herramientas, fila, columna) && !hay_ingrediente(juego.comida[orden].ingrediente, juego.comida[orden].tope_ingredientes, fila, columna) && !hay_jugador(juego, fila, columna) && !hay_puerta_salida(juego.salida, fila, columna);
-}
-
-bool debe_ser_cocinado(char tipo_ingrediente){
-	return tipo_ingrediente == MASA || tipo_ingrediente == MILANESA || tipo_ingrediente == CARNE;
 }
 
 bool distancia_manhattan_horno(coordenada_t posicion_jugador, objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas){

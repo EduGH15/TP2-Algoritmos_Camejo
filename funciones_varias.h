@@ -28,47 +28,47 @@ void mover_jugador(personaje_t* jugador, char movimiento);
 
 
 /*
-Pre: los parametros fila y columna deben ser valores válidos (mayores a cero).
+Pre: los parametros fila y columna deben ser valores válidos (mayores a cero), el tope de ingredientes debe ser mayor o igual a cero y menor o igual a la constante MAX_INGREDIENTES.
 Post: Devuelve el tipo de ingrediente dada una fila y una columna, si no existe un ingrediente en esa posicion entonces no devuelve nada.
 */
 char buscar_tipo_ingrediente(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, int fila, int columna);
 
 /*
-Pre: ------------------------------------------------------------------------------------------------------------
-Post: Modifica la posicion actual del ingrediente (en caso de que esté en el vector de ingredientes) y lo manda a una posición no visible para el usuario.
+Pre: tope de ingredientes debe ser mayor o igual a cero y menor o igual a la constante MAX_INGREDIENTES.
+Post: Modifica la posicion actual del ingrediente y lo manda a una posición no visible para el usuario. En caso de que no se encuentre el ingrediente, no produce cambios.
 */
 void ocultar_ingrediente(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes);
 
 
 /*
-Pre: el parametro fila y columna deben ser valores válidos (mayores o iguales a 0)
-Post: Modifica la posicion actual del ingrediente (en caso de que esté en el vector de ingredientes) y lo manda a una fila y a una columna que se le pase por parámetro.
+Pre: el parametro fila y columna deben ser valores válidos (mayores o iguales a 0), el tope de ingredientes debe ser mayor o igual a cero y menor o igual a la constante MAX_INGREDIENTES
+Post: Modifica la posicion actual del ingrediente y lo manda a una fila y a una columna que se le pase por parámetro. En caso de que no esté en el vector, no produce cambios.
 */
 void cambiar_posicion_ingrediente(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, int fila, int columna);
 
 /*
-Pre: --------------------------------------------------------------------------------------------------------------------------------------------------
+Pre: Tope de ingrediente debe ser mayor o igual a cero y menor o igual a la constante MAX_INGREDIENTES
 Post: Modifica el estado actual del ingrediente (en caso de que esté en el vector de ingredientes). 
 si cortado = false ----> cortado = true.
 */
 void cortar_ingrediente(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes);
 
 /*
-Pre: --------------------------------------------------------------------------------------------------------------------------------------------------
+Pre: Tope de ingrediente debe ser mayor o igual a cero y menor o igual a la constante MAX_INGREDIENTES
 Post: Modifica el estado actual del ingrediente (en caso de que esté en el vector de ingredientes). 
 si cocinado = false ----> cocinado = true.
 */
 void cocinar_ingrediente(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes);
 
 /*
-Pre: los parametros fila y columna deben ser valores válidos (mayores a cero).
+Pre: Los parametros fila y columna deben ser valores válidos (mayores a cero), el tope de herramientas debe ser mayor o igual a cero y menor o igual a la constante MAX_HERRAMIENTAS.
 Post: Devuelve el tipo de herramienta  dada una posicion (en caso de que exista una herramienta en la fila y la columna que se le pase por parámetro). 
 */
 char buscar_tipo_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna);
 
 /*
-Pre: ------------------------------------------------------------------------------------------------------------
-Post: Modifica la posicion actual de la herramienta (en caso de que esté en el vector de herramientas) y lo manda a una posición no visible para el usuario.
+Pre:  El tope de herramientas debe ser mayor o igual a cero y menor o igual a la constante MAX_HERRAMIENTAS.
+Post: Modifica la posicion actual de la herramienta y lo manda a una posición no visible para el usuario. En caso de que no esté en el vector, no produce cambios.
 */
 void ocultar_herramienta(char tipo_herramienta, objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas);
 
@@ -79,19 +79,19 @@ Post: Devuelve un numero de orden dependiendo de cual sea la comida actual:
 int orden_actual(char comida_actual);
 
 /*
-Pre: -------------------------------------------------------------------------------------------------------------------------------
+Pre: El tope de obstaculos debe ser mayor o igual a cero y menor o igual a la constante MAX_OBSTACULOS
 Post: Modifica el vector de obstaculo y el tope de obstaculo, asignandole una posicion.fil, una posicion.col y un tipo de obstáculo.
 */
 void asignar_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS], int* tope_obstaculos, coordenada_t posicion, char tipo_obstaculo);
 
 /*
-Pre: -------------------------------------------------------------------------------------------------------------------------------
+Pre: El tope de herramientas debe ser mayor o igual a cero y menor o igual a la constante MAX_HERRAMIENTAS.
 Post: Modifica el vector de herramientas y el tope de herramientas, asignandole una posicion.fil, una posicion.col y un tipo de herramienta.
 */
 void asignar_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int* tope_herramientas, coordenada_t posicion, char tipo_herramienta);
 
 /*
-Pre: -------------------------------------------------------------------------------------------------------------------------------
+Pre: Tope de ingrediente debe ser mayor o igual a cero y menor o igual a la constante MAX_INGREDIENTES
 Post: Modifica el vector de ingredientes y el tope de ingredientes, asignandole una posicion.fil, una posicion.col y un tipo de ingrediente.
 */
 void asignar_ingrediente(ingrediente_t ingrediente[MAX_INGREDIENTES], int* tope_ingredientes, coordenada_t posicion, char tipo_ingrediente);

@@ -7,3 +7,5 @@
 
 
 void ejecutar_introduccion();
+
+void imprimir_resultado(juego_t juego);

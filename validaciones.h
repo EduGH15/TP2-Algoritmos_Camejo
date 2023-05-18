@@ -13,43 +13,43 @@ Post: Dada una fila y una columna, devuelve true en caso de que haya un jugador 
 bool hay_jugador(juego_t juego, int fila, int columna);
 
 /*
-Pre: El parámetro tope de paredes debe ser menor o igual a la constante MAX_PAREDES.
+Pre: El parámetro tope de paredes debe ser mayor o igual a cero y menor o igual a la constante MAX_PAREDES.
 Post: Dada una fila y una columna, devuelve true en caso de que haya una pared en esa posición. En caso contrario, devuelve false.
 */
 bool hay_pared(coordenada_t paredes[MAX_PAREDES], int tope_paredes, int fila, int columna);
 
 /*
-Pre: El parámetro tope de obstáculos debe ser menor o igual a la constante MAX_OBSTACULOS.
+Pre: El parámetro tope de obstáculos debe ser mayor o igual a cero y menor o igual a la constante MAX_OBSTACULOS.
 Post: Dada una fila y una columna, devuelve true en caso de que haya un obstaculo en esa posición. En caso contrario, devuelve false.
 */
 bool hay_obstaculo(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int fila, int columna);
 
 /*
-Pre: El parámetro tope de obstáculos debe ser menor o igual a la constante MAX_OBSTACULOS.
+Pre: El parámetro tope de obstáculos debe ser mayor o igual a cero y menor o igual a la constante MAX_OBSTACULOS.
 Post: Dada una fila y una columna, devuelve true en caso de que haya un fuego en esa posición. En caso contrario, devuelve false.
 */
 bool hay_fuego(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo, int fila, int columna);
 
 /*
-Pre: El parámetro tope de obstáculos debe ser menor o igual a la constante MAX_OBSTACULOS.
+Pre: El parámetro tope de obstáculos debe ser mayor o igual a cero y menor o igual a la constante MAX_OBSTACULOS.
 Post: Dada una fila y una columna, devuelve true en caso de que haya un fuego en el cuadrante de Stitch. En caso contrario, devuelve false.
 */
 bool hay_fuego_cuadrante_stitch(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo);
 
 /*
-Pre: El parámetro tope de obstáculos debe ser menor o igual a la constante MAX_OBSTACULOS.
+Pre: El parámetro tope de obstáculos debe ser mayor a cero y menor o igual a la constante MAX_OBSTACULOS.
 Post: Dada una fila y una columna, devuelve true en caso de que haya un fuego en el cuadrante de Reuben. En caso contrario, devuelve false.
 */
 bool hay_fuego_cuadrante_reuben(objeto_t obstaculos[MAX_OBSTACULOS],int tope_obstaculo);
 
 /*
-Pre: El parámetro tope de herramientas debe ser menor o igual a la constante MAX_HERRAMIENTAS.
+Pre: El parámetro tope de herramientas debe ser mayor o igual a cero y menor o igual a la constante MAX_HERRAMIENTAS.
 Post: Dada una fila y una columna, devuelve true en caso de que haya una herramienta en esa posición. En caso contrario, devuelve false.
 */
 bool hay_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna);
 
 /*
-Pre: El parámetro tope de ingredientes debe de ser menor o igual a la constante MAX_INGREDIENTES.
+Pre: El parámetro tope de ingredientes debe de ser mayor o igual a cero y menor o igual a la constante MAX_INGREDIENTES.
 Post: Dada una fila y una columna, devuelve true en caso de que haya un ingrediente en esa posición. En caso contrario, devuelve false.
 */
 bool hay_ingrediente(ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes, int fila, int columna);
@@ -61,13 +61,13 @@ Post: dada una fila y una columna, devuelve true en caso de que haya una mesa en
 bool hay_mesa(coordenada_t mesa, int fila, int columna);
 
 /*
-Pre: El parámetro tope de herramientas debe ser menor o igual a la constante MAX_HERRAMIENTAS.
+Pre: El parámetro tope de herramientas debe ser mayor o igual a cero y menor o igual a la constante MAX_HERRAMIENTAS.
 Post: Dada una fila y una columna, devuelve true en caso de que haya un horno en esa posición. En caso contrario, devuelve false.
 */
 bool hay_horno(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna);
 
 /*
-Pre: El parámetro tope de herramientas debe ser menor o igual a la constante MAX_HERRAMIENTAS.
+Pre: El parámetro tope de herramientas debe ser mayor o igual a cero y menor o igual a la constante MAX_HERRAMIENTAS.
 Post: Dada una fila y una columna, devuelve true en caso de que haya un matafuegos en esa posición. En caso contrario, devuelve false.
 */
 bool hay_matafuegos(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna);
@@ -97,13 +97,13 @@ Post: Dada dos filas, devuelve true si ambas pertenecen al mismo cuadrante. En c
 bool estan_mismo_cuadrante(int fila_objeto_1,  int fila_objeto_2);
 
 /*
-Pre: El parámetro tope de ingredientes debe de ser menor o igual a la constante MAX_INGREDIENTES.
+Pre: El parámetro tope de ingredientes debe de ser mayor o igual a cero y menor o igual a la constante MAX_INGREDIENTES.
 Post: Dado un tipo de ingrediente, devuelve true si este se encuentra cortado. En caso contrario, devuelve false.
 */
 bool esta_cortado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes);
 
 /*
-Pre: El parámetro tope de ingredientes debe de ser menor o igual a la constante MAX_INGREDIENTES.
+Pre: El parámetro tope de ingredientes debe de ser mayor o igual a cero y menor o igual a la constante MAX_INGREDIENTES.
 Post: Dado un tipo de ingrediente, devuelve true si este se encuentra cocinado. En caso contrario, devuelve false.
 */
 bool esta_cocinado(char tipo_ingrediente, ingrediente_t ingrediente[MAX_INGREDIENTES], int tope_ingredientes);
@@ -115,11 +115,9 @@ Post: Dada una fila y una columna, devuelve true si en esta posición no hay par
 bool hay_vacio(juego_t juego, int orden, int fila, int columna);
 
 /*
-Pre: .................................................................
-Post: Devuelve true en caso de que tipo_ingrediente sea MASA; MILANESA o CARNE.
+Pre: Tope de herramientas debe ser mayor o igual a cero y menor o igual a la constante MAX_HERRAMIENTAS.
+Post: Devuelve true si la distancia manhattan entre el horno y el jugador es menor o igual a 1.
 */
-bool debe_ser_cocinado(char tipo_ingrediente);
-
 bool distancia_manhattan_horno(coordenada_t posicion_jugador, objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas);
 
 #endif /*__VALIDACIONES_H__*/

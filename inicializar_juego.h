@@ -42,6 +42,10 @@
 #define ESPACIO_BLANCO ' '; 
 
 /*------POSICIONES----------------*/
+#define MIN_FILA_STITCH 1
+#define MAX_FILA_STITCH 9
+#define MIN_FILA_REUBEN 11
+#define MAX_FILA_REUBEN 19
 #define CENTRO_FILA 10
 #define CENTRO_COLUMNA 10
 #define PRIMERA_FILA 0
@@ -51,17 +55,27 @@
 #define ULTIMA_COLUMNA 20
 #define MAX_FIL 21
 #define MAX_COL 21
+#define POSICION_INVALIDA_FIL -1
+#define POSICION_INVALIDA_COL -1
 
 /*------------VALORES VARIOS-----------*/
 
 #define CANTIDAD_AGUJEROS_CUADRANTE 10
 #define CANTIDAD_HERRAMIENTAS_CUADRANTE 2
+#define CANTIDAD_MAX_POR_INGREDIENTE 1
 #define ORDEN_ENSALADA 0
 #define ORDEN_PIZZA 1
 #define ORDEN_HAMBURGUESA 2
 #define ORDEN_SANDWICH 3
+#define SIN_COMIDA_LISTA 0
 #define MOVIMIENTOS_MAX 15
-#define MOVIMIENTOS_MIN 0
+#define SIN_MOVIMIENTOS 0
+#define SIN_PRECIO 0
+
+/*-------------ESTADOS DE JUEGO-----------------*/
+#define GANADO 1
+#define PERDIDO -1
+#define EN_JUEGO 0
 
 /*------------TECLAS-----------------*/
 
@@ -131,12 +145,6 @@ Post: Le asigna una posición a cada ingrediente, un tipo ('L' o 'T' o 'N' o 'J'
 void inicializar_ingredientes_sandwich(juego_t* juego);
 
 /*
-Pre:------------------------------------------------------------------------------------------
-Post: Dependiendo de cual sea la comida actual, inicializará los ingredientes de la ensalada, la pizza, la hamburguesa o el sandwich.
-*/
-void inicializar_comida(juego_t* juego);
-
-/*
 Pre:......................................................................................
 Post: Le asigna una posición y un tipo 'P' a la puerta de salida.
 */
@@ -144,7 +152,7 @@ void inicializar_puerta_salida(juego_t* juego);
 
 /*
 Pre:-------------------------------------------------------
-Post: inicializa a dos personajes (Stitch y Reuben), asignándole dos posiciones, un tipo 'S' o 'R' y objeto en mano.
+Post: inicializa a dos personajes (Stitch y Reuben), asignándole dos posiciones, un tipo 'S' o 'R' y objeto en mano que comienza siendo igual a la constante VACIO.
 */
 void inicializar_personajes(juego_t* juego);
 
@@ -174,7 +182,7 @@ void llenar_grilla(juego_t juego, char grilla[MAX_FIL][MAX_COL]);
 
 /*
 Pre: -------------------------------------------------
-Post: Imprime la grilla.
+Post: Imprime por pantalla la grilla.
 */
 void dibujar_grilla(char grilla[MAX_FIL][MAX_COL]);
 

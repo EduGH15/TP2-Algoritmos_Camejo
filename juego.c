@@ -10,14 +10,14 @@
 int main(){
     srand (( unsigned)time(NULL));
 
-    int precio = 0;
+    int precio = SIN_PRECIO;
     char movimiento = ESPACIO_BLANCO;
     juego_t juego;
     ejecutar_introduccion();
     calcular_precio_chambuchito(&precio);
     inicializar_juego(&juego, precio);
     
-    while(estado_juego(juego) == 0){
+    while(estado_juego(juego) == EN_JUEGO){
         system("clear");
         imprimir_terreno(juego);
         printf("Ingrese una jugada:\n");
@@ -25,6 +25,7 @@ int main(){
         realizar_jugada(&juego, movimiento);
     }
     
+    imprimir_resultado(juego);
     
     return 0;
 }

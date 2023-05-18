@@ -57,8 +57,8 @@ void ocultar_ingrediente(char tipo_ingrediente, ingrediente_t ingrediente[MAX_IN
 	int i = 0;
 	while(i < tope_ingredientes && !encontro){
 		if(ingrediente[i].tipo == tipo_ingrediente){
-			ingrediente[i].posicion.fil = -1;
-			ingrediente[i].posicion.col = -1;
+			ingrediente[i].posicion.fil = POSICION_INVALIDA_FIL;
+			ingrediente[i].posicion.col = POSICION_INVALIDA_COL;
 			encontro = true;
 		}
 		i++;
@@ -103,7 +103,7 @@ void cocinar_ingrediente(char tipo_ingrediente, ingrediente_t ingrediente[MAX_IN
 }
 
 char buscar_tipo_herramienta(objeto_t herramientas[MAX_HERRAMIENTAS], int tope_herramientas, int fila, int columna){
-	char tipo_herramienta = ' ';
+	char tipo_herramienta = ESPACIO_BLANCO;
 	bool encontro = false;
 	int i = 0;
 	while(i < tope_herramientas && !encontro){
@@ -121,8 +121,8 @@ void ocultar_herramienta(char tipo_herramienta, objeto_t herramientas[MAX_HERRAM
 	int i = 0;
 	while(i < tope_herramientas && !encontro){
 		if(herramientas[i].tipo == tipo_herramienta){
-			herramientas[i].posicion.fil = -1;
-			herramientas[i].posicion.col = -1;
+			herramientas[i].posicion.fil = POSICION_INVALIDA_FIL;
+			herramientas[i].posicion.col = POSICION_INVALIDA_COL;
 			encontro = true;
 		}
 		i++;
@@ -130,13 +130,13 @@ void ocultar_herramienta(char tipo_herramienta, objeto_t herramientas[MAX_HERRAM
 }
 
 int orden_actual(char comida_actual){
-	int orden = 0;
+	int orden = ORDEN_ENSALADA;
 	if(comida_actual == PIZZA){
-		orden = 1;
+		orden = ORDEN_PIZZA;
 	}else if(comida_actual == HAMBURGUESA){
-		orden = 2;
+		orden = ORDEN_HAMBURGUESA;
 	}else if (comida_actual == SANDWICH){
-		orden = 3;
+		orden = ORDEN_SANDWICH;
 	}
 	return orden;
 }
@@ -183,19 +183,19 @@ void cargar_vector(juego_t* juego, int orden){
 void cambiar_nivel(juego_t* juego){
 	if(juego->comida_actual == ENSALADA && juego->tope_comida_lista == 2){
 		juego->comida_actual = PIZZA;
-		juego->tope_comida_lista = 0;
+		juego->tope_comida_lista = SIN_COMIDA_LISTA;
 		juego->comida[ORDEN_PIZZA].tipo = PIZZA;
 		(juego->tope_comida)++;
 		inicializar_ingredientes_pizza(juego);
 	}else if(juego->comida_actual == PIZZA && juego->tope_comida_lista == 3){
 		juego->comida_actual = HAMBURGUESA;
-		juego->tope_comida_lista = 0;
+		juego->tope_comida_lista = SIN_COMIDA_LISTA;
 		juego->comida[ORDEN_HAMBURGUESA].tipo = HAMBURGUESA;
 		(juego->tope_comida)++;
 		inicializar_ingredientes_hamburguesa(juego);
 	}else if(juego->comida_actual == HAMBURGUESA && juego->tope_comida_lista == 4){
 		juego->comida_actual = SANDWICH;
-		juego->tope_comida_lista = 0;
+		juego->tope_comida_lista = SIN_COMIDA_LISTA;
 		juego->comida[ORDEN_SANDWICH].tipo = SANDWICH;
 		(juego->tope_comida)++;
 		inicializar_ingredientes_sandwich(juego);
